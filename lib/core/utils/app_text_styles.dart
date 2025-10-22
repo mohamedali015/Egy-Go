@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+
+import '../helper/my_responsive.dart';
+
+abstract class AppTextStyles {
+  // ---------- Light ----------
+  static TextStyle light13 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 13),
+    fontWeight: FontWeight.w300,
+  );
+
+  // ---------- Regular ----------
+
+  static TextStyle regular11 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 11),
+    fontWeight: FontWeight.normal,
+  );
+
+  // ---------- Medium ----------
+  static TextStyle medium16 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 16),
+    fontWeight: FontWeight.w500,
+  );
+
+  // ---------- SemiBold ----------
+  static TextStyle semiBold11 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 11),
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle semiBold20 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 20),
+    fontWeight: FontWeight.w600,
+  );
+
+  // ---------- Bold ----------
+
+  static TextStyle bold11 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 11),
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle bold13 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 13),
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle bold36 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 36),
+    fontWeight: FontWeight.bold,
+  );
+}
