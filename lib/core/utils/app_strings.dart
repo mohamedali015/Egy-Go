@@ -1,4 +1,10 @@
 abstract class AppStrings {
+  ///// get started screen /////
+  static const String getStartedTitle = "Discover\nAmazing Places";
+  static const String getStartedSubtitle =
+      "Your Journey, Your Guide, All In One App.";
+
+
   ///// login screen /////
   static const String loginTitle = "Welcome\nBack!";
   static const String nameHint = "Full Name";

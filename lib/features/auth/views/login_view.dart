@@ -2,7 +2,7 @@ import 'package:egy_go/core/helper/my_snackbar.dart';
 import 'package:egy_go/core/shared_widgets/custom_progress_hud.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_cubit.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_state.dart';
-import 'package:egy_go/features/auth/views/widgets/login_view_body.dart';
+import 'package:egy_go/features/auth/views/widgets/login_widgets/login_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

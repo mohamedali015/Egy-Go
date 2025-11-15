@@ -1,5 +1,7 @@
 import 'package:egy_go/core/helper/custom_bloc_observer.dart';
 import 'package:egy_go/core/helper/one_generate_routes.dart';
+import 'package:egy_go/core/utils/app_theme.dart';
+import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +26,8 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'EgyGo',
           onGenerateRoute: onGenerateRoutes,
-          initialRoute: LoginView.routeName,
+          initialRoute: GetStartedView.routeName,
+          theme: AppTheme.lightTheme,
         );
       },
     );

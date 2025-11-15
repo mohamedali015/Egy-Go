@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/helper/my_responsive.dart';
-import '../../../../core/shared_widgets/svg_wrapper.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_text_styles.dart';
+import '../../../../../core/helper/my_responsive.dart';
+import '../../../../../core/shared_widgets/svg_wrapper.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_text_styles.dart';
+
 
 class SocialLoginButton extends StatelessWidget {
   const SocialLoginButton({

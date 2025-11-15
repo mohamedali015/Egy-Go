@@ -5,11 +5,11 @@ import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_cubit.dart';
-import 'package:egy_go/features/auth/views/widgets/social_login_button.dart';
+import 'package:egy_go/features/auth/views/widgets/login_widgets/social_login_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/app_assets.dart';
-import 'do_not_have_account.dart';
+import '../../../../../core/utils/app_assets.dart';
+import '../do_not_have_account.dart';
 import 'or_divider.dart';
 
 class LoginViewBody extends StatelessWidget {
