@@ -7,8 +7,11 @@ abstract class AppStrings {
   static const String passwordHint = "Password";
   static const String confirmPasswordHint = "Confirm Password";
   static const String forgotPassword = "Forgot Password?";
+  static const String or = "OR";
+  static const String loginWithGoogle = "Login with Google";
+  static const String loginWithFacebook = "Login with Facebook";
   static const String dontHaveAccount = "Don't have an account? ";
-  static const String signUp = "Sign Up";
+  static const String register = "Register";
 
   // validators
   static const String nameRequired = 'Name is required';
