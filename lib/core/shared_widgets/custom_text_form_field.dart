@@ -37,6 +37,9 @@ class CustomTextFormField extends StatelessWidget {
       case TextFieldType.email:
         return _emailField(context, Validator.email);
 
+      case TextFieldType.phone:
+        return _phoneField(context, Validator.phone);
+
       case TextFieldType.name:
         return _nameField(context, Validator.name);
     }
@@ -96,6 +99,30 @@ class CustomTextFormField extends StatelessWidget {
       decoration: _inputDecoration(
         context,
         label: AppStrings.nameHint,
+        prefixIcon: Icon(
+          Icons.person_2_outlined,
+          color: AppColors.grey,
+        ),
+      ),
+    );
+  }
+
+  Widget _phoneField(
+    BuildContext context,
+    String? Function(String?)? validator,
+  ) {
+    return TextFormField(
+      controller: controller,
+      validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.phone,
+      decoration: _inputDecoration(
+        context,
+        label: AppStrings.phoneNumber,
+        prefixIcon: Icon(
+          Icons.local_phone_outlined,
+          color: AppColors.grey,
+        ),
       ),
     );
   }
@@ -113,7 +140,7 @@ class CustomTextFormField extends StatelessWidget {
         context,
         label: AppStrings.emailHint,
         prefixIcon: Icon(
-          Icons.email,
+          Icons.email_outlined,
           color: AppColors.grey,
         ),
       ),
@@ -135,16 +162,16 @@ class CustomTextFormField extends StatelessWidget {
         label: passController == null
             ? AppStrings.passwordHint
             : AppStrings.confirmPasswordHint,
-        prefixIcon: Icon(Icons.lock, color: AppColors.grey),
+        prefixIcon: Icon(Icons.lock_outline, color: AppColors.grey),
         suffixIcon: IconButton(
           onPressed: onSuffixTapped,
           icon: obsecure
               ? Icon(
-                  Icons.visibility,
+                  Icons.visibility_outlined,
                   color: AppColors.grey,
                 )
               : Icon(
-                  Icons.visibility_off,
+                  Icons.visibility_off_outlined,
                   color: AppColors.grey,
                 ),
         ),
@@ -153,4 +180,4 @@ class CustomTextFormField extends StatelessWidget {
   }
 }
 
-enum TextFieldType { password, email, name }
+enum TextFieldType { password, email, name, phone }

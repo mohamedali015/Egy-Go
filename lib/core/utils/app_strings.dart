@@ -7,17 +7,24 @@ abstract class AppStrings {
 
   ///// login screen /////
   static const String loginTitle = "Welcome\nBack!";
+  static const String registerTitle = "Create an\nAccount";
   static const String nameHint = "Full Name";
   static const String login = "Login";
   static const String emailHint = "Email";
   static const String passwordHint = "Password";
+  static const String phoneNumber = "Phone Number";
   static const String confirmPasswordHint = "Confirm Password";
   static const String forgotPassword = "Forgot Password?";
   static const String or = "OR";
   static const String loginWithGoogle = "Login with Google";
   static const String loginWithFacebook = "Login with Facebook";
   static const String dontHaveAccount = "Don't have an account? ";
+  static const String alreadyHaveAccount = "Already have an account? ";
   static const String register = "Register";
+  static const String byClicking  =
+      "By clicking Register, you agree to our ";
+  static const String conditionsAndTerms = "Conditions & Terms";
+  static const String acceptTerms = "You must accept the terms and conditions";
 
   // validators
   static const String nameRequired = 'Name is required';

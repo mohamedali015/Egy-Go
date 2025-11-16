@@ -9,6 +9,7 @@ import 'package:egy_go/features/auth/views/widgets/login_widgets/social_login_bu
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/app_assets.dart';
+import '../../register_view.dart';
 import '../do_not_have_account.dart';
 import 'or_divider.dart';
 
@@ -104,7 +105,7 @@ class LoginViewBody extends StatelessWidget {
               question: AppStrings.dontHaveAccount,
               actionText: AppStrings.register,
               onPressed: () {
-                // Navigator.pushNamed(context, RegisterView.routeName);
+                Navigator.pushReplacementNamed(context, RegisterView.routeName);
               },
             ),
             SizedBox(
