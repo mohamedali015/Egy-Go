@@ -22,7 +22,7 @@ class RegisterView extends StatelessWidget {
           body: BlocConsumer<RegisterCubit, RegisterState>(
             listener: (context, state) {
               if (state is RegisterSuccess) {
-                MySnackbar.success(context, 'Login Successful');
+                MySnackbar.success(context, 'Registration successful!');
 
                 // ToDo Navigate to the next screen
               }

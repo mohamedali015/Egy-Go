@@ -8,7 +8,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
   static RegisterCubit get(context) => BlocProvider.of(context);
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  // Removed GlobalKey<FormState> from cubit to avoid duplicate key usage across widgets
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -19,10 +19,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   bool obsecureConfirmPassword = true;
 
   void register() {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
-
+    // Validation will be performed in the UI using a local Form key
     if (!isChecked) {
       return emit(RegisterError(error: AppStrings.acceptTerms));
     }

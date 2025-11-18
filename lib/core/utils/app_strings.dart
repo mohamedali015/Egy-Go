@@ -4,7 +4,6 @@ abstract class AppStrings {
   static const String getStartedSubtitle =
       "Your Journey, Your Guide, All In One App.";
 
-
   ///// login screen /////
   static const String loginTitle = "Welcome\nBack!";
   static const String registerTitle = "Create an\nAccount";
@@ -21,10 +20,29 @@ abstract class AppStrings {
   static const String dontHaveAccount = "Don't have an account? ";
   static const String alreadyHaveAccount = "Already have an account? ";
   static const String register = "Register";
-  static const String byClicking  =
-      "By clicking Register, you agree to our ";
+  static const String byClicking = "By clicking Register, you agree to our ";
   static const String conditionsAndTerms = "Conditions & Terms";
   static const String acceptTerms = "You must accept the terms and conditions";
+
+  ///// forgot password screen /////
+  static const String forgotPasswordTitle = "Forgot Password 🔒";
+  static const String forgotPasswordSubtitle =
+      "Enter your email to reset your password";
+
+  static const String resetPasswordHint =
+      "We will send you an OTP to your email";
+  static const String sendCode = "Send Code";
+  static const String newPassword = "New Password";
+  static const String resetPasswordSubtitle = "Please crease a new Password";
+  static const String resetPassword = "Reset Password";
+
+  ///// OTP screen /////
+  static const String otpTitle = "Input OTP";
+  static const String otpSubtitle =
+      "Please enter the verification code sent to your email, Check your Email And Enter the code Below.";
+  static const String resendCode = "Resend Code";
+  static const String doNotReceiveCode = "Didn't receive the code?";
+  static const String verify = "Verify";
 
   // validators
   static const String nameRequired = 'Name is required';

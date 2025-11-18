@@ -11,10 +11,18 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../register_view.dart';
 import '../do_not_have_account.dart';
+import '../reset_password_widgets/forget_password_flow.dart';
 import 'or_divider.dart';
 
-class LoginViewBody extends StatelessWidget {
+class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
+
+  @override
+  State<LoginViewBody> createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<LoginViewBody> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +46,7 @@ class LoginViewBody extends StatelessWidget {
               height: MyResponsive.height(value: 20),
             ),
             Form(
-              key: cubit.formKey,
+              key: _formKey,
               child: Column(
                 children: [
                   CustomTextFormField(
@@ -57,23 +65,32 @@ class LoginViewBody extends StatelessWidget {
                   SizedBox(
                     height: MyResponsive.height(value: 16),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        AppStrings.forgotPassword,
-                        style: AppTextStyles.bold13.copyWith(
-                          color: AppColors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, ForgetPasswordFlow.routeName);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          AppStrings.forgotPassword,
+                          style: AppTextStyles.bold13.copyWith(
+                            color: AppColors.grey,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: MyResponsive.height(value: 50),
                   ),
                   CustomButton(
                     title: AppStrings.login,
-                    onPressed: cubit.login,
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) return;
+                      cubit.login();
+                    },
                   ),
                 ],
               ),

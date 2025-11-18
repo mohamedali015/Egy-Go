@@ -6,13 +6,19 @@ import 'package:flutter/material.dart';
 import '../../../../../core/helper/my_responsive.dart';
 import '../../../../../core/shared_widgets/custom_button.dart';
 import '../../../../../core/shared_widgets/custom_text_form_field.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_text_styles.dart';
 import '../do_not_have_account.dart';
 
-class RegisterViewBody extends StatelessWidget {
+class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
+
+  @override
+  State<RegisterViewBody> createState() => _RegisterViewBodyState();
+}
+
+class _RegisterViewBodyState extends State<RegisterViewBody> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,7 @@ class RegisterViewBody extends StatelessWidget {
               height: MyResponsive.height(value: 20),
             ),
             Form(
-              key: cubit.formKey,
+              key: _formKey,
               child: Column(
                 children: [
                   CustomTextFormField(
@@ -85,7 +91,10 @@ class RegisterViewBody extends StatelessWidget {
                   ),
                   CustomButton(
                     title: AppStrings.register,
-                    onPressed: cubit.register,
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) return;
+                      cubit.register();
+                    },
                   ),
                 ],
               ),

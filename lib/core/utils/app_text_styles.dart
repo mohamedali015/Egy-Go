@@ -16,6 +16,11 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.normal,
   );
 
+  static TextStyle regular12 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 12),
+    fontWeight: FontWeight.normal,
+  );
+
   static TextStyle regular14 = TextStyle(
     fontSize: MyResponsive.fontSize(value: 14),
     fontWeight: FontWeight.normal,
@@ -62,6 +67,11 @@ abstract class AppTextStyles {
 
   static TextStyle bold16 = TextStyle(
     fontSize: MyResponsive.fontSize(value: 16),
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle bold25 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 25),
     fontWeight: FontWeight.bold,
   );
 
