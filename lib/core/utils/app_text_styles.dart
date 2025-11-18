@@ -70,6 +70,11 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static TextStyle bold20 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 20),
+    fontWeight: FontWeight.bold,
+  );
+
   static TextStyle bold25 = TextStyle(
     fontSize: MyResponsive.fontSize(value: 25),
     fontWeight: FontWeight.bold,

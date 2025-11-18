@@ -46,6 +46,8 @@ dependencies:
   flutter_bloc: ^9.1.1
   shared_preferences: ^2.5.3
   flutter_svg_provider: ^1.0.7
+  dots_indicator: ^4.0.1
+
 
 
 dev_dependencies:

@@ -57,7 +57,7 @@ class GetStartedViewBody extends StatelessWidget {
                 AppStrings.getStartedSubtitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.regular14.copyWith(
-                  color: AppColors.grey,
+                  color: AppColors.white,
                 ),
               ),
               SizedBox(
