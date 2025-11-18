@@ -15,6 +15,7 @@ class OnBoardingContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = OnBoardingCubit.get(context);
     return Container(
+      height: MyResponsive.height(value: 250),
       padding: MyResponsive.paddingSymmetric(
         horizontal: 18,
         vertical: 22,
@@ -32,21 +33,41 @@ class OnBoardingContainerWidget extends StatelessWidget {
           SizedBox(
             height: MyResponsive.height(value: 8),
           ),
-          Text(
-            cubit.items[cubit.currentIndex]['subTitle']!,
-            style: AppTextStyles.regular14
-                .copyWith(color: AppColors.black.withValues(alpha: .5)),
-            textAlign: TextAlign.center,
+          Padding(
+            padding: MyResponsive.paddingSymmetric(horizontal: 5),
+            child: Text(
+              cubit.items[cubit.currentIndex]['subTitle']!,
+              style: AppTextStyles.regular14
+                  .copyWith(color: AppColors.black.withValues(alpha: .5)),
+              textAlign: TextAlign.center,
+            ),
           ),
-          SizedBox(
-            height: MyResponsive.height(value: 16),
-          ),
+          // SizedBox(
+          //   height: MyResponsive.height(value: 16),
+          // ),
+          Spacer(),
           DotsIndicator(
             dotsCount: cubit.items.length,
             position: cubit.currentIndex.toDouble(),
             decorator: DotsDecorator(
               activeColor: AppColors.primary,
               color: AppColors.primary.withValues(alpha: 0.5),
+              size: Size(
+                MyResponsive.width(value: 8),
+                MyResponsive.height(value: 8),
+              ),
+              activeSize: Size(
+                MyResponsive.width(value: 24),
+                MyResponsive.height(value: 8),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(MyResponsive.radius(value: 12)),
+              ),
+              activeShape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(MyResponsive.radius(value: 12)),
+              ),
             ),
           ),
           SizedBox(

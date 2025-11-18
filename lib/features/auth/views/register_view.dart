@@ -1,6 +1,7 @@
 import 'package:egy_go/core/shared_widgets/custom_progress_hud.dart';
 import 'package:egy_go/features/auth/manager/register_cubit/register_cubit.dart';
 import 'package:egy_go/features/auth/manager/register_cubit/register_state.dart';
+import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +26,7 @@ class RegisterView extends StatelessWidget {
                 MySnackbar.success(context, 'Registration successful!');
 
                 // ToDo Navigate to the next screen
+                Navigator.pushReplacementNamed(context, LoginView.routeName);
               }
               if (state is RegisterError) {
                 MySnackbar.error(context, state.error);

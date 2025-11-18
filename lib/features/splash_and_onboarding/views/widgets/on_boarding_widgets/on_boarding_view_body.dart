@@ -27,7 +27,7 @@ class OnBoardingViewBody extends StatelessWidget {
                 },
               ),
               SizedBox(
-                height: MyResponsive.height(value: 40),
+                height: MyResponsive.height(value: 30),
               ),
             ],
           ),
