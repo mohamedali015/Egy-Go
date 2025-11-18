@@ -3,7 +3,7 @@ abstract class AppStrings {
   static const String skip = "Skip";
   static const String next = "Next";
   static const String getStarted = "Get Started";
-  static const String onBoardingTitle1 = "'HI. Welcome to Egy Go!'";
+  static const String onBoardingTitle1 = 'HI. Welcome to Egy Go!';
   static const String onBoardingSubtitle1 =
       'Start your journey with a curated view of Egypt’s most iconic places and\ninspiring experiences—all in one place.';
 

@@ -1,6 +1,9 @@
 abstract class AppAssets {
   static const String basePath = "assets/images/";
 
+  // splash screen assets
+  static const String splashImage = "${basePath}app_logo.png";
+
   // onBoarding screen assets
   static const String onBoardingImage1 = "${basePath}on_boarding_item1.png";
   static const String onBoardingImage2 = "${basePath}on_boarding_item2.png";

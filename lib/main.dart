@@ -4,6 +4,7 @@ import 'package:egy_go/core/utils/app_theme.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/on_boarding_view.dart';
+import 'package:egy_go/features/splash_and_onboarding/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
           title: 'EgyGo',
           debugShowCheckedModeBanner: false,
           onGenerateRoute: onGenerateRoutes,
-          initialRoute: OnBoardingView.routeName,
+          initialRoute: SplashView.routeName,
           theme: AppTheme.lightTheme,
         );
       },

@@ -47,6 +47,8 @@ dependencies:
   shared_preferences: ^2.5.3
   flutter_svg_provider: ^1.0.7
   dots_indicator: ^4.0.1
+  widget_and_text_animator:
+
 
 
 
