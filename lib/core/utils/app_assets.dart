@@ -15,4 +15,9 @@ abstract class AppAssets {
   // login screen assets
   static const String googleLogo = "${basePath}google.svg";
   static const String facebookLogo = "${basePath}facebook.svg";
+
+  // home screen assets
+  static const String home = "${basePath}home.svg";
+  static const String trips = "${basePath}schedule.svg";
+  static const String profile = "${basePath}person.svg";
 }

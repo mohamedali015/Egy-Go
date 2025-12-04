@@ -60,6 +60,11 @@ abstract class AppStrings {
   static const String doNotReceiveCode = "Didn't receive the code?";
   static const String verify = "Verify";
 
+  ///// home screen /////
+  static const String home = "Home";
+  static const String trips = "Trips";
+  static const String profile = "Profile";
+
   // validators
   static const String nameRequired = 'Name is required';
   static const String nameLength = 'Name must be at least 3 characters long';

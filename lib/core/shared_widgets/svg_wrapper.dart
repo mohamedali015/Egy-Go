@@ -9,36 +9,26 @@ class SvgWrapper extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.scaleDown,
-    this.svgType = SvgType.normal,
+    this.color,
   });
 
   final String path;
   final double? width;
   final double? height;
   final BoxFit fit;
-  final SvgType svgType;
+  final Color? color;
 
   static ImageProvider provider(String path) => svg.Svg(path);
 
   @override
   Widget build(BuildContext context) {
-    switch (svgType) {
-      case SvgType.normal:
-        return SvgPicture.asset(
-          path,
-          fit: fit,
-          width: width,
-          height: height,
-        );
-      case SvgType.provider:
-        return Image(
-          image: svg.Svg(path),
-          fit: fit,
-          width: width,
-          height: height,
-        );
-    }
+    return SvgPicture.asset(
+      path,
+      fit: fit,
+      width: width,
+      height: height,
+      colorFilter:
+          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+    );
   }
 }
-
-enum SvgType { normal, provider }
