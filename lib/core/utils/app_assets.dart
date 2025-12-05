@@ -20,4 +20,7 @@ abstract class AppAssets {
   static const String home = "${basePath}home.svg";
   static const String trips = "${basePath}schedule.svg";
   static const String profile = "${basePath}person.svg";
+  static const String test = "${basePath}test.png";
+  static const String filledStar = "${basePath}filled_star.svg";
+  static const String star = "${basePath}star.svg";
 }

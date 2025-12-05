@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../../../core/helper/my_responsive.dart';
+import '../../../../core/shared_widgets/svg_wrapper.dart';
+import '../../../../core/utils/app_assets.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_text_styles.dart';
+
+class SpecialListViewItem extends StatelessWidget {
+  const SpecialListViewItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MyResponsive.width(value: 200),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          MyResponsive.radius(value: 10),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              AppAssets.test,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withAlpha(200),
+                  ],
+                  stops: [0.5, 1.0],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: MyResponsive.height(value: 12),
+            left: MyResponsive.width(value: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Giza",
+                  style: AppTextStyles.bold16.copyWith(color: AppColors.white),
+                ),
+                SizedBox(
+                  height: MyResponsive.height(value: 8),
+                ),
+                Row(
+                  children: [
+                    RatingBar(
+                      itemCount: 5,
+                      initialRating: 4,
+                      allowHalfRating: false,
+                      ignoreGestures: true,
+                      itemSize: MyResponsive.fontSize(value: 17),
+                      itemPadding:
+                          MyResponsive.paddingSymmetric(horizontal: .75),
+                      ratingWidget: RatingWidget(
+                        full: SvgWrapper(
+                          path: AppAssets.filledStar,
+                          color: Colors.deepOrange,
+                        ),
+                        empty: SvgWrapper(
+                          path: AppAssets.star,
+                        ),
+                        half: SvgWrapper(
+                          path: AppAssets.star,
+                        ),
+                      ),
+                      onRatingUpdate: (value) {},
+                    ),
+                    SizedBox(
+                      width: MyResponsive.width(value: 6),
+                    ),
+                    Text(
+                      "(${10})",
+                      style: AppTextStyles.semiBold12.copyWith(
+                          color: AppColors.white.withValues(alpha: .4)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
