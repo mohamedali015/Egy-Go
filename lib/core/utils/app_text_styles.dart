@@ -27,6 +27,10 @@ abstract class AppTextStyles {
   );
 
   // ---------- Medium ----------
+  static TextStyle medium12 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 12),
+    fontWeight: FontWeight.w500,
+  );
   static TextStyle medium16 = TextStyle(
     fontSize: MyResponsive.fontSize(value: 16),
     fontWeight: FontWeight.w500,

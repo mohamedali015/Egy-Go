@@ -1,8 +1,6 @@
+import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../../../../core/helper/my_responsive.dart';
-import '../../../../core/shared_widgets/svg_wrapper.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
@@ -58,27 +56,10 @@ class SpecialListViewItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    RatingBar(
-                      itemCount: 5,
-                      initialRating: 4,
-                      allowHalfRating: false,
-                      ignoreGestures: true,
-                      itemSize: MyResponsive.fontSize(value: 17),
-                      itemPadding:
-                          MyResponsive.paddingSymmetric(horizontal: .75),
-                      ratingWidget: RatingWidget(
-                        full: SvgWrapper(
-                          path: AppAssets.filledStar,
-                          color: Colors.deepOrange,
-                        ),
-                        empty: SvgWrapper(
-                          path: AppAssets.star,
-                        ),
-                        half: SvgWrapper(
-                          path: AppAssets.star,
-                        ),
-                      ),
-                      onRatingUpdate: (value) {},
+                    RatingBarWrapper(
+                      rating: 4,
+                      starSize: 17,
+                      spaceBetweenStars: .75,
                     ),
                     SizedBox(
                       width: MyResponsive.width(value: 6),
