@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../core/helper/my_responsive.dart';
-import 'special_discover_more_grid_view_item.dart';
+import '../home_view_widgets/special_list_view_item.dart';
 
 class SpecialDiscoverMoreGridView extends StatelessWidget {
   const SpecialDiscoverMoreGridView({super.key});
@@ -17,7 +16,7 @@ class SpecialDiscoverMoreGridView extends StatelessWidget {
         crossAxisSpacing: MyResponsive.width(value: 12),
       ),
       itemBuilder: (context, index) {
-        return SpecialDiscoverMoreListViewItem();
+        return SpecialListViewItem();
       },
       itemCount: 7,
     );

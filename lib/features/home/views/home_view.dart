@@ -1,5 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/home/views/recommended_discover_more_view.dart';
 import 'package:egy_go/features/home/views/special_discover_more_view.dart';
 import 'package:egy_go/features/home/views/widgets/home_view_widgets/home_text_row_widget.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class HomeView extends StatelessWidget {
             ),
             HomeTextRowWidget(
               title: AppStrings.recommended,
-              destinationPath: SpecialDiscoverMoreView.routeName,
+              destinationPath: RecommendedDiscoverMoreView.routeName,
             ),
             SizedBox(
               height: MyResponsive.height(value: 16),

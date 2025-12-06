@@ -1,17 +1,17 @@
-import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
-import 'package:egy_go/core/utils/app_colors.dart';
-import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:flutter/material.dart';
-
+import '../../../../../core/helper/my_responsive.dart';
 import '../../../../../core/utils/app_assets.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_text_styles.dart';
 
-class SpecialDiscoverMoreListViewItem extends StatelessWidget {
-  const SpecialDiscoverMoreListViewItem({super.key});
+class SpecialListViewItem extends StatelessWidget {
+  const SpecialListViewItem({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MyResponsive.width(value: 200),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(

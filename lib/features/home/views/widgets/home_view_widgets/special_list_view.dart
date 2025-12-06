@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/helper/my_responsive.dart';
-import 'special_grid_view_item.dart';
+import 'special_list_view_item.dart';
 
 class SpecialListView extends StatelessWidget {
   const SpecialListView({super.key});

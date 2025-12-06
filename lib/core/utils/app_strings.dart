@@ -70,7 +70,8 @@ abstract class AppStrings {
 
   ///// special discover more screen ////
   static const String searchHint = "Search for places...";
-  static const String governorates = "Governorates:";
+  static const String governorates = "Governorates :";
+  static const String popularPlaces = "Popular Places :";
 
   // validators
   static const String nameRequired = 'Name is required';
