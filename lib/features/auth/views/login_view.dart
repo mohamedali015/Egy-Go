@@ -3,6 +3,7 @@ import 'package:egy_go/core/shared_widgets/custom_progress_hud.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_cubit.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_state.dart';
 import 'package:egy_go/features/auth/views/widgets/login_widgets/login_view_body.dart';
+import 'package:egy_go/features/home/views/app_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,8 @@ class LoginView extends StatelessWidget {
                 MySnackbar.success(context, 'Login Successful');
 
                 // ToDo Navigate to the next screen
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppHomeView.routeName, (route) => false);
               }
               if (state is LoginFailure) {
                 MySnackbar.error(context, state.errorMessage);

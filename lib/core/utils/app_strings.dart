@@ -68,6 +68,10 @@ abstract class AppStrings {
   static const String specialForYou = "Special for you";
   static const String discoverMore = "Discover More";
 
+  ///// special discover more screen ////
+  static const String searchHint = "Search for places...";
+  static const String governorates = "Governorates:";
+
   // validators
   static const String nameRequired = 'Name is required';
   static const String nameLength = 'Name must be at least 3 characters long';

@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
     this.passController,
     this.obsecure = true,
     this.onSuffixTapped,
+    this.onChanged,
   });
 
   final TextFieldType type;
@@ -21,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? passController;
   final bool obsecure;
   final void Function()? onSuffixTapped;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,9 @@ class CustomTextFormField extends StatelessWidget {
 
       case TextFieldType.name:
         return _nameField(context, Validator.name);
+
+      case TextFieldType.search:
+        return _searchField(context);
     }
   }
 
@@ -56,6 +61,8 @@ class CustomTextFormField extends StatelessWidget {
     return InputDecoration(
       labelText: label,
       labelStyle: AppTextStyles.bold13.copyWith(color: AppColors.grey),
+      hintText: hint,
+      hintStyle: AppTextStyles.bold13.copyWith(color: AppColors.grey),
       filled: true,
       fillColor: AppColors.fill,
       // errorMaxLines: 2,
@@ -178,6 +185,22 @@ class CustomTextFormField extends StatelessWidget {
       ),
     );
   }
+
+  Widget _searchField(
+    BuildContext context,
+  ) {
+    return TextField(
+      decoration: _inputDecoration(
+        context,
+        hint: AppStrings.searchHint,
+        suffixIcon: Icon(
+          Icons.search,
+          color: AppColors.grey,
+        ),
+      ),
+      onChanged: onChanged,
+    );
+  }
 }
 
-enum TextFieldType { password, email, name, phone }
+enum TextFieldType { password, email, name, phone, search }

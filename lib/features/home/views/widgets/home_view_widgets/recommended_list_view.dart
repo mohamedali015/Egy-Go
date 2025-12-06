@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/helper/my_responsive.dart';
+import '../../../../../core/helper/my_responsive.dart';
 import 'recommended_list_view_item.dart';
 
 class RecommendedListView extends StatelessWidget {
@@ -8,6 +8,9 @@ class RecommendedListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         return RecommendedListViewItem();
       },
