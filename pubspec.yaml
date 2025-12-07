@@ -49,6 +49,9 @@ dependencies:
   dots_indicator: ^4.0.1
   widget_and_text_animator:
   flutter_rating_bar: ^4.0.1
+  dartz: ^0.10.1
+  dio: ^5.8.0+1
+  cached_network_image: ^3.4.1
 
 
 

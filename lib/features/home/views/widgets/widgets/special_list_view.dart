@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/helper/my_responsive.dart';
-import 'special_list_view_item.dart';
+import 'governorate_item.dart';
 
 class SpecialListView extends StatelessWidget {
   const SpecialListView({super.key});
@@ -14,7 +14,7 @@ class SpecialListView extends StatelessWidget {
         padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return SpecialListViewItem();
+          return GovernorateItem();
         },
         separatorBuilder: (context, index) {
           return SizedBox(

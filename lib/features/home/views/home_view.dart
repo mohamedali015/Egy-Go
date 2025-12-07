@@ -1,12 +1,12 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
-import 'package:egy_go/features/home/views/recommended_discover_more_view.dart';
-import 'package:egy_go/features/home/views/special_discover_more_view.dart';
-import 'package:egy_go/features/home/views/widgets/home_view_widgets/home_text_row_widget.dart';
+import 'package:egy_go/features/places/views/places_view.dart';
+import 'package:egy_go/features/governorates/views/governorates_view.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/home_view_widgets/recommended_list_view.dart';
-import 'widgets/home_view_widgets/special_list_view.dart';
+import 'widgets/widgets/home_text_row_widget.dart';
+import 'widgets/widgets/recommended_list_view.dart';
+import 'widgets/widgets/special_list_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -20,7 +20,7 @@ class HomeView extends StatelessWidget {
           children: [
             HomeTextRowWidget(
               title: AppStrings.specialForYou,
-              destinationPath: SpecialDiscoverMoreView.routeName,
+              destinationPath: GovernoratesView.routeName,
             ),
             SizedBox(
               height: MyResponsive.height(value: 16),
@@ -31,7 +31,7 @@ class HomeView extends StatelessWidget {
             ),
             HomeTextRowWidget(
               title: AppStrings.recommended,
-              destinationPath: RecommendedDiscoverMoreView.routeName,
+              destinationPath: PlacesView.routeName,
             ),
             SizedBox(
               height: MyResponsive.height(value: 16),

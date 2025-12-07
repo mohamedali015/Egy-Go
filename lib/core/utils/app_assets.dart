@@ -23,4 +23,10 @@ abstract class AppAssets {
   static const String test = "${basePath}test.png";
   static const String filledStar = "${basePath}filled_star.svg";
   static const String star = "${basePath}star.svg";
+
+  // governorates category assets
+  static const String historicalIcon = "${basePath}historical.svg";
+  static const String entertainmentIcon = "${basePath}location.svg";
+  static const String hotelsIcon = "${basePath}hotel.svg";
+  static const String eventsIcon = "${basePath}events.svg";
 }

@@ -6,8 +6,8 @@ import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_text_styles.dart';
 
-class RecommendedListViewItem extends StatelessWidget {
-  const RecommendedListViewItem({super.key});
+class PlaceItem extends StatelessWidget {
+  const PlaceItem({super.key});
 
   @override
   Widget build(BuildContext context) {

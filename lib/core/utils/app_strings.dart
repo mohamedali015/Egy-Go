@@ -73,6 +73,18 @@ abstract class AppStrings {
   static const String governorates = "Governorates :";
   static const String popularPlaces = "Popular Places :";
 
+  ///// governorates category screen /////
+  static const String historical = "Historical";
+  static const String historicalTitle = "Discover AncientSites.";
+
+  static const String entertainment = "Entertainment";
+  static const String entertainmentTitle = "Discover Exciting Spots.";
+  static const String hotels = "Hotels";
+  static const String hotelsTitle = "Find Accommodation.";
+
+  static const String events = "Events";
+  static const String eventsTitle = "Cultural Experiences.";
+
   // validators
   static const String nameRequired = 'Name is required';
   static const String nameLength = 'Name must be at least 3 characters long';

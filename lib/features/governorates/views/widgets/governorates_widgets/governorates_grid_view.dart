@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/helper/my_responsive.dart';
-import '../home_view_widgets/special_list_view_item.dart';
+import '../../../../home/views/widgets/widgets/governorate_item.dart';
 
-class SpecialDiscoverMoreGridView extends StatelessWidget {
-  const SpecialDiscoverMoreGridView({super.key});
+class GovernoratesGridView extends StatelessWidget {
+  const GovernoratesGridView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class SpecialDiscoverMoreGridView extends StatelessWidget {
         crossAxisSpacing: MyResponsive.width(value: 12),
       ),
       itemBuilder: (context, index) {
-        return SpecialListViewItem();
+        return GovernorateItem();
       },
       itemCount: 7,
     );
