@@ -61,6 +61,9 @@ abstract class AppStrings {
   static const String verify = "Verify";
 
   ///// home screen /////
+  static const String welcomeHomeText = "Welcome to EgyGo";
+  static const String homeSubtitle =
+      "Your journey into the heart of Egypt starts here.";
   static const String home = "Home";
   static const String trips = "Trips";
   static const String profile = "Profile";
@@ -69,7 +72,7 @@ abstract class AppStrings {
   static const String discoverMore = "Discover More";
 
   ///// special discover more screen ////
-  static const String searchHint = "Search for places...";
+  static const String searchHint = "Search for anything...";
   static const String governorates = "Governorates :";
   static const String popularPlaces = "Popular Places :";
 
@@ -84,6 +87,10 @@ abstract class AppStrings {
 
   static const String events = "Events";
   static const String eventsTitle = "Cultural Experiences.";
+
+  ///// search screen /////
+  static const String searchResult = "Search Results";
+  static const String noResults = "No Results";
 
   // validators
   static const String nameRequired = 'Name is required';

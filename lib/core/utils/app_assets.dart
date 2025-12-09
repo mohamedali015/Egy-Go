@@ -17,6 +17,7 @@ abstract class AppAssets {
   static const String facebookLogo = "${basePath}facebook.svg";
 
   // home screen assets
+  static const String homeBanner = "${basePath}home_banner.png";
   static const String home = "${basePath}home.svg";
   static const String trips = "${basePath}schedule.svg";
   static const String profile = "${basePath}person.svg";

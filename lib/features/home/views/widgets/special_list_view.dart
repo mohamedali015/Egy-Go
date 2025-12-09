@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/helper/my_responsive.dart';
+import '../../../../core/helper/my_responsive.dart';
 import 'governorate_item.dart';
 
 class SpecialListView extends StatelessWidget {

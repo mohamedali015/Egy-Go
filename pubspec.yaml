@@ -52,6 +52,7 @@ dependencies:
   dartz: ^0.10.1
   dio: ^5.8.0+1
   cached_network_image: ^3.4.1
+  carousel_slider:
 
 
 
@@ -126,6 +127,43 @@ flutter:
           weight: 200
         - asset: assets/fonts/Montserrat/Montserrat-Thin.ttf
           weight: 100
+
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo/Cairo-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Cairo/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Cairo/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo/Cairo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Cairo/Cairo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Cairo/Cairo-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Cairo/Cairo-ExtraLight.ttf
+          weight: 200
+
+    - family: Libre_Baskerville
+      fonts:
+        - asset: assets/fonts/Libre_Baskerville/LibreBaskerville-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Libre_Baskerville/LibreBaskerville-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Libre_Baskerville/LibreBaskerville-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Libre_Baskerville/LibreBaskerville-Regular.ttf
+          weight: 400
+
+
+    - family: Tanseek
+      fonts:
+        - asset: assets/fonts/Tanseek/Tanseek.ttf
+  #          weight: 700
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

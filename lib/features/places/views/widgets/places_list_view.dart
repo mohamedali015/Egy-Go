@@ -1,4 +1,4 @@
-import 'package:egy_go/features/home/views/widgets/widgets/place_item.dart';
+import 'package:egy_go/features/home/views/widgets/place_item.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/helper/my_responsive.dart';
 

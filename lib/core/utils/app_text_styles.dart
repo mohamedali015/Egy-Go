@@ -51,6 +51,11 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w600,
   );
 
+  static TextStyle semiBold16 = TextStyle(
+    fontSize: MyResponsive.fontSize(value: 16),
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle semiBold18 = TextStyle(
     fontSize: MyResponsive.fontSize(value: 18),
     fontWeight: FontWeight.w600,

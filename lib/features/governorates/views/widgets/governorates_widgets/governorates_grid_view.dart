@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/helper/my_responsive.dart';
-import '../../../../home/views/widgets/widgets/governorate_item.dart';
+import '../../../../home/views/widgets/governorate_item.dart';
 
 class GovernoratesGridView extends StatelessWidget {
   const GovernoratesGridView({super.key});

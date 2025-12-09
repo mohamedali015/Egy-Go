@@ -1,10 +1,10 @@
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/helper/my_responsive.dart';
-import '../../../../../core/utils/app_assets.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_text_styles.dart';
-import '../../../../governorates/views/governorates_category_view.dart';
+import '../../../../core/helper/my_responsive.dart';
+import '../../../../core/utils/app_assets.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_text_styles.dart';
+import '../../../governorates/views/governorates_category_view.dart';
 
 class GovernorateItem extends StatelessWidget {
   const GovernorateItem({super.key});

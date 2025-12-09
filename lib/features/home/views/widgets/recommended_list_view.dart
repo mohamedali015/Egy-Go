@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/helper/my_responsive.dart';
+import '../../../../core/helper/my_responsive.dart';
 import 'place_item.dart';
 
 class RecommendedListView extends StatelessWidget {
