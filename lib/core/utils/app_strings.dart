@@ -67,9 +67,9 @@ abstract class AppStrings {
   static const String home = "Home";
   static const String trips = "Trips";
   static const String profile = "Profile";
-  static const String recommended = "Recommended";
+  static const String recommended = "Recommended Places";
   static const String specialForYou = "Special for you";
-  static const String discoverMore = "Discover More";
+  static const String seeAll = "See all";
 
   ///// special discover more screen ////
   static const String searchHint = "Search for anything...";

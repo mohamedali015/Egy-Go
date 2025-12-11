@@ -1,4 +1,6 @@
+import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
+import 'package:egy_go/features/governorates/data/models/governorates_response_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/helper/my_responsive.dart';
 import '../../../../core/utils/app_assets.dart';
@@ -7,13 +9,19 @@ import '../../../../core/utils/app_text_styles.dart';
 import '../../../governorates/views/governorates_category_view.dart';
 
 class GovernorateItem extends StatelessWidget {
-  const GovernorateItem({super.key});
+  const GovernorateItem({super.key, required this.governorate});
+
+  final Governorate governorate;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, GovernoratesCategoryView.routeName);
+        Navigator.pushNamed(
+          context,
+          GovernoratesCategoryView.routeName,
+          arguments: governorate,
+        );
       },
       child: Container(
         width: MyResponsive.width(value: 200),
@@ -26,10 +34,15 @@ class GovernorateItem extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.asset(
-                AppAssets.test,
-                fit: BoxFit.cover,
-              ),
+              child: governorate.coverImage != null
+                  ? CachedNetworkImageWrapper(
+                      imagePath: governorate.coverImage!,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      AppAssets.test,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Positioned.fill(
               child: Container(
@@ -39,46 +52,47 @@ class GovernorateItem extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withAlpha(200),
+                      Colors.black.withAlpha(90),
                     ],
-                    stops: [0.5, 1.0],
+                    stops: [0.0, 0.0],
                   ),
                 ),
               ),
             ),
-            Positioned(
-              bottom: MyResponsive.height(value: 12),
-              left: MyResponsive.width(value: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Giza",
-                    style:
-                        AppTextStyles.bold18.copyWith(color: AppColors.white),
-                  ),
-                  SizedBox(
-                    height: MyResponsive.height(value: 8),
-                  ),
-                  Row(
-                    children: [
-                      RatingBarWrapper(
-                        rating: 4,
-                        starSize: 17,
-                        spaceBetweenStars: .75,
-                      ),
-                      SizedBox(
-                        width: MyResponsive.width(value: 6),
-                      ),
-                      Text(
-                        "(${10})",
-                        style: AppTextStyles.semiBold12.copyWith(
-                            color: AppColors.white.withValues(alpha: .4)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                ),
+
+                Text(
+                  governorate.name!,
+                  style: AppTextStyles.bold20.copyWith(color: AppColors.white),
+                ),
+                // SizedBox(
+                //   height: MyResponsive.height(value: 8),
+                // ),
+                // Row(
+                //   children: [
+                //     RatingBarWrapper(
+                //       rating: 4,
+                //       starSize: 17,
+                //       spaceBetweenStars: .75,
+                //     ),
+                //     SizedBox(
+                //       width: MyResponsive.width(value: 6),
+                //     ),
+                //     Text(
+                //       "(${10})",
+                //       style: AppTextStyles.semiBold12.copyWith(
+                //         color: Colors.deepOrange,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ],
             ),
           ],
         ),

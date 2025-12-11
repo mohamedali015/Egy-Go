@@ -12,17 +12,19 @@ class RatingBarWrapper extends StatelessWidget {
     required this.starSize,
     required this.spaceBetweenStars,
     this.ignoreGestures = true,
+    this.itemCount = 1,
   });
 
   final double rating;
   final double starSize;
   final double spaceBetweenStars;
   final bool? ignoreGestures;
+  final int? itemCount;
 
   @override
   Widget build(BuildContext context) {
     return RatingBar(
-      itemCount: 5,
+      itemCount: itemCount!,
       initialRating: rating,
       allowHalfRating: false,
       ignoreGestures: ignoreGestures!,

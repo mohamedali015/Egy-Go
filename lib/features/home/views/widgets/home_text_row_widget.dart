@@ -26,7 +26,7 @@ class HomeTextRowWidget extends StatelessWidget {
             Navigator.pushNamed(context, destinationPath);
           },
           child: Text(
-            AppStrings.discoverMore,
+            AppStrings.seeAll,
             style: AppTextStyles.semiBold12.copyWith(color: AppColors.primary),
           ),
         )

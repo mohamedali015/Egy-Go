@@ -3,17 +3,23 @@ import 'package:egy_go/core/helper/one_generate_routes.dart';
 import 'package:egy_go/core/utils/app_theme.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
+import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo.dart';
+import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
+import 'package:egy_go/features/places/data/repos/places_repo/places_repo.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/on_boarding_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/helper/get_it.dart';
 import 'features/home/views/app_home_view.dart';
 
 void main() {
   Bloc.observer = CustomBlocObserver();
+  setupGetIt();
   runApp(const MyApp());
 }
 
@@ -28,12 +34,24 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          title: 'EgyGo',
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: onGenerateRoutes,
-          initialRoute: AppHomeView.routeName,
-          theme: AppTheme.lightTheme,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<GovernoratesCubit>(
+              create: (context) => GovernoratesCubit(getIt<GovernoratesRepo>())
+                ..fetchGovernorates(),
+            ),
+            BlocProvider<PlacesCubit>(
+              create: (context) =>
+                  PlacesCubit(getIt<PlacesRepo>())..fetchPlaces(),
+            ),
+          ],
+          child: MaterialApp(
+            title: 'EgyGo',
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: onGenerateRoutes,
+            initialRoute: AppHomeView.routeName,
+            theme: AppTheme.lightTheme,
+          ),
         );
       },
     );

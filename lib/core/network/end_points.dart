@@ -1,4 +1,6 @@
 abstract class EndPoints {
-  static const String baseUrl =
-      'https://nti-ecommerce-api-production-9b78.up.railway.app/api/';
+  static const String baseUrl = 'http://10.0.2.2:5000/api/';
+
+  static const String getGovernorates = 'provinces';
+  static const String getPlaces = 'places?page=1&limit=20';
 }

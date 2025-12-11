@@ -1,3 +1,5 @@
+import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
+import 'package:egy_go/features/places/data/models/places_response_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helper/my_responsive.dart';
@@ -7,85 +9,99 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
 
 class PlaceItem extends StatelessWidget {
-  const PlaceItem({super.key});
+  const PlaceItem({super.key, required this.place});
+
+  final Place place;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: MyResponsive.paddingSymmetric(horizontal: 18, vertical: 16),
+      height: MyResponsive.height(value: 170),
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(MyResponsive.radius(value: 16)),
         border: Border.all(
-          color: AppColors.black.withValues(alpha: .3),
+          color: AppColors.black.withValues(alpha: .2),
           width: 1,
         ),
       ),
-      child: Row(
+      child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(MyResponsive.radius(value: 16)),
-            child: Image.asset(
-              AppAssets.test,
-              width: MyResponsive.width(value: 80),
-              height: MyResponsive.height(value: 80),
-              fit: BoxFit.cover,
+          Positioned.fill(
+            child: place.images!.isNotEmpty
+                ? CachedNetworkImageWrapper(
+                    imagePath: place.images!.first,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    AppAssets.test,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withAlpha(200),
+                  ],
+                  stops: const [0.2, 1.0],
+                ),
+              ),
             ),
           ),
-          SizedBox(
-            width: MyResponsive.width(value: 14),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Pyramids",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: AppTextStyles.bold18,
-              ),
-              SizedBox(
-                height: MyResponsive.height(value: 6),
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    color: AppColors.black.withValues(alpha: .6),
-                    size: MyResponsive.fontSize(value: 16),
+          Positioned(
+            left: MyResponsive.width(value: 14),
+            right: MyResponsive.width(value: 14),
+            bottom: MyResponsive.height(value: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        place.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.bold18.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        RatingBarWrapper(
+                          rating: 5,
+                          starSize: 15,
+                          spaceBetweenStars: 1,
+                        ),
+                        SizedBox(width: MyResponsive.width(value: 6)),
+                        Text(
+                          "(${place.rating ?? '0.0'})",
+                          style: AppTextStyles.semiBold14.copyWith(
+                            color: Colors.deepOrange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: MyResponsive.height(value: 3)),
+                Text(
+                  place.address ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: AppTextStyles.medium12.copyWith(
+                    color: Colors.white.withValues(alpha: .7),
                   ),
-                  SizedBox(
-                    width: MyResponsive.width(value: 4),
-                  ),
-                  Text(
-                    "Nazlet El-Samman, Al-Haram,",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: AppTextStyles.medium12
-                        .copyWith(color: AppColors.black.withValues(alpha: .6)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: MyResponsive.height(value: 6),
-              ),
-              Row(
-                children: [
-                  RatingBarWrapper(
-                    rating: 5,
-                    starSize: 16,
-                    spaceBetweenStars: 1,
-                  ),
-                  SizedBox(
-                    width: MyResponsive.width(value: 6),
-                  ),
-                  Text(
-                    "(${10})",
-                    style: AppTextStyles.medium12
-                        .copyWith(color: AppColors.black.withValues(alpha: .4)),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
