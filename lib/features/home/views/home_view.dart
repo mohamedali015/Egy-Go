@@ -1,5 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/home/views/widgets/home_banner.dart';
 import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_view.dart';
@@ -21,6 +22,7 @@ class HomeView extends StatelessWidget {
           Padding(
             padding: MyResponsive.paddingSymmetric(horizontal: 16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: MyResponsive.height(value: 22),
@@ -36,9 +38,9 @@ class HomeView extends StatelessWidget {
                 SizedBox(
                   height: MyResponsive.height(value: 22),
                 ),
-                HomeTextRowWidget(
-                  title: AppStrings.recommended,
-                  destinationPath: PlacesView.routeName,
+                Text(
+                  AppStrings.recommended,
+                  style: AppTextStyles.bold18,
                 ),
                 SizedBox(
                   height: MyResponsive.height(value: 16),

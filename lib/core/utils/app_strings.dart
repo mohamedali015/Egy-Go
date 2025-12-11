@@ -88,7 +88,7 @@ abstract class AppStrings {
   static const String events = "Events";
   static const String eventsTitle = "Cultural Experiences.";
 
-  ///// search screen /////
+  ///// home_search screen /////
   static const String searchResult = "Search Results";
   static const String noResults = "No Results";
 

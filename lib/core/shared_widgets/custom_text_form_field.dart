@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obsecure = true,
     this.onSuffixTapped,
     this.onChanged,
+    this.focusNode,
   });
 
   final TextFieldType type;
@@ -23,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obsecure;
   final void Function()? onSuffixTapped;
   final void Function(String)? onChanged;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +102,7 @@ class CustomTextFormField extends StatelessWidget {
   ) {
     return TextFormField(
       controller: controller,
+      cursorColor: AppColors.primary,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.name,
@@ -120,6 +123,7 @@ class CustomTextFormField extends StatelessWidget {
   ) {
     return TextFormField(
       controller: controller,
+      cursorColor: AppColors.primary,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.phone,
@@ -140,6 +144,7 @@ class CustomTextFormField extends StatelessWidget {
   ) {
     return TextFormField(
       controller: controller,
+      cursorColor: AppColors.primary,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.emailAddress,
@@ -160,6 +165,7 @@ class CustomTextFormField extends StatelessWidget {
   ) {
     return TextFormField(
       controller: controller,
+      cursorColor: AppColors.primary,
       validator: validator,
       obscureText: obsecure,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -190,6 +196,8 @@ class CustomTextFormField extends StatelessWidget {
     BuildContext context,
   ) {
     return TextField(
+      focusNode: focusNode,
+      cursorColor: AppColors.primary,
       decoration: _inputDecoration(
         context,
         hint: AppStrings.searchHint,

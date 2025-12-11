@@ -2,6 +2,7 @@ import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:egy_go/features/auth/views/register_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_category_view.dart';
+import 'package:egy_go/features/home_search/view/home_search_view.dart';
 import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/on_boarding_view.dart';
@@ -52,6 +53,12 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     case AppHomeView.routeName:
       return MaterialPageRoute(
         builder: (_) => const AppHomeView(),
+        settings: settings,
+      );
+
+    case HomeSearchView.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const HomeSearchView(),
         settings: settings,
       );
 

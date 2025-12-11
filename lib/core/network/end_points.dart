@@ -3,4 +3,8 @@ abstract class EndPoints {
 
   static const String getGovernorates = 'provinces';
   static const String getPlaces = 'places?page=1&limit=20';
+
+  static String searchHome(String query) {
+    return 'places/search?q=$query';
+  }
 }

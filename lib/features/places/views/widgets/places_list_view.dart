@@ -21,7 +21,7 @@ class PlacesListView extends StatelessWidget {
           height: MyResponsive.height(value: 16),
         );
       },
-      itemCount: 10,
+      itemCount: cubit.places.length,
     );
   }
 }
