@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSuffixTapped,
     this.onChanged,
     this.focusNode,
+    this.searchHint = AppStrings.searchHint,
   });
 
   final TextFieldType type;
@@ -25,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function()? onSuffixTapped;
   final void Function(String)? onChanged;
   final FocusNode? focusNode;
+  final String? searchHint;
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +202,7 @@ class CustomTextFormField extends StatelessWidget {
       cursorColor: AppColors.primary,
       decoration: _inputDecoration(
         context,
-        hint: AppStrings.searchHint,
+        hint: searchHint,
         suffixIcon: Icon(
           Icons.search,
           color: AppColors.grey,

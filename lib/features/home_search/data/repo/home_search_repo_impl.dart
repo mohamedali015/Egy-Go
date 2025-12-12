@@ -23,8 +23,7 @@ class HomeSearchRepoImpl extends HomeSearchRepo {
           HomeSearchResponseModel.fromJson(response.data);
       if (searchResponseModel.success != null &&
           searchResponseModel.success == true) {
-        if (searchResponseModel.data != null &&
-            searchResponseModel.data!.isNotEmpty) {
+        if (searchResponseModel.data != null) {
           return Right(searchResponseModel.data!);
         } else {
           throw Exception("No Places found.");

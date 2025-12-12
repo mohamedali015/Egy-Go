@@ -17,7 +17,7 @@ class SearchResultListView extends StatelessWidget {
         builder: (context, state) {
       if (state is HomeSearchSuccess) {
         if (state.places.isEmpty) {
-          return CustomErrorWidget(errorMessage: AppStrings.noResults);
+          return CustomErrorWidget(errorMessage: "No Places found.");
         } else {
           return ListView.separated(
             padding: EdgeInsets.zero,

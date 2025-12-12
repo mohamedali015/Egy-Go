@@ -11,6 +11,7 @@ class GovernoratesCubit extends Cubit<GovernoratesState> {
   final GovernoratesRepo repo;
 
   final List<Governorate> governorates = [];
+  List<Governorate> filteredGovernorates = [];
 
   Future<void> fetchGovernorates() async {
     emit(GovernoratesLoading());
@@ -22,8 +23,24 @@ class GovernoratesCubit extends Cubit<GovernoratesState> {
       (governoratesList) {
         governorates.clear();
         governorates.addAll(governoratesList);
+
+        filteredGovernorates = List.from(governorates);
+
         emit(GovernoratesSuccess(governorates));
       },
     );
+  }
+
+  void searchGovernorates(String query) {
+    if (query.isEmpty) {
+      filteredGovernorates = List.from(governorates);
+    } else {
+      filteredGovernorates = governorates
+          .where((governorate) =>
+              governorate.name!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+
+    emit(GovernoratesSuccess(filteredGovernorates));
   }
 }

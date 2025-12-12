@@ -1,6 +1,7 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_text_form_field.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
 import 'package:egy_go/features/governorates/views/widgets/governorates_widgets/governorates_grid_view.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,9 @@ class GovernoratesViewBody extends StatelessWidget {
           ),
           CustomTextFormField(
             type: TextFieldType.search,
-            onChanged: (value) {},
+            onChanged: (value) {
+              GovernoratesCubit.get(context).searchGovernorates(value);
+            },
           ),
           SizedBox(
             height: MyResponsive.height(value: 20),
