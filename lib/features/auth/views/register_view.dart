@@ -1,4 +1,6 @@
+import 'package:egy_go/core/helper/get_it.dart';
 import 'package:egy_go/core/shared_widgets/custom_progress_hud.dart';
+import 'package:egy_go/features/auth/data/repo/auth_repo.dart';
 import 'package:egy_go/features/auth/manager/register_cubit/register_cubit.dart';
 import 'package:egy_go/features/auth/manager/register_cubit/register_state.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
@@ -16,14 +18,17 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegisterCubit(),
+      create: (context) => RegisterCubit(
+        getIt<AuthRepo>(),
+      ),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(),
           body: BlocConsumer<RegisterCubit, RegisterState>(
             listener: (context, state) {
               if (state is RegisterSuccess) {
-                MySnackbar.success(context, 'Registration successful!');
+                MySnackbar.success(context,
+                    'Registration successful! Please log in to verify your email.');
 
                 // ToDo Navigate to the next screen
                 Navigator.pushReplacementNamed(context, LoginView.routeName);

@@ -1,6 +1,10 @@
 abstract class EndPoints {
   static const String baseUrl = 'https://1p1jgw5z-5000.euw.devtunnels.ms/api/';
 
+  static const String register = 'auth/register';
+  static const String login = 'auth/login';
+  static const String getUserData = 'auth/me';
+  static const String refreshToken = 'auth/refresh';
   static const String getGovernorates = 'provinces';
   static const String getPlaces = 'places?page=1&limit=20';
 

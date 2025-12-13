@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:egy_go/core/helper/custom_logger.dart';
+import 'package:egy_go/core/helper/get_it.dart';
+import 'package:egy_go/core/helper/my_navigator.dart';
+import 'package:egy_go/features/auth/views/get_started_view.dart';
 
 import '../cache/cache_data.dart';
 import '../cache/cache_helper.dart';
@@ -28,58 +31,59 @@ class ApiHelper {
       return handler.next(response);
     }, onError: (DioException error, handler) async {
       CustomLogger.red("--- Error : ${error.response?.data.toString()}");
-      //ApiResponse apiResponse = ApiResponse.fromError(error);
-      // if (error.response?.data['message'].contains('expired')) {
-      //   // refresh token
-      //   try {
-      //     ApiResponse apiResponse = await _instance.postRequest(
-      //       endPoint: EndPoints.refreshToken,
-      //       sendRefreshToken: true,
-      //       isProtected: true,
-      //     );
-      //     if (apiResponse.status) {
-      //       // must update token
-      //       CacheData.accessToken = apiResponse.data['access_token'];
-      //       await CacheHelper.saveData(
-      //           key: CacheKeys.accessToken, value: CacheData.accessToken);
-      //
-      //       // Retry original request
-      //       final options = error.requestOptions;
-      //       if (options.data is FormData) {
-      //         final oldFormData = options.data as FormData;
-      //
-      //         // Convert FormData to map so it can be rebuilt
-      //         final Map<String, dynamic> formMap = {};
-      //         for (var entry in oldFormData.fields) {
-      //           formMap[entry.key] = entry.value;
-      //         }
-      //
-      //         // Add files if any
-      //         for (var file in oldFormData.files) {
-      //           formMap[file.key] = file.value;
-      //         }
-      //
-      //         // Rebuild new FormData
-      //         options.data = FormData.fromMap(formMap);
-      //       }
-      //       options.headers['Authorization'] =
-      //           'Bearer ${CacheData.accessToken}';
-      //       final response = await dio.fetch(options);
-      //       return handler.resolve(response);
-      //     } else {
-      //       // must logout
-      //       CacheHelper.removeData(key: CacheKeys.accessToken);
-      //       CacheHelper.removeData(key: CacheKeys.refreshToken);
-      //       MyNavigator.goTo(screen: () => LoginScreen(), isReplace: true);
-      //       return handler.next(error);
-      //     }
-      //   } catch (e) {
-      //     CacheHelper.removeData(key: CacheKeys.accessToken);
-      //     CacheHelper.removeData(key: CacheKeys.refreshToken);
-      //     MyNavigator.goTo(screen: () => LoginScreen(), isReplace: true);
-      //     return handler.next(error);
-      //   }
-      // }
+      // ApiResponse apiResponse = ApiResponse.fromError(error);
+      if (error.response?.data['message'].contains('expired')) {
+        ApiHelper apiHelper = getIt<ApiHelper>();
+        // refresh token
+        try {
+          ApiResponse apiResponse = await apiHelper.postRequest(
+            endPoint: EndPoints.refreshToken,
+            sendRefreshToken: true,
+            isProtected: true,
+          );
+          if (apiResponse.success) {
+            // must update token
+            CacheData.accessToken = apiResponse.data['accessToken'];
+            await CacheHelper.saveData(
+                key: CacheKeys.accessToken, value: CacheData.accessToken);
+
+            // Retry original request
+            final options = error.requestOptions;
+            if (options.data is FormData) {
+              final oldFormData = options.data as FormData;
+
+              // Convert FormData to map so it can be rebuilt
+              final Map<String, dynamic> formMap = {};
+              for (var entry in oldFormData.fields) {
+                formMap[entry.key] = entry.value;
+              }
+
+              // Add files if any
+              for (var file in oldFormData.files) {
+                formMap[file.key] = file.value;
+              }
+
+              // Rebuild new FormData
+              options.data = FormData.fromMap(formMap);
+            }
+            options.headers['Authorization'] =
+                'Bearer ${CacheData.accessToken}';
+            final response = await dio.fetch(options);
+            return handler.resolve(response);
+          } else {
+            // must logout
+            CacheHelper.removeData(key: CacheKeys.accessToken);
+            CacheHelper.removeData(key: CacheKeys.refreshToken);
+            MyNavigator.goTo(screen: () => GetStartedView(), isReplace: true);
+            return handler.next(error);
+          }
+        } catch (e) {
+          CacheHelper.removeData(key: CacheKeys.accessToken);
+          CacheHelper.removeData(key: CacheKeys.refreshToken);
+          MyNavigator.goTo(screen: () => GetStartedView(), isReplace: true);
+          return handler.next(error);
+        }
+      }
 
       return handler.next(error);
     }));
@@ -88,13 +92,12 @@ class ApiHelper {
   Future<ApiResponse> postRequest(
       {required String endPoint,
       Map<String, dynamic>? data,
-      bool isFormData = true,
       bool isProtected = false,
       bool sendRefreshToken = false}) async {
     return ApiResponse.fromResponse(
       await dio.post(
         endPoint,
-        data: isFormData ? FormData.fromMap(data ?? {}) : data,
+        data: data,
         options: Options(headers: {
           if (isProtected)
             'Authorization':

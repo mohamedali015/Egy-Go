@@ -1,4 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:egy_go/core/cache/cache_data.dart';
+import 'package:egy_go/core/cache/cache_helper.dart';
+import 'package:egy_go/core/cache/cache_key.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_button.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
@@ -79,7 +82,8 @@ class OnBoardingContainerWidget extends StatelessWidget {
                 : AppStrings.next,
             onPressed: () {
               if (cubit.currentIndex == cubit.items.length - 1) {
-                // cubit.onBoardingTap(context);
+                CacheHelper.saveData(key: CacheKeys.firstTime, value: true);
+                CacheData.firstTime = true;
                 Navigator.pushNamedAndRemoveUntil(
                     context, GetStartedView.routeName, (route) => false);
               } else {

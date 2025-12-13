@@ -1,5 +1,8 @@
+import 'package:egy_go/core/cache/cache_helper.dart';
 import 'package:egy_go/core/helper/custom_bloc_observer.dart';
 import 'package:egy_go/core/helper/one_generate_routes.dart';
+import 'package:egy_go/core/user/data/repo/user_repo.dart';
+import 'package:egy_go/core/user/manager/user_cubit/user_cubit.dart';
 import 'package:egy_go/core/utils/app_theme.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
@@ -18,8 +21,10 @@ import 'package:get/get.dart';
 import 'core/helper/get_it.dart';
 import 'features/home/views/app_home_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = CustomBlocObserver();
+  await CacheHelper.init();
   setupGetIt();
   runApp(const MyApp());
 }
@@ -45,12 +50,15 @@ class MyApp extends StatelessWidget {
               create: (context) =>
                   PlacesCubit(getIt<PlacesRepo>())..fetchPlaces(),
             ),
+            BlocProvider<UserCubit>(
+              create: (context) => UserCubit(getIt<UserRepo>()),
+            ),
           ],
           child: GetMaterialApp(
             title: 'EgyGo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: onGenerateRoutes,
-            initialRoute: AppHomeView.routeName,
+            initialRoute: SplashView.routeName,
             theme: AppTheme.lightTheme,
           ),
         );

@@ -1,3 +1,4 @@
+import 'package:egy_go/features/auth/data/repo/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,10 +6,10 @@ import '../../../../core/utils/app_strings.dart';
 import 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit() : super(RegisterInitial());
+  RegisterCubit(this.repo) : super(RegisterInitial());
   static RegisterCubit get(context) => BlocProvider.of(context);
+  AuthRepo repo;
 
-  // Removed GlobalKey<FormState> from cubit to avoid duplicate key usage across widgets
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -18,17 +19,23 @@ class RegisterCubit extends Cubit<RegisterState> {
   bool obsecureText = true;
   bool obsecureConfirmPassword = true;
 
-  void register() {
-    // Validation will be performed in the UI using a local Form key
+  void register() async {
     if (!isChecked) {
       return emit(RegisterError(error: AppStrings.acceptTerms));
     }
 
     emit(RegisterLoading());
-    // Simulate a registration process
-    Future.delayed(const Duration(seconds: 2), () {
-      emit(RegisterSuccess());
-    });
+    var result = await repo.register(
+      email: emailController.text,
+      password: passwordController.text,
+      name: nameController.text,
+      phone: phoneController.text,
+    );
+
+    result.fold(
+      (error) => emit(RegisterError(error: error)),
+      (message) => emit(RegisterSuccess(message: message)),
+    );
   }
 
   void isCheckedChange() {
