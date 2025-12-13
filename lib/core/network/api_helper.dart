@@ -38,8 +38,9 @@ class ApiHelper {
         try {
           ApiResponse apiResponse = await apiHelper.postRequest(
             endPoint: EndPoints.refreshToken,
-            sendRefreshToken: true,
-            isProtected: true,
+            data: {
+              'refreshToken': CacheHelper.getData(key: CacheKeys.refreshToken),
+            },
           );
           if (apiResponse.success) {
             // must update token
@@ -89,19 +90,17 @@ class ApiHelper {
     }));
   }
 
-  Future<ApiResponse> postRequest(
-      {required String endPoint,
-      Map<String, dynamic>? data,
-      bool isProtected = false,
-      bool sendRefreshToken = false}) async {
+  Future<ApiResponse> postRequest({
+    required String endPoint,
+    Map<String, dynamic>? data,
+    bool isProtected = false,
+  }) async {
     return ApiResponse.fromResponse(
       await dio.post(
         endPoint,
         data: data,
         options: Options(headers: {
-          if (isProtected)
-            'Authorization':
-                'Bearer ${sendRefreshToken ? CacheHelper.getData(key: CacheKeys.refreshToken) : CacheData.accessToken}',
+          if (isProtected) 'Authorization': 'Bearer ${CacheData.accessToken}',
         }),
       ),
     );

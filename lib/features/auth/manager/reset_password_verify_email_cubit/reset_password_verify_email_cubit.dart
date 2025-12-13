@@ -13,8 +13,8 @@ class ResetPasswordVerifyEmailCubit
   void submitEmail() {
     emit(ResetPasswordVerifyEmailLoading());
     // Simulate a network call or any async operation
-    Future.delayed(Duration(seconds: 2), () {
-      emit(ResetPasswordVerifyEmailSuccess());
+    Future.delayed(Duration(seconds: 1), () {
+      emit(ResetPasswordVerifyEmailSuccess(emailController.text));
     });
   }
 

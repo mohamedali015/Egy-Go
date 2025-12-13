@@ -1,3 +1,4 @@
+import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/features/auth/views/widgets/reset_password_widgets/reset_password_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +33,8 @@ class _ResetPasswordVerifyEmailViewState
           ResetPasswordVerifyEmailState>(
         listener: (context, state) {
           if (state is ResetPasswordVerifyEmailSuccess) {
-            Navigator.pushNamed(
-              context,
-              ResetPasswordOtpView.routeName,
+            MyNavigator.goTo(
+              screen: ResetPasswordOtpView(email: state.email),
             );
           } else if (state is ResetPasswordVerifyEmailFailure) {
             MySnackbar.error(context, state.errorMessage);

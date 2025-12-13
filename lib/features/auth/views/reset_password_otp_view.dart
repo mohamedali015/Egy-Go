@@ -1,3 +1,4 @@
+import 'package:egy_go/core/helper/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,9 @@ import 'reset_password_new_pass_view.dart';
 import 'widgets/reset_password_widgets/otp_widget.dart';
 
 class ResetPasswordOtpView extends StatelessWidget {
-  const ResetPasswordOtpView({super.key});
+  const ResetPasswordOtpView({super.key, required this.email});
+
+  final String email;
 
   static const String routeName = 'reset-password-otp';
 
@@ -23,6 +26,10 @@ class ResetPasswordOtpView extends StatelessWidget {
               context,
               ResetPasswordNewPassView.routeName,
             );
+          } else if (state is ResetPasswordOtpResend) {
+            MySnackbar.success(context, state.message);
+          } else if (state is ResetPasswordOtpFailure) {
+            MySnackbar.error(context, state.errorMessage);
           }
         },
         builder: (context, state) {
@@ -31,8 +38,8 @@ class ResetPasswordOtpView extends StatelessWidget {
             isLoading: state is ResetPasswordOtpLoading,
             child: OtpWidget(
               onOtpChanged: cubit.onOtpChanged,
-              onResendOtp: cubit.resendOtp,
-              onVerifyOtp: cubit.verifyOtp,
+              onResendOtp: () => cubit.resendOtp(email: email),
+              onVerifyOtp: () => cubit.verifyOtp(email: email),
               isOtpComplete: cubit.isOtpComplete,
             ),
           );

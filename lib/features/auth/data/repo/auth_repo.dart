@@ -13,4 +13,13 @@ abstract class AuthRepo {
     required String email,
     required String password,
   });
+
+  Future<Either<String, String>> verifyOtp({
+    required String email,
+    required String otp,
+  });
+
+  Future<Either<String, String>> resendOtp({
+    required String email,
+  });
 }

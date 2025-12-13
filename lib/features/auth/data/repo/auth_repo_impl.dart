@@ -83,4 +83,48 @@ class AuthRepoImpl implements AuthRepo {
       return Left(apiResponse.message);
     }
   }
+
+  @override
+  Future<Either<String, String>> verifyOtp(
+      {required String email, required String otp}) async {
+    try {
+      ApiResponse response = await apiHelper.postRequest(
+        endPoint: EndPoints.verifyOtp,
+        data: {
+          'email': email,
+          'otp': otp,
+        },
+      );
+
+      if (response.success == false) {
+        throw Exception(response.message);
+      }
+
+      return Right(response.message);
+    } catch (e) {
+      ApiResponse apiResponse = ApiResponse.fromError(e);
+      return Left(apiResponse.message);
+    }
+  }
+
+  @override
+  Future<Either<String, String>> resendOtp({required String email}) async {
+    try {
+      ApiResponse response = await apiHelper.postRequest(
+        endPoint: EndPoints.resendOtp,
+        data: {
+          'email': email,
+        },
+      );
+
+      if (response.success == false) {
+        throw Exception(response.message);
+      }
+
+      return Right(response.message);
+    } catch (e) {
+      ApiResponse apiResponse = ApiResponse.fromError(e);
+      return Left(apiResponse.message);
+    }
+  }
 }
