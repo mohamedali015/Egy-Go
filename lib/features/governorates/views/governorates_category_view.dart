@@ -1,4 +1,6 @@
 import 'package:egy_go/core/utils/app_text_styles.dart';
+import 'package:egy_go/features/governorates/data/models/governorates_response_model.dart';
+import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/governorates_category_widgets/governorates_category_view_body.dart';
@@ -10,15 +12,20 @@ class GovernoratesCategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = GovernoratesCubit.get(context);
+    Governorate governorate =
+        cubit.filteredGovernorates[cubit.selectedGovernorate];
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Giza",
+          governorate.name ?? '',
           style: AppTextStyles.semiBold28.copyWith(color: Colors.black),
         ),
         centerTitle: true,
       ),
-      body: GovernoratesCategoryViewBody(),
+      body: GovernoratesCategoryViewBody(
+        governorate: governorate,
+      ),
     );
   }
 }

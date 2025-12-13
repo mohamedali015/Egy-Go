@@ -34,4 +34,31 @@ class PlacesRepoImpl extends PlacesRepo {
       return Left(errorResponse.message);
     }
   }
+
+  @override
+  Future<Either<String, List<Place>>> getPlacesByCategory(
+      {required String category, required String governorate}) async {
+    try {
+      ApiResponse response = await apiHelper.getRequest(
+          endPoint: EndPoints.getPlacesByCategory(
+        category,
+        governorate,
+      ));
+      PlacesResponseModel placesResponseModel =
+          PlacesResponseModel.fromJson(response.data);
+      if (placesResponseModel.success != null &&
+          placesResponseModel.success == true) {
+        if (placesResponseModel.data!.places != null) {
+          return Right(placesResponseModel.data!.places!);
+        } else {
+          throw Exception("No Places found.");
+        }
+      } else {
+        throw Exception("Failed to fetch Places.");
+      }
+    } catch (e) {
+      ApiResponse errorResponse = ApiResponse.fromError(e);
+      return Left(errorResponse.message);
+    }
+  }
 }

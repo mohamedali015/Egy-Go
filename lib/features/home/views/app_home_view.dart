@@ -20,7 +20,6 @@ class AppHomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       body: IndexedStack(
         index: currentIndex,
         children: screens,

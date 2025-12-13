@@ -13,6 +13,7 @@ import 'package:egy_go/features/splash_and_onboarding/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'core/helper/get_it.dart';
 import 'features/home/views/app_home_view.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
                   PlacesCubit(getIt<PlacesRepo>())..fetchPlaces(),
             ),
           ],
-          child: MaterialApp(
+          child: GetMaterialApp(
             title: 'EgyGo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: onGenerateRoutes,

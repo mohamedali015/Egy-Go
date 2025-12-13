@@ -24,6 +24,7 @@ class SearchResultListView extends StatelessWidget {
             itemBuilder: (context, index) {
               return PlaceItem(
                 place: state.places[index],
+                index: index,
               );
             },
             separatorBuilder: (context, index) {

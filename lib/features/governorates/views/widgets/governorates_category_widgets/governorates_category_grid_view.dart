@@ -1,4 +1,5 @@
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/helper/my_responsive.dart';
@@ -43,10 +44,15 @@ class GovernoratesCategoryGridView extends StatelessWidget {
         crossAxisSpacing: MyResponsive.width(value: 12),
       ),
       itemBuilder: (context, index) {
-        return GovernoratesCategoryGridViewItem(
-          title: categories[index]["title"]!,
-          icon: categories[index]["icon"]!,
-          name: categories[index]["name"]!,
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, PlacesView.routeName);
+          },
+          child: GovernoratesCategoryGridViewItem(
+            title: categories[index]["title"]!,
+            icon: categories[index]["icon"]!,
+            name: categories[index]["name"]!,
+          ),
         );
       },
       itemCount: 4,

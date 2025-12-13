@@ -1,10 +1,14 @@
 abstract class EndPoints {
-  static const String baseUrl = 'http://10.0.2.2:5000/api/';
+  static const String baseUrl = 'https://1p1jgw5z-5000.euw.devtunnels.ms/api/';
 
   static const String getGovernorates = 'provinces';
   static const String getPlaces = 'places?page=1&limit=20';
 
   static String searchHome(String query) {
     return 'places/search?q=$query';
+  }
+
+  static String getPlacesByCategory(String category, String governorate) {
+    return 'provinces/$governorate/places?type=$category';
   }
 }

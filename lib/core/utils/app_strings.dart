@@ -92,6 +92,12 @@ abstract class AppStrings {
   static const String searchResult = "Search Results";
   static const String noResults = "No Results";
 
+  ///// Place details screen /////
+  static const String features = "Features";
+  static const String location = "Location";
+  static const String reviews = "Reviews";
+  static const String findGuide = "Find a Guide";
+
   // validators
   static const String nameRequired = 'Name is required';
   static const String nameLength = 'Name must be at least 3 characters long';

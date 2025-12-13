@@ -27,7 +27,10 @@ class RecommendedListView extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return PlaceItem(place: state.places[index]);
+                return PlaceItem(
+                  place: state.places[index],
+                  index: index,
+                );
               },
               separatorBuilder: (context, index) {
                 return SizedBox(

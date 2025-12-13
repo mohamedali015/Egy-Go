@@ -28,7 +28,10 @@ class GovernoratesGridView extends StatelessWidget {
                 crossAxisSpacing: MyResponsive.width(value: 12),
               ),
               itemBuilder: (context, index) {
-                return GovernorateItem(governorate: state.governorates[index]);
+                return GovernorateItem(
+                  governorate: state.governorates[index],
+                  index: index,
+                );
               },
               itemCount: state.governorates.length,
             );

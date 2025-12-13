@@ -14,6 +14,7 @@ class PlacesListView extends StatelessWidget {
       itemBuilder: (context, index) {
         return PlaceItem(
           place: cubit.places[index],
+          index: index,
         );
       },
       separatorBuilder: (context, index) {

@@ -28,6 +28,7 @@ class SpecialListView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GovernorateItem(
                     governorate: state.governorates[index],
+                    index: index,
                   );
                 },
                 separatorBuilder: (context, index) {
