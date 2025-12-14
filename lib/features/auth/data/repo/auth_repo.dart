@@ -22,4 +22,9 @@ abstract class AuthRepo {
   Future<Either<String, String>> resendOtp({
     required String email,
   });
+
+  Future<Either<String, String>> resetPassword({
+    required String email,
+    required String password,
+  });
 }

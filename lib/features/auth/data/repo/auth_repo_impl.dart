@@ -127,4 +127,35 @@ class AuthRepoImpl implements AuthRepo {
       return Left(apiResponse.message);
     }
   }
+
+  @override
+  Future<Either<String, String>> resetPassword(
+      {required String email, required String password}) {
+    // TODO: implement resetPassword
+    throw UnimplementedError();
+  }
+
+// @override
+// Future<Either<String, String>> resetPassword(
+//     {required String email, required String password}) async {
+//   try {
+//     ApiResponse response = await apiHelper.postRequest(
+//       endPoint: EndPoints.resetPassword,
+//       data: {
+//         'email': email,
+//         'password': password,
+//         'confirmPassword': password,
+//       },
+//     );
+//
+//     if (response.success == false) {
+//       throw Exception(response.message);
+//     }
+//
+//     return Right(response.message);
+//   } catch (e) {
+//     ApiResponse apiResponse = ApiResponse.fromError(e);
+//     return Left(apiResponse.message);
+//   }
+// }
 }

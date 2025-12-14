@@ -11,18 +11,12 @@ import '../../../core/utils/app_strings.dart';
 import '../manager/reset_password_new_password_cubit/reset_password_new_password_cubit.dart';
 import '../manager/reset_password_new_password_cubit/reset_password_new_password_state.dart';
 
-class ResetPasswordNewPassView extends StatefulWidget {
-  const ResetPasswordNewPassView({super.key});
+class ResetPasswordNewPassView extends StatelessWidget {
+  const ResetPasswordNewPassView({super.key, required this.email});
 
+  final String email;
   static const String routeName = "reset_password_new_pass";
 
-  @override
-  State<ResetPasswordNewPassView> createState() =>
-      _ResetPasswordNewPassViewState();
-}
-
-class _ResetPasswordNewPassViewState extends State<ResetPasswordNewPassView> {
-  final GlobalKey<FormState> _passwordFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +49,8 @@ class _ResetPasswordNewPassViewState extends State<ResetPasswordNewPassView> {
               obscureTextConfirmPass: cubit.confirmObsecure,
               onSuffixTapPass: cubit.changeObsecurePassword,
               onSuffixTapConfirmPass: cubit.changeConfirmObsecurePassword,
-              onPressed: () => cubit.submitNewPassword(_passwordFormKey),
-              formKey: _passwordFormKey,
+              onPressed: () => cubit.submitNewPassword(email),
+              formKey: cubit.passwordFormKey,
             ),
           );
         },

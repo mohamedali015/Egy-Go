@@ -1,3 +1,5 @@
+import 'package:egy_go/core/helper/get_it.dart';
+import 'package:egy_go/features/auth/data/repo/auth_repo.dart';
 import 'package:egy_go/features/auth/manager/reset_password_new_password_cubit/reset_password_new_password_cubit.dart';
 import 'package:egy_go/features/auth/manager/reset_password_verify_email_cubit/reset_password_verify_email_cubit.dart';
 import 'package:egy_go/features/auth/views/reset_password_new_pass_view.dart';
@@ -18,8 +20,9 @@ class ForgetPasswordFlow extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ResetPasswordVerifyEmailCubit()),
-        BlocProvider(create: (_) => ResetPasswordOtpCubit()),
-        BlocProvider(create: (_) => ResetPasswordNewPasswordCubit()),
+        BlocProvider(create: (_) => ResetPasswordOtpCubit(getIt<AuthRepo>())),
+        BlocProvider(
+            create: (_) => ResetPasswordNewPasswordCubit(getIt<AuthRepo>())),
       ],
       child: Navigator(
         initialRoute: ResetPasswordVerifyEmailView.routeName,
@@ -29,10 +32,20 @@ class ForgetPasswordFlow extends StatelessWidget {
               return MaterialPageRoute(
                   builder: (_) => ResetPasswordVerifyEmailView());
             case ResetPasswordOtpView.routeName:
-              return MaterialPageRoute(builder: (_) => ResetPasswordOtpView());
+              return MaterialPageRoute(
+                builder: (_) => ResetPasswordOtpView(
+                  email: ResetPasswordVerifyEmailCubit.get(context)
+                      .emailController
+                      .text,
+                ),
+              );
             case ResetPasswordNewPassView.routeName:
               return MaterialPageRoute(
-                  builder: (_) => ResetPasswordNewPassView());
+                  builder: (_) => ResetPasswordNewPassView(
+                        email: ResetPasswordVerifyEmailCubit.get(context)
+                            .emailController
+                            .text,
+                      ));
             default:
               return MaterialPageRoute(
                   builder: (_) => ResetPasswordVerifyEmailView());

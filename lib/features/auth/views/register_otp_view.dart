@@ -1,14 +1,18 @@
+import 'package:egy_go/core/helper/get_it.dart';
+import 'package:egy_go/features/auth/data/repo/auth_repo.dart';
 import 'package:egy_go/features/auth/manager/register_otp_cubit/register_otp_cubit.dart';
 import 'package:egy_go/features/auth/manager/register_otp_cubit/register_otp_state.dart';
+import 'package:egy_go/features/home/views/app_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/shared_widgets/custom_progress_hud.dart';
-import 'reset_password_new_pass_view.dart';
 import 'widgets/reset_password_widgets/otp_widget.dart';
 
 class RegisterOtpView extends StatelessWidget {
-  const RegisterOtpView({super.key});
+  const RegisterOtpView({super.key, required this.email});
+
+  final String email;
 
   static const String routeName = 'Register-otp';
 
@@ -17,14 +21,17 @@ class RegisterOtpView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: BlocProvider(
-        create: (context) => RegisterOtpCubit(),
+        create: (context) => RegisterOtpCubit(
+          getIt<AuthRepo>(),
+        ),
         child: Builder(builder: (context) {
           return BlocConsumer<RegisterOtpCubit, RegisterOtpState>(
             listener: (context, state) {
               if (state is RegisterOtpVerified) {
-                Navigator.pushReplacementNamed(
+                Navigator.pushNamedAndRemoveUntil(
                   context,
-                  ResetPasswordNewPassView.routeName,
+                  AppHomeView.routeName,
+                  (route) => false,
                 );
               }
             },
@@ -34,8 +41,8 @@ class RegisterOtpView extends StatelessWidget {
                 isLoading: state is RegisterOtpLoading,
                 child: OtpWidget(
                   onOtpChanged: cubit.onOtpChanged,
-                  onResendOtp: cubit.resendOtp,
-                  onVerifyOtp: cubit.verifyOtp,
+                  onResendOtp: () => cubit.resendOtp(email: email),
+                  onVerifyOtp: () => cubit.verifyOtp(email: email),
                   isOtpComplete: cubit.isOtpComplete,
                 ),
               );

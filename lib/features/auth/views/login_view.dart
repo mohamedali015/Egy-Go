@@ -32,7 +32,11 @@ class LoginView extends StatelessWidget {
                   MySnackbar.error(
                       context, "You are not authorized to access this app.");
                 } else if (state.user.isEmailVerified != true) {
-                  MyNavigator.goTo(screen: RegisterOtpView(), isReplace: true);
+                  MyNavigator.goTo(
+                      screen: RegisterOtpView(
+                        email: state.user.email!,
+                      ),
+                      isReplace: true);
                 } else {
                   MySnackbar.success(context, 'Login Successful');
 
