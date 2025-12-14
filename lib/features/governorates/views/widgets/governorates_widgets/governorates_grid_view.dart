@@ -21,6 +21,7 @@ class GovernoratesGridView extends StatelessWidget {
           } else {
             return GridView.builder(
               padding: EdgeInsets.zero,
+              cacheExtent: 4000,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 200 / 170,

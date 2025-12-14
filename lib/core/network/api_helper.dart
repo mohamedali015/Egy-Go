@@ -32,7 +32,7 @@ class ApiHelper {
     }, onError: (DioException error, handler) async {
       CustomLogger.red("--- Error : ${error.response?.data.toString()}");
       // ApiResponse apiResponse = ApiResponse.fromError(error);
-      if (error.response?.data['message'].contains('expired')) {
+      if (error.response?.data['message'].contains('Unauthorized access')) {
         ApiHelper apiHelper = getIt<ApiHelper>();
         // refresh token
         try {

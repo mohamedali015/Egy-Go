@@ -19,6 +19,7 @@ class CachedNetworkImageWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imagePath,
+      cacheKey: imagePath,
       placeholder: (context, url) => const Center(
         child: CircularProgressIndicator(),
       ),

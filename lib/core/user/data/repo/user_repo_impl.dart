@@ -22,7 +22,7 @@ class UserRepoImpl extends UserRepo {
       );
 
       if (response.success) {
-        userModel = UserModel.fromJson(response.data['user']);
+        userModel = UserModel.fromJson(response.data['data']);
         return Right(userModel);
       } else {
         throw Exception(response.message);
