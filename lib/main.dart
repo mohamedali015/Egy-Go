@@ -6,6 +6,7 @@ import 'package:egy_go/core/user/manager/user_cubit/user_cubit.dart';
 import 'package:egy_go/core/utils/app_theme.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
+import 'package:egy_go/features/create_trip/manager/create_trip_cubit/create_trip_cubit.dart';
 import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo.dart';
 import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
             BlocProvider<UserCubit>(
               create: (context) => UserCubit(getIt<UserRepo>()),
             ),
+            // BlocProvider<CreateTripCubit>(
+            //   create: (context) => CreateTripCubit(),
+            // ),
           ],
           child: GetMaterialApp(
             title: 'EgyGo',

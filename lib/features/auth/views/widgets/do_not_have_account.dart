@@ -4,7 +4,6 @@ import '../../../../core/helper/my_responsive.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
 
-
 class DoNotHaveAccount extends StatelessWidget {
   final String question;
   final String actionText;

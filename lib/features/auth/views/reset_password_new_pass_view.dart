@@ -17,7 +17,6 @@ class ResetPasswordNewPassView extends StatelessWidget {
   final String email;
   static const String routeName = "reset_password_new_pass";
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -18,6 +18,7 @@ abstract class AppAssets {
 
   // home screen assets
   static const String homeBanner = "${basePath}home_banner.png";
+  static const String startTrip = "${basePath}start_trip_icon.svg";
   static const String home = "${basePath}home.svg";
   static const String trips = "${basePath}schedule.svg";
   static const String profile = "${basePath}person.svg";
@@ -30,4 +31,7 @@ abstract class AppAssets {
   static const String entertainmentIcon = "${basePath}location.svg";
   static const String hotelsIcon = "${basePath}hotel.svg";
   static const String eventsIcon = "${basePath}events.svg";
+
+  // start trip screen assets
+  static const String createTrip = "${basePath}createTrip.png";
 }

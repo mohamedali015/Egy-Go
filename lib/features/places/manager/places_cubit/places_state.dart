@@ -17,4 +17,3 @@ class PlacesLoadError extends PlacesState {
 
   PlacesLoadError({required this.error});
 }
-

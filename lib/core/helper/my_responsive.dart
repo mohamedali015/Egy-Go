@@ -11,8 +11,6 @@ abstract class MyResponsive {
   /// Responsive font size
   static double fontSize({required double value}) => value.sp;
 
-
-
   /// Responsive radius (BorderRadius / Border / any square dimension)
   static double radius({required double value}) => value.r;
 

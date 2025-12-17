@@ -32,6 +32,4 @@ class CustomBlocObserver extends BlocObserver {
     CustomLogger.bgWhite('onClose -- ${bloc.runtimeType}');
     super.onClose(bloc);
   }
-
-
 }

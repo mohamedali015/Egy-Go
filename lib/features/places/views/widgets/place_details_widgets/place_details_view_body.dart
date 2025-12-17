@@ -1,6 +1,8 @@
+import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_button.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/guides/views/guides_view.dart';
 import 'package:flutter/material.dart';
 import 'first_section_details.dart';
 import 'place_details_stack_slider_widget.dart';
@@ -36,7 +38,9 @@ class PlaceDetailsViewBody extends StatelessWidget {
             padding: MyResponsive.paddingSymmetric(horizontal: 20),
             child: CustomButton(
               title: AppStrings.findGuide,
-              onPressed: () {},
+              onPressed: () {
+                MyNavigator.goTo(screen: GuidesView());
+              },
             ),
           ),
           SizedBox(

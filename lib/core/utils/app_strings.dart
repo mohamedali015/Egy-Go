@@ -71,6 +71,16 @@ abstract class AppStrings {
   static const String specialForYou = "Special for you";
   static const String seeAll = "See all";
 
+  ///// create trip screen /////
+  static const String startYourTrip = "Start your trip";
+  static const String tripImageTitle = 'An unforgettable trip awaits!';
+  static const String tripImageSubtitle =
+      'Discover new places and enjoy unique experiences.';
+  static const String startNow = "Start Now";
+  static const String formTitle = 'Plan Your Custom Trip';
+  static const String formSubtitle =
+      "Tell us your preferences and we'll help you organize it.";
+
   ///// special discover more screen ////
   static const String searchHint = "Search for anything...";
   static const String governorates = "Governorates :";
@@ -97,6 +107,11 @@ abstract class AppStrings {
   static const String location = "Location";
   static const String reviews = "Reviews";
   static const String findGuide = "Find a Guide";
+
+  ///// Guides screen /////
+  static const String guidesTitle = "Guides";
+  static const String popularGuides = "Popular Guides";
+  static const String hireNow = "Hire Now";
 
   // validators
   static const String nameRequired = 'Name is required';
