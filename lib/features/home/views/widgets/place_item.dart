@@ -1,6 +1,7 @@
 import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
 import 'package:egy_go/features/places/data/models/places_response_model.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:egy_go/features/places/views/place_details_view.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class PlaceItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        PlacesCubit.get(context).setSelectedPlace(place);
         MyNavigator.goTo(screen: PlaceDetailsView());
       },
       child: Container(

@@ -2,6 +2,7 @@ import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:flutter/material.dart';
 
 class FirstSectionDetails extends StatelessWidget {
@@ -11,6 +12,8 @@ class FirstSectionDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = PlacesCubit.get(context);
+    var place = cubit.selectedPlace!;
     return Padding(
       padding: MyResponsive.paddingSymmetric(horizontal: 20),
       child: Column(
@@ -20,7 +23,7 @@ class FirstSectionDetails extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Pyramids of Giza',
+                  place.name ?? '',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: AppTextStyles.bold20,
@@ -34,7 +37,7 @@ class FirstSectionDetails extends StatelessWidget {
               ),
               SizedBox(width: MyResponsive.width(value: 6)),
               Text(
-                "(4)",
+                "(${place.rating ?? '0.0'})",
                 style: AppTextStyles.semiBold14.copyWith(
                   color: Colors.deepOrange,
                 ),
@@ -51,7 +54,7 @@ class FirstSectionDetails extends StatelessWidget {
               ),
               SizedBox(width: MyResponsive.width(value: 4)),
               Text(
-                'Giza, Egypt, Elharam St.',
+                place.address ?? '',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: AppTextStyles.medium12.copyWith(
@@ -62,7 +65,7 @@ class FirstSectionDetails extends StatelessWidget {
           ),
           SizedBox(height: MyResponsive.height(value: 15)),
           Text(
-            'The Pyramids of Giza, located on the outskirts of Cairo, Egypt, are one of the most iconic and enduring symbols of ancient civilization.',
+            place.description ?? '',
             style: AppTextStyles.medium12.copyWith(
               color: AppColors.black.withValues(alpha: .6),
             ),

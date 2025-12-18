@@ -13,8 +13,7 @@ class GovernoratesCategoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = GovernoratesCubit.get(context);
-    Governorate governorate =
-        cubit.filteredGovernorates[cubit.selectedGovernorate];
+    Governorate governorate = cubit.selectedGovernorate!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -23,9 +22,7 @@ class GovernoratesCategoryView extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: GovernoratesCategoryViewBody(
-        governorate: governorate,
-      ),
+      body: GovernoratesCategoryViewBody(),
     );
   }
 }

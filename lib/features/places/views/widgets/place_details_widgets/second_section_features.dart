@@ -2,6 +2,7 @@ import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:flutter/material.dart';
 
 class SecondSectionFeatures extends StatelessWidget {
@@ -9,31 +10,33 @@ class SecondSectionFeatures extends StatelessWidget {
     super.key,
   });
 
-  final List<Map<String, dynamic>> features = const [
-    {
-      'icon': Icons.bookmark,
-      'title': 'Catergory',
-      'subtitle': 'Historical',
-    },
-    {
-      'icon': Icons.price_change,
-      'title': 'Price',
-      'subtitle': 'Free',
-    },
-    {
-      'icon': Icons.timelapse,
-      'title': 'openingHours',
-      'subtitle': '8:00 AM - 5:00 PM daily',
-    },
-    {
-      'icon': Icons.airplane_ticket,
-      'title': 'Ticket',
-      'subtitle': '240 EGP',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var cubit = PlacesCubit.get(context);
+    var place = cubit.selectedPlace!;
+    final List<Map<String, dynamic>> features = [
+      {
+        'icon': Icons.bookmark,
+        'title': 'Category',
+        'subtitle': place.type ?? 'Unknown',
+      },
+      {
+        'icon': Icons.price_change,
+        'title': 'Price',
+        'subtitle': '${place.ticketPrice ?? 'Unknown'}',
+      },
+      {
+        'icon': Icons.timelapse,
+        'title': 'openingHours',
+        'subtitle': place.openingHours ?? 'Unknown',
+      },
+      {
+        'icon': Icons.phone,
+        'title': 'Phone',
+        'subtitle': place.phone ?? 'Unknown',
+      },
+    ];
+
     return Padding(
       padding: MyResponsive.paddingSymmetric(horizontal: 20),
       child: Column(
@@ -53,7 +56,7 @@ class SecondSectionFeatures extends StatelessWidget {
               ),
               SizedBox(width: MyResponsive.width(value: 4)),
               Text(
-                'created at: 20/10/2023',
+                'created at: ${place.createdAt ?? ''}',
                 style: AppTextStyles.medium12.copyWith(
                   color: AppColors.black.withValues(alpha: .5),
                 ),

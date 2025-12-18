@@ -28,7 +28,6 @@ class Data {
 class Place {
   String? sId;
   String? slug;
-  num? iV;
   String? address;
   String? createdAt;
   String? description;
@@ -41,7 +40,6 @@ class Place {
   String? name;
   String? openingHours;
   String? phone;
-  Province? province;
   num? rating;
   String? shortDescription;
   num? stars;
@@ -55,7 +53,6 @@ class Place {
   Place(
       {this.sId,
       this.slug,
-      this.iV,
       this.address,
       this.createdAt,
       this.description,
@@ -68,7 +65,6 @@ class Place {
       this.name,
       this.openingHours,
       this.phone,
-      this.province,
       this.rating,
       this.shortDescription,
       this.stars,
@@ -82,7 +78,6 @@ class Place {
   Place.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     slug = json['slug'];
-    iV = json['__v'];
     address = json['address'];
     createdAt = json['createdAt'];
     description = json['description'];
@@ -96,8 +91,6 @@ class Place {
     name = json['name'];
     openingHours = json['openingHours'];
     phone = json['phone'];
-    province =
-        json['province'] != null ? Province.fromJson(json['province']) : null;
     rating = json['rating'];
     shortDescription = json['shortDescription'];
     stars = json['stars'];
@@ -122,16 +115,3 @@ class Location {
   }
 }
 
-class Province {
-  String? sId;
-  String? slug;
-  String? name;
-
-  Province({this.sId, this.slug, this.name});
-
-  Province.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    slug = json['slug'];
-    name = json['name'];
-  }
-}

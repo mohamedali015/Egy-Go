@@ -11,6 +11,11 @@ class PlacesCubit extends Cubit<PlacesState> {
   final PlacesRepo repo;
 
   final List<Place> places = [];
+  Place? selectedPlace;
+
+  void setSelectedPlace(Place place) {
+    selectedPlace = place;
+  }
 
   Future<void> fetchPlaces() async {
     emit(PlacesLoading());

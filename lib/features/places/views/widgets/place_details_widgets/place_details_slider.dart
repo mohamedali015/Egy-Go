@@ -1,22 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
-import 'package:egy_go/core/utils/app_assets.dart';
+import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:egy_go/features/places/manager/slider_cubit/slider_cubit.dart';
 import 'package:flutter/material.dart';
 
 class PlaceDetailsSlider extends StatelessWidget {
-  PlaceDetailsSlider({super.key});
-
-  final List<String> sliderImages = [
-    AppAssets.test,
-    AppAssets.test,
-    AppAssets.test,
-    AppAssets.test,
-    AppAssets.test,
-  ];
+  const PlaceDetailsSlider({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var cubit = PlacesCubit.get(context);
     return CarouselSlider(
       options: CarouselOptions(
         height: MyResponsive.height(value: 400),
@@ -28,7 +22,7 @@ class PlaceDetailsSlider extends StatelessWidget {
           SliderCubit.get(context).changeSliderIndex(index);
         },
       ),
-      items: sliderImages.map((imagePath) {
+      items: cubit.selectedPlace!.images?.map((imagePath) {
         return SliderWidget(
           imagePath: imagePath,
         );
@@ -44,8 +38,8 @@ class SliderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      imagePath,
+    return CachedNetworkImageWrapper(
+      imagePath: imagePath,
       width: double.infinity,
       height: double.infinity,
       fit: BoxFit.cover,

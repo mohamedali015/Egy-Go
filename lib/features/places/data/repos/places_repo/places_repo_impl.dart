@@ -54,7 +54,7 @@ class PlacesRepoImpl extends PlacesRepo {
           throw Exception("No Places found.");
         }
       } else {
-        throw Exception("Failed to fetch Places.");
+        throw Exception("Failed to get $governorate Places.");
       }
     } catch (e) {
       ApiResponse errorResponse = ApiResponse.fromError(e);

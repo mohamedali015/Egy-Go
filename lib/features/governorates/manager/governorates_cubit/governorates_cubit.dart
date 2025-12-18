@@ -12,7 +12,11 @@ class GovernoratesCubit extends Cubit<GovernoratesState> {
 
   final List<Governorate> governorates = [];
   List<Governorate> filteredGovernorates = [];
-  int selectedGovernorate = -1;
+  Governorate? selectedGovernorate;
+
+  void setSelectedGovernorate(Governorate governorate) {
+    selectedGovernorate = governorate;
+  }
 
   Future<void> fetchGovernorates() async {
     emit(GovernoratesLoading());

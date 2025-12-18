@@ -1,5 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:egy_go/features/places/manager/slider_cubit/slider_cubit.dart';
 import 'package:egy_go/features/places/manager/slider_cubit/slider_state.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class PlaceDetailsStackSliderWidget extends StatelessWidget {
             builder: (context, state) {
               return AnimatedSmoothIndicator(
                 activeIndex: SliderCubit.get(context).currentIndex,
-                count: 5,
+                count: PlacesCubit.get(context).selectedPlace!.images!.length,
                 effect: ExpandingDotsEffect(
                   dotHeight: MyResponsive.height(value: 10),
                   dotWidth: MyResponsive.width(value: 10),

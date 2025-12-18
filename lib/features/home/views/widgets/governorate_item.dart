@@ -19,7 +19,7 @@ class GovernorateItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        GovernoratesCubit.get(context).selectedGovernorate = index;
+        GovernoratesCubit.get(context).setSelectedGovernorate(governorate);
         Navigator.pushNamed(
           context,
           GovernoratesCategoryView.routeName,

@@ -1,4 +1,6 @@
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
+import 'package:egy_go/features/places/manager/place_category_cubit/place_category_cubit.dart';
 import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,21 +18,25 @@ class GovernoratesCategoryGridView extends StatelessWidget {
         "name": AppStrings.historical,
         "title": AppStrings.historicalTitle,
         "icon": AppAssets.historicalIcon,
+        "backEnd": 'archaeological'
       },
       {
         "name": AppStrings.entertainment,
         "title": AppStrings.entertainmentTitle,
         "icon": AppAssets.entertainmentIcon,
+        "backEnd": 'entertainment'
       },
       {
         "name": AppStrings.hotels,
         "title": AppStrings.hotelsTitle,
         "icon": AppAssets.hotelsIcon,
+        "backEnd": 'hotels'
       },
       {
         "name": AppStrings.events,
         "title": AppStrings.eventsTitle,
         "icon": AppAssets.eventsIcon,
+        "backEnd": 'events'
       },
     ];
 
@@ -46,6 +52,11 @@ class GovernoratesCategoryGridView extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
+            var governorate =
+                GovernoratesCubit.get(context).selectedGovernorate;
+            PlaceCategoryCubit.get(context).fetchPlacesByCategory(
+                category: categories[index]['backEnd']!,
+                governorate: governorate!.name!);
             Navigator.pushNamed(context, PlacesView.routeName);
           },
           child: GovernoratesCategoryGridViewItem(
