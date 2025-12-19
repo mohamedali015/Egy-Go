@@ -2,6 +2,7 @@ import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_button.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
+import 'package:egy_go/features/create_trip/views/create_trip_image_view.dart';
 import 'package:egy_go/features/guides/views/guides_view.dart';
 import 'package:flutter/material.dart';
 import 'first_section_details.dart';
@@ -37,9 +38,9 @@ class PlaceDetailsViewBody extends StatelessWidget {
           Padding(
             padding: MyResponsive.paddingSymmetric(horizontal: 20),
             child: CustomButton(
-              title: AppStrings.findGuide,
+              title: AppStrings.startYourTrip,
               onPressed: () {
-                MyNavigator.goTo(screen: GuidesView());
+                MyNavigator.goTo(screen: CreateTripImageView());
               },
             ),
           ),

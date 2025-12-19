@@ -7,6 +7,8 @@ import 'package:egy_go/features/create_trip/data/repos/create_trip_form_repo/cre
 import 'package:egy_go/features/create_trip/data/repos/create_trip_form_repo/create_trip_form_repo_impl.dart';
 import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo.dart';
 import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo_impl.dart';
+import 'package:egy_go/features/guides/data/repos/guides_repo.dart';
+import 'package:egy_go/features/guides/data/repos/guides_repo_impl.dart';
 import 'package:egy_go/features/home_search/data/repo/home_search_repo.dart';
 import 'package:egy_go/features/home_search/data/repo/home_search_repo_impl.dart';
 import 'package:egy_go/features/places/data/repos/places_repo/places_repo.dart';
@@ -37,4 +39,7 @@ void setupGetIt() {
 
   getIt.registerSingleton<CreateTripFormRepo>(
       CreateTripFormRepoImpl(getIt<ApiHelper>()));
+
+  getIt.registerSingleton<GuidesRepo>(
+      GuidesRepoImpl(apiHelper: getIt<ApiHelper>()));
 }

@@ -19,4 +19,8 @@ abstract class EndPoints {
   static String getPlacesByCategory(String category, String governorate) {
     return 'provinces/$governorate/places?type=$category';
   }
+
+  static String getTripGuides(String tripId) {
+    return 'tourist/trips/$tripId/guides';
+  }
 }

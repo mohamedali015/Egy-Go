@@ -5,6 +5,7 @@ import 'package:egy_go/features/create_trip/views/create_trip_form_view.dart';
 import 'package:egy_go/features/create_trip/views/create_trip_image_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_category_view.dart';
 import 'package:egy_go/features/guides/views/guides_view.dart';
+import 'package:egy_go/features/guides/views/select_guide_screen.dart';
 import 'package:egy_go/features/home_search/view/home_search_view.dart';
 import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_view.dart';
@@ -98,6 +99,13 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     case GuidesView.routeName:
       return MaterialPageRoute(
         builder: (_) => const GuidesView(),
+        settings: settings,
+      );
+
+    case SelectGuideScreen.routeName:
+      final tripId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => SelectGuideScreen(tripId: tripId),
         settings: settings,
       );
 
