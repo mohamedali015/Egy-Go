@@ -37,7 +37,7 @@ class CreateTripCubit extends Cubit<CreateTripState> {
 
     emit(CreateTripLoading());
     var result = await repo.createTrip(
-      dateTime: dateTimeController.text,
+      dateTime: selectedDateTime!.toUtc().toIso8601String(),
       duration: number,
       meetingPoint: meetingPointController.text,
       notes: notesController.text,
@@ -51,6 +51,7 @@ class CreateTripCubit extends Cubit<CreateTripState> {
     );
   }
 
+  DateTime? selectedDateTime;
   Future<void> pickDateTime(BuildContext context) async {
     final DateTime? date = await showDatePicker(
       context: context,
@@ -68,7 +69,7 @@ class CreateTripCubit extends Cubit<CreateTripState> {
 
     if (time == null) return;
 
-    final DateTime dateTime = DateTime(
+    final DateTime localDateTime = DateTime(
       date.year,
       date.month,
       date.day,
@@ -76,8 +77,11 @@ class CreateTripCubit extends Cubit<CreateTripState> {
       time.minute,
     );
 
+    selectedDateTime = localDateTime;
+
+    // ده للـ UI بس
     dateTimeController.text =
-        "${dateTime.day}/${dateTime.month}/${dateTime.year} "
+        "${localDateTime.day}/${localDateTime.month}/${localDateTime.year} "
         "${time.format(context)}";
   }
 

@@ -7,6 +7,7 @@ import 'package:egy_go/core/utils/app_theme.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
 import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:egy_go/features/create_trip/manager/create_trip_cubit/create_trip_cubit.dart';
+import 'package:egy_go/features/create_trip/views/choose_guide_view.dart';
 import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo.dart';
 import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
@@ -62,8 +63,9 @@ class MyApp extends StatelessWidget {
             title: 'EgyGo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: onGenerateRoutes,
-            initialRoute: SplashView.routeName,
+            // initialRoute: SplashView.routeName,
             theme: AppTheme.lightTheme,
+            home: ChooseGuideView(),
           ),
         );
       },

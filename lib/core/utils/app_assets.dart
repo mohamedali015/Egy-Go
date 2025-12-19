@@ -34,4 +34,11 @@ abstract class AppAssets {
 
   // start trip screen assets
   static const String createTrip = "${basePath}createTrip.png";
+
+  // profile screen assets
+  static const String profileImage = "${basePath}profileImage.png";
+  static const String forwardArrow = "${basePath}forwardArrow.svg";
+  static const String profilePerson = "${basePath}profilePerson.svg";
+  static const String profileFavorite = "${basePath}profileFavorite.svg";
+  static const String profileLogout = "${basePath}profileLogout.svg";
 }

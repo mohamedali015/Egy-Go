@@ -81,6 +81,8 @@ abstract class AppStrings {
   static const String formSubtitle =
       "Tell us your preferences and we'll help you organize it.";
 
+  static const String chooseGuide = "Choose Guide";
+
   ///// special discover more screen ////
   static const String searchHint = "Search for anything...";
   static const String governorates = "Governorates :";
@@ -112,6 +114,18 @@ abstract class AppStrings {
   static const String guidesTitle = "Guides";
   static const String popularGuides = "Popular Guides";
   static const String hireNow = "Hire Now";
+
+  ///// profile screen /////
+  static const String myProfile = "My Profile";
+  static const String save = "Save";
+  static const String deleteAccount = "Delete Account";
+  static const String myTrips = "My Trips";
+  static const String myFavorites = "My Favorites";
+  static const String logout = "Log Out";
+  static const String deleteAccountMessage =
+      "Are you sure you want to delete account?";
+  static const String cancel = "Cancel";
+  static const String confirm = "Confirm";
 
   // validators
   static const String nameRequired = 'Name is required';

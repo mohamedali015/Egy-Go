@@ -4,6 +4,8 @@ import 'package:egy_go/core/shared_widgets/svg_wrapper.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/features/create_trip/views/create_trip_image_view.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
+import 'package:egy_go/features/profile/views/profile_view.dart';
+import 'package:egy_go/features/trip/views/trips_view.dart';
 import 'package:flutter/material.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
@@ -21,8 +23,8 @@ class _AppHomeViewState extends State<AppHomeView> {
 
   final List<Widget> screens = const [
     HomeView(),
-    Placeholder(),
-    Placeholder(),
+    TripsView(),
+    ProfileView(),
   ];
 
   @override

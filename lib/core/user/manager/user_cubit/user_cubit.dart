@@ -120,7 +120,7 @@ class UserCubit extends Cubit<UserState> {
 
     if (permission == LocationPermission.deniedForever) {
       throw Exception(
-        'Location permission permanently denied, please enable it from settings',
+        'Location permission permanently denied, please enable it from profile',
       );
     }
 

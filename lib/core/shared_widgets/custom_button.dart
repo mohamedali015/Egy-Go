@@ -39,7 +39,9 @@ class CustomButton extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: AppTextStyles.semiBold20,
+        style: AppTextStyles.semiBold20.copyWith(
+          color: foregroundColor,
+        ),
       ),
     );
   }
