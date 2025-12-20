@@ -11,6 +11,7 @@ abstract class EndPoints {
   static const String getGovernorates = 'provinces';
   static const String getPlaces = 'places?page=1&limit=20';
   static const String createTrip = 'tourist/trips';
+  static const String getMyTrips = 'tourist/trips';
 
   static String searchHome(String query) {
     return 'places/search?q=$query';
@@ -22,5 +23,13 @@ abstract class EndPoints {
 
   static String getTripGuides(String tripId) {
     return 'tourist/trips/$tripId/guides';
+  }
+
+  static String selectGuide(String tripId) {
+    return 'tourist/trips/$tripId/select-guide';
+  }
+
+  static String getTripDetails(String tripId) {
+    return 'tourist/trips/$tripId';
   }
 }

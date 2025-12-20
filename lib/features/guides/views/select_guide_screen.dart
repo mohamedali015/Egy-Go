@@ -6,7 +6,7 @@ import 'package:egy_go/features/guides/views/widgets/select_guide_widgets/select
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SelectGuideScreen extends StatelessWidget {
+class SelectGuideScreen extends StatefulWidget {
   const SelectGuideScreen({super.key, required this.tripId});
 
   final String tripId;
@@ -14,20 +14,27 @@ class SelectGuideScreen extends StatelessWidget {
   static const String routeName = "selectGuide";
 
   @override
+  State<SelectGuideScreen> createState() => _SelectGuideScreenState();
+}
+
+class _SelectGuideScreenState extends State<SelectGuideScreen> {
+  @override
+  void initState() {
+    SelectGuideCubit.get(context).fetchTripGuides(widget.tripId);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          SelectGuideCubit(getIt<GuidesRepo>())..fetchTripGuides(tripId),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Select Guide',
-            style: AppTextStyles.semiBold20,
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Select Guide',
+          style: AppTextStyles.semiBold20,
         ),
-        body: SelectGuideViewBody(),
+        centerTitle: true,
       ),
+      body: SelectGuideViewBody(tripId: widget.tripId),
     );
   }
 }

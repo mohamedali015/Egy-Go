@@ -62,4 +62,17 @@ class SelectGuideCubit extends Cubit<SelectGuideState> {
     }
     return languages.toList()..sort();
   }
+
+  Future<void> selectGuide(String tripId, String guideId) async {
+    emit(SelectGuideSelecting());
+    final result = await repo.selectGuide(tripId, guideId);
+    result.fold(
+      (error) {
+        emit(SelectGuideFailure(error));
+      },
+      (response) {
+        emit(SelectGuideSelected(response));
+      },
+    );
+  }
 }

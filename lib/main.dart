@@ -9,6 +9,8 @@ import 'package:egy_go/features/auth/views/login_view.dart';
 import 'package:egy_go/features/create_trip/manager/create_trip_cubit/create_trip_cubit.dart';
 import 'package:egy_go/features/governorates/data/repos/governorates_repo/governorates_repo.dart';
 import 'package:egy_go/features/governorates/manager/governorates_cubit/governorates_cubit.dart';
+import 'package:egy_go/features/guides/data/repos/guides_repo.dart';
+import 'package:egy_go/features/guides/manager/select_guide_cubit/select_guide_cubit.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
 import 'package:egy_go/features/places/data/repos/places_repo/places_repo.dart';
 import 'package:egy_go/features/places/manager/place_category_cubit/place_category_cubit.dart';
@@ -56,6 +58,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<PlaceCategoryCubit>(
               create: (context) => PlaceCategoryCubit(getIt<PlacesRepo>()),
+            ),
+            BlocProvider<SelectGuideCubit>(
+              create: (context) => SelectGuideCubit(getIt<GuidesRepo>()),
             ),
           ],
           child: GetMaterialApp(

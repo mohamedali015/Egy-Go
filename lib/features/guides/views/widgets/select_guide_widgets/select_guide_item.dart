@@ -1,7 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
-import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/guides/data/models/trip_guides_response_model.dart';
@@ -9,9 +8,10 @@ import 'package:egy_go/features/guides/views/guide_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class SelectGuideItem extends StatelessWidget {
-  const SelectGuideItem({super.key, required this.guide});
+  const SelectGuideItem({super.key, required this.guide, required this.tripId});
 
   final Guide guide;
+  final String tripId;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class SelectGuideItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GuideDetailsScreen(guide: guide),
+            builder: (context) =>
+                GuideDetailsScreen(guide: guide, tripId: tripId),
           ),
         );
       },
