@@ -124,15 +124,15 @@ class ApiHelper {
     );
   }
 
-  Future<ApiResponse> putRequest(
-      {required String endPoint,
-      Map<String, dynamic>? data,
-      bool isFormData = true,
-      bool isProtected = false}) async {
+  Future<ApiResponse> putRequest({
+    required String endPoint,
+    Map<String, dynamic>? data,
+    bool isProtected = false,
+  }) async {
     return ApiResponse.fromResponse(
       await dio.put(
         endPoint,
-        data: isFormData ? FormData.fromMap(data ?? {}) : data,
+        data: data,
         options: Options(headers: {
           if (isProtected) 'Authorization': 'Bearer ${CacheData.accessToken}',
         }),

@@ -5,27 +5,38 @@ import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/features/create_trip/views/create_trip_image_view.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
 import 'package:egy_go/features/profile/views/profile_view.dart';
-import 'package:egy_go/features/trip/views/trips_view.dart';
+import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 
 class AppHomeView extends StatefulWidget {
-  const AppHomeView({super.key});
+  const AppHomeView({
+    super.key,
+    this.initialIndex = 0,
+  });
   static const String routeName = 'app_bottom_navigation_bar';
+
+  final int initialIndex;
 
   @override
   State<AppHomeView> createState() => _AppHomeViewState();
 }
 
 class _AppHomeViewState extends State<AppHomeView> {
-  int currentIndex = 0;
+  late int currentIndex;
 
   final List<Widget> screens = const [
     HomeView(),
-    TripsView(),
+    TripsScreen(),
     ProfileView(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {

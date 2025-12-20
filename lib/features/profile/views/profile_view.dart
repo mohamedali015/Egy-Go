@@ -6,6 +6,7 @@ import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/profile/views/my_profile_view.dart';
+import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/profile_row_widget.dart';
@@ -54,7 +55,7 @@ class ProfileView extends StatelessWidget {
             ProfileRowWidget(
               title: AppStrings.myTrips,
               imagePath: AppAssets.trips,
-              goTo: Placeholder(),
+              goTo: TripsScreen(),
             ),
             SizedBox(height: MyResponsive.height(value: 38)),
             ProfileRowWidget(

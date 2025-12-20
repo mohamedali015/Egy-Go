@@ -32,4 +32,8 @@ abstract class EndPoints {
   static String getTripDetails(String tripId) {
     return 'tourist/trips/$tripId';
   }
+
+  static String cancelTrip(String tripId) {
+    return 'tourist/trips/$tripId/cancel';
+  }
 }

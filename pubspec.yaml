@@ -60,6 +60,7 @@ dependencies:
   geolocator: ^11.1.0
   geocoding: ^4.0.0
   google_maps_flutter: ^2.12.3
+  url_launcher: ^6.1.10
 
 
 

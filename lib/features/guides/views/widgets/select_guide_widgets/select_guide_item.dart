@@ -1,6 +1,7 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
 import 'package:egy_go/core/shared_widgets/rating_bar_wrapper.dart';
+import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/guides/data/models/trip_guides_response_model.dart';

@@ -5,18 +5,45 @@ import 'package:egy_go/features/guides/manager/select_guide_cubit/select_guide_c
 import 'package:egy_go/features/guides/manager/select_guide_cubit/select_guide_state.dart';
 import 'package:egy_go/features/guides/views/widgets/guide_details_widgets/guide_details_header.dart';
 import 'package:egy_go/features/guides/views/widgets/guide_details_widgets/guide_info_section.dart';
+import 'package:egy_go/features/home/views/app_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GuideDetailsViewBody extends StatelessWidget {
-  const GuideDetailsViewBody(
-      {super.key, required this.guide, required this.tripId});
+  const GuideDetailsViewBody({super.key, required this.guide, this.tripId});
 
   final Guide guide;
-  final String tripId;
+  final String? tripId;
 
   @override
   Widget build(BuildContext context) {
+    // Read-only mode if tripId is null
+    final isReadOnly = tripId == null;
+
+    if (isReadOnly) {
+      // Simple read-only view without BlocConsumer
+      return Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: MyResponsive.paddingSymmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MyResponsive.height(value: 16)),
+                  GuideDetailsHeader(guide: guide),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  GuideInfoSection(guide: guide),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    // Original interactive mode with select guide button
     return BlocConsumer<SelectGuideCubit, SelectGuideState>(
       listener: (context, state) {
         if (state is SelectGuideSelected) {
@@ -27,7 +54,12 @@ class GuideDetailsViewBody extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pop(context);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => const AppHomeView(initialIndex: 1),
+            ),
+            (route) => false,
+          );
         } else if (state is SelectGuideFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -66,7 +98,7 @@ class GuideDetailsViewBody extends StatelessWidget {
                     ? null
                     : () {
                         final cubit = SelectGuideCubit.get(context);
-                        cubit.selectGuide(tripId, guide.sId ?? '');
+                        cubit.selectGuide(tripId!, guide.sId ?? '');
                       },
               ),
             ),
