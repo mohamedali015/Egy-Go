@@ -1,0 +1,53 @@
+{
+  "success": true,
+  "message": "Trip cancelled successfully",
+  "trip": {
+    "meetingPoint": {
+      "type": "Point",
+      "coordinates": [
+        31.185531914234158,
+        30.00917299544896
+      ]
+    },
+    "meta": {
+      "createdFromPlaceId": null,
+      "agreementSource": "new_flow"
+    },
+    "review": {
+      "rating": null,
+      "comment": null,
+      "reviewedAt": null
+    },
+    "_id": "6946c0a4aa08021e1e697f62",
+    "tourist": {
+      "_id": "693ee28651f4359a1703d490",
+      "email": "wokew17352@alexida.com",
+      "name": "mohamed",
+      "phone": "01020374526"
+    },
+    "guide": null,
+    "selectedGuide": null,
+    "candidateGuides": [
+      "69414ba61b25092cdc55483a",
+      "69414ba61b25092cdc55481c",
+      "69414ba61b25092cdc55480e"
+    ],
+    "callSessions": [],
+    "itinerary": [],
+    "startAt": "2025-12-22T18:27:00.000Z",
+    "totalDurationMinutes": 300,
+    "meetingAddress": "255P+J6X, , Kafr Tohormos, Giza Governorate, Egypt",
+    "provinceId": "6935efa247a0b161dbdeee4d",
+    "paymentStatus": "unpaid",
+    "stripeSessionId": null,
+    "stripePaymentIntentId": null,
+    "currency": "usd",
+    "status": "cancelled",
+    "createdAt": "2025-12-20T15:28:36.987Z",
+    "updatedAt": "2025-12-20T16:44:00.030Z",
+    "__v": 0,
+    "cancellationReason": "Change of travel plans",
+    "cancelledAt": "2025-12-20T16:44:00.030Z",
+    "cancelledBy": "tourist"
+  }
+}
