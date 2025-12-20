@@ -29,18 +29,9 @@ class GuideDetailsViewBody extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          padding: MyResponsive.paddingSymmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: .05),
-                blurRadius: 10,
-                offset: Offset(0, -5),
-              ),
-            ],
-          ),
+        SizedBox(height: MyResponsive.height(value: 20)),
+        Padding(
+          padding: MyResponsive.paddingSymmetric(horizontal: 20),
           child: CustomButton(
             title: 'Select this Guide',
             onPressed: () {
@@ -48,6 +39,7 @@ class GuideDetailsViewBody extends StatelessWidget {
             },
           ),
         ),
+        SizedBox(height: MyResponsive.height(value: 25)),
       ],
     );
   }
