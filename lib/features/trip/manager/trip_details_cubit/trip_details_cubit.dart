@@ -41,6 +41,19 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
     );
   }
 
+  Future<void> initiateCall(String tripId, String guideId) async {
+    emit(CallInitiating());
+    final result = await repo.initiateCall(tripId, guideId);
+    result.fold(
+      (error) {
+        emit(CallInitiationFailed(error));
+      },
+      (callResponse) {
+        emit(CallInitiatedSuccess(callResponse));
+      },
+    );
+  }
+
   bool canCancelTrip() {
     if (currentTrip == null) return false;
 

@@ -1,4 +1,5 @@
 import 'package:egy_go/features/trip/data/models/trips_response_model.dart';
+import 'package:egy_go/features/trip/data/models/initiate_call_response_model.dart';
 
 abstract class TripDetailsState {}
 
@@ -25,4 +26,18 @@ class TripCancelled extends TripDetailsState {
   final String message;
 
   TripCancelled(this.trip, this.message);
+}
+
+class CallInitiating extends TripDetailsState {}
+
+class CallInitiatedSuccess extends TripDetailsState {
+  final InitiateCallResponseModel callResponse;
+
+  CallInitiatedSuccess(this.callResponse);
+}
+
+class CallInitiationFailed extends TripDetailsState {
+  final String errorMessage;
+
+  CallInitiationFailed(this.errorMessage);
 }

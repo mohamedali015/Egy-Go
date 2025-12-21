@@ -61,7 +61,7 @@ dependencies:
   geocoding: ^4.0.0
   google_maps_flutter: ^2.12.3
   url_launcher: ^6.1.10
-
+  agora_rtc_engine: ^6.5.3
 
 
 

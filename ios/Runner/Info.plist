@@ -50,6 +50,11 @@
 	<string>We need Your location to show your position on the map.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need Your location to keep tracking your movement.</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>Microphone access</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera access</string>
+
 
 </dict>
 </plist>

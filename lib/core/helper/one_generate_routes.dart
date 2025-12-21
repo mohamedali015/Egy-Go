@@ -11,6 +11,10 @@ import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/on_boarding_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/splash_view.dart';
+import 'package:egy_go/features/trip/views/trip_details_screen.dart';
+import 'package:egy_go/features/trip/views/trips_screen.dart';
+import 'package:egy_go/features/trip/views/agora_call_screen.dart';
+import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/auth/views/widgets/reset_password_widgets/forget_password_flow.dart';
@@ -106,6 +110,43 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
       final tripId = settings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => SelectGuideScreen(tripId: tripId),
+        settings: settings,
+      );
+
+    case TripDetailsScreen.routeName:
+      final tripId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => TripDetailsScreen(tripId: tripId),
+        settings: settings,
+      );
+
+    case TripsScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const TripsScreen(),
+        settings: settings,
+      );
+
+    case AgoraCallScreen.routeName:
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (_) => AgoraCallScreen(
+          appId: args['appId'] as String,
+          channelName: args['channelName'] as String,
+          token: args['token'] as String,
+          uid: args['uid'] as int,
+          callId: args['callId'] as String,
+          tripId: args['tripId'] as String,
+        ),
+        settings: settings,
+      );
+
+    case EndCallFormScreen.routeName:
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (_) => EndCallFormScreen(
+          callId: args['callId'] as String,
+          tripId: args['tripId'] as String,
+        ),
         settings: settings,
       );
 

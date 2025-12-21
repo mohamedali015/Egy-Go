@@ -3,6 +3,8 @@ import 'package:egy_go/core/network/api_helper.dart';
 import 'package:egy_go/core/network/api_response.dart';
 import 'package:egy_go/core/network/end_points.dart';
 import 'package:egy_go/features/trip/data/models/cancel_trip_response_model.dart';
+import 'package:egy_go/features/trip/data/models/end_call_response_model.dart';
+import 'package:egy_go/features/trip/data/models/initiate_call_response_model.dart';
 import 'package:egy_go/features/trip/data/models/trip_details_response_model.dart';
 import 'package:egy_go/features/trip/data/models/trips_response_model.dart';
 import 'package:egy_go/features/trip/data/repos/trip_repo.dart';
@@ -73,6 +75,60 @@ class TripRepoImpl implements TripRepo {
         return Right(cancelTripResponseModel);
       } else {
         throw Exception("Failed to cancel trip.");
+      }
+    } catch (e) {
+      ApiResponse errorResponse = ApiResponse.fromError(e);
+      return Left(errorResponse.message);
+    }
+  }
+
+  @override
+  Future<Either<String, InitiateCallResponseModel>> initiateCall(
+      String tripId, String guideId) async {
+    try {
+      ApiResponse response = await apiHelper.postRequest(
+        endPoint: EndPoints.initiateCallTrip(tripId),
+        isProtected: true,
+      );
+      InitiateCallResponseModel initiateCallResponseModel =
+          InitiateCallResponseModel.fromJson(response.data);
+      if (initiateCallResponseModel.success != null &&
+          initiateCallResponseModel.success == true) {
+        return Right(initiateCallResponseModel);
+      } else {
+        throw Exception("Failed to initiate call.");
+      }
+    } catch (e) {
+      ApiResponse errorResponse = ApiResponse.fromError(e);
+      return Left(errorResponse.message);
+    }
+  }
+
+  @override
+  Future<Either<String, EndCallResponseModel>> endCall(
+      String callId,
+      String endReason,
+      String summary,
+      double? negotiatedPrice,
+      bool agreedToTerms) async {
+    try {
+      ApiResponse response = await apiHelper.postRequest(
+        endPoint: EndPoints.endCallTrip(callId),
+        data: {
+          "endReason": endReason,
+          "summary": summary,
+          if (negotiatedPrice != null) "negotiatedPrice": negotiatedPrice,
+          "agreedToTerms": agreedToTerms,
+        },
+        isProtected: true,
+      );
+      EndCallResponseModel endCallResponseModel =
+          EndCallResponseModel.fromJson(response.data);
+      if (endCallResponseModel.success != null &&
+          endCallResponseModel.success == true) {
+        return Right(endCallResponseModel);
+      } else {
+        throw Exception("Failed to end call.");
       }
     } catch (e) {
       ApiResponse errorResponse = ApiResponse.fromError(e);

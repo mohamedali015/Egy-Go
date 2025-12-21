@@ -36,4 +36,12 @@ abstract class EndPoints {
   static String cancelTrip(String tripId) {
     return 'tourist/trips/$tripId/cancel';
   }
+
+  static String initiateCallTrip(String tripId) {
+    return 'trips/$tripId/calls/initiate';
+  }
+
+  static String endCallTrip(String callId) {
+    return 'calls/$callId/end';
+  }
 }

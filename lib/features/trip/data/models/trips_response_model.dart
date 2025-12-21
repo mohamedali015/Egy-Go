@@ -361,12 +361,21 @@ class MeetingPoint {
 class Meta {
   String? createdFromPlaceId;
   String? agreementSource;
+  String? proposalStatus;
+  double? negotiatedPrice;
 
-  Meta({this.createdFromPlaceId, this.agreementSource});
+  Meta({
+    this.createdFromPlaceId,
+    this.agreementSource,
+    this.proposalStatus,
+    this.negotiatedPrice,
+  });
 
   Meta.fromJson(Map<String, dynamic> json) {
     createdFromPlaceId = json['createdFromPlaceId'];
     agreementSource = json['agreementSource'];
+    proposalStatus = json['proposalStatus'];
+    negotiatedPrice = json['negotiatedPrice']?.toDouble();
   }
 }
 
