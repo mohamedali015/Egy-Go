@@ -39,6 +39,8 @@ class TripInfoSection extends StatelessWidget {
         return 'Selecting Guide';
       case 'awaiting_call':
         return 'Awaiting Call';
+      case 'pending_confirmation':
+        return 'Pending Confirmation';
       case 'completed':
         return 'Completed';
       case 'cancelled':
@@ -54,6 +56,8 @@ class TripInfoSection extends StatelessWidget {
         return Colors.orange;
       case 'awaiting_call':
         return Colors.blue;
+      case 'pending_confirmation':
+        return Colors.orange;
       case 'completed':
         return Colors.green;
       case 'cancelled':

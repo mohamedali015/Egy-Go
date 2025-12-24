@@ -13,14 +13,14 @@
 #include <url_launcher_windows/url_launcher_windows.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-    AgoraRtcEnginePluginRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("AgoraRtcEnginePlugin"));
-    GeolocatorWindowsRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("GeolocatorWindows"));
-    IrisMethodChannelPluginCApiRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("IrisMethodChannelPluginCApi"));
-    PermissionHandlerWindowsPluginRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
-    UrlLauncherWindowsRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("UrlLauncherWindows"));
+  AgoraRtcEnginePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("AgoraRtcEnginePlugin"));
+  GeolocatorWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("GeolocatorWindows"));
+  IrisMethodChannelPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("IrisMethodChannelPluginCApi"));
+  PermissionHandlerWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
+  UrlLauncherWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("UrlLauncherWindows"));
 }

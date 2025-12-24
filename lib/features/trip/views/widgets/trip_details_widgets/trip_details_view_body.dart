@@ -7,6 +7,7 @@ import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/guide_se
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/trip_actions_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/call_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/proposal_section.dart';
+import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/waiting_section.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,10 @@ class TripDetailsViewBody extends StatelessWidget {
                 'tripId': callResponse.tripId!,
               },
             ).then((value) {
+              // Restore TripDetails state after returning from call screen
+              final cubit = TripDetailsCubit.get(context);
+              cubit.restoreTripDetailsState();
+
               // After call ends, show end call form
               Navigator.pushNamed(
                 context,
@@ -59,10 +64,20 @@ class TripDetailsViewBody extends StatelessWidget {
                   'callId': callResponse.callId!,
                   'tripId': callResponse.tripId!,
                 },
-              ).then((shouldRefresh) {
-                if (shouldRefresh == true) {
-                  // Refresh trip details
-                  final cubit = TripDetailsCubit.get(context);
+              ).then((result) {
+                final cubit = TripDetailsCubit.get(context);
+
+                // Check if result is a Map with 'action' key (for cancelled)
+                if (result is Map && result['action'] == 'cancel') {
+                  // Call cancelTrip API to set trip status to CANCELLED
+                  if (cubit.currentTrip?.sId != null) {
+                    cubit.cancelTrip(
+                      cubit.currentTrip!.sId!,
+                      result['reason'] ?? 'Call was cancelled',
+                    );
+                  }
+                } else if (result == true) {
+                  // For completed or timeout: refresh trip details
                   if (cubit.currentTrip?.sId != null) {
                     cubit.fetchTripDetails(cubit.currentTrip!.sId!);
                   }
@@ -71,6 +86,7 @@ class TripDetailsViewBody extends StatelessWidget {
             });
           }
         } else if (state is CallInitiationFailed) {
+          // State already restored in cubit, just show error
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -80,7 +96,7 @@ class TripDetailsViewBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is TripDetailsLoading || state is CallInitiating) {
+        if (state is CallInitiating) {
           return CustomLoadingIndicator();
         } else if (state is TripDetailsFailure && state is! TripCancelling) {
           return Center(
@@ -88,7 +104,8 @@ class TripDetailsViewBody extends StatelessWidget {
           );
         } else if (state is TripDetailsSuccess ||
             state is TripCancelling ||
-            state is CallInitiatedSuccess) {
+            state is CallInitiatedSuccess ||
+            state is CallInitiationFailed) {
           final cubit = TripDetailsCubit.get(context);
           final trip = cubit.currentTrip;
 
@@ -106,6 +123,9 @@ class TripDetailsViewBody extends StatelessWidget {
                 SizedBox(height: MyResponsive.height(value: 24)),
                 GuideSection(trip: trip),
                 SizedBox(height: MyResponsive.height(value: 24)),
+                WaitingSection(trip: trip),
+                if (trip.status?.toLowerCase() == 'pending_confirmation')
+                  SizedBox(height: MyResponsive.height(value: 24)),
                 CallSection(trip: trip),
                 SizedBox(height: MyResponsive.height(value: 24)),
                 ProposalSection(trip: trip),

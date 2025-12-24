@@ -33,6 +33,8 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
   late RtcEngine _engine;
   bool _isMuted = false;
   bool _isCameraOff = false;
+  bool _isSpeakerOn = true;
+  bool _isEngineInitialized = false;
 
   @override
   void initState() {
@@ -41,54 +43,64 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
   }
 
   Future<void> initAgora() async {
-    // Request permissions
-    await [Permission.microphone, Permission.camera].request();
+    try {
+      // Request permissions
+      await [Permission.microphone, Permission.camera].request();
 
-    // Create Agora engine
-    _engine = createAgoraRtcEngine();
-    await _engine.initialize(RtcEngineContext(
-      appId: widget.appId,
-      channelProfile: ChannelProfileType.channelProfileCommunication,
-    ));
+      // Create Agora engine as a single persistent instance
+      _engine = createAgoraRtcEngine();
+      await _engine.initialize(RtcEngineContext(
+        appId: widget.appId,
+        channelProfile: ChannelProfileType.channelProfileCommunication,
+      ));
 
-    _engine.registerEventHandler(
-      RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          debugPrint("Local user ${connection.localUid} joined");
-          setState(() {
-            _localUserJoined = true;
-          });
-        },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          debugPrint("Remote user $remoteUid joined");
-          setState(() {
-            _remoteUid = remoteUid;
-          });
-        },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          debugPrint("Remote user $remoteUid left channel");
-          setState(() {
-            _remoteUid = null;
-          });
-        },
-        onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-          debugPrint(
-              '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
-        },
-      ),
-    );
+      _engine.registerEventHandler(
+        RtcEngineEventHandler(
+          onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+            debugPrint("Local user ${connection.localUid} joined");
+          },
+          onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+            debugPrint("Remote user $remoteUid joined");
+            setState(() {
+              _remoteUid = remoteUid;
+            });
+          },
+          onUserOffline: (RtcConnection connection, int remoteUid,
+              UserOfflineReasonType reason) {
+            debugPrint("Remote user $remoteUid left channel");
+            setState(() {
+              _remoteUid = null;
+            });
+          },
+          onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
+            debugPrint(
+                '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
+          },
+        ),
+      );
 
-    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.enableVideo();
-    await _engine.startPreview();
+      await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+      await _engine.enableVideo();
+      await _engine.startPreview();
 
-    await _engine.joinChannel(
-      token: widget.token,
-      channelId: widget.channelName,
-      uid: widget.uid,
-      options: const ChannelMediaOptions(),
-    );
+      // Set local user joined after preview starts so camera feed shows immediately
+      setState(() {
+        _localUserJoined = true;
+        _isEngineInitialized = true;
+      });
+
+      // Enable speaker by default
+      await _engine.setEnableSpeakerphone(_isSpeakerOn);
+
+      await _engine.joinChannel(
+        token: widget.token,
+        channelId: widget.channelName,
+        uid: widget.uid,
+        options: const ChannelMediaOptions(),
+      );
+    } catch (e) {
+      debugPrint("Error initializing Agora: $e");
+    }
   }
 
   @override
@@ -98,26 +110,43 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
   }
 
   Future<void> _dispose() async {
-    await _engine.leaveChannel();
-    await _engine.release();
+    try {
+      if (_isEngineInitialized) {
+        await _engine.leaveChannel();
+        await _engine.release();
+      }
+    } catch (e) {
+      debugPrint("Error disposing Agora: $e");
+    }
   }
 
-  void _onToggleMute() {
+  // Bind to real Agora method: muteLocalAudioStream
+  Future<void> _onToggleMute() async {
     setState(() {
       _isMuted = !_isMuted;
     });
-    _engine.muteLocalAudioStream(_isMuted);
+    await _engine.muteLocalAudioStream(_isMuted);
   }
 
-  void _onSwitchCamera() {
-    _engine.switchCamera();
+  // Bind to real Agora method: switchCamera
+  Future<void> _onSwitchCamera() async {
+    await _engine.switchCamera();
   }
 
-  void _onToggleCamera() {
+  Future<void> _onToggleCamera() async {
     setState(() {
       _isCameraOff = !_isCameraOff;
     });
-    _engine.muteLocalVideoStream(_isCameraOff);
+    // Use enableLocalVideo instead of muteLocalVideoStream for better control
+    await _engine.enableLocalVideo(!_isCameraOff);
+  }
+
+  // Bind to real Agora method: enableSpeakerphone
+  Future<void> _onToggleSpeaker() async {
+    setState(() {
+      _isSpeakerOn = !_isSpeakerOn;
+    });
+    await _engine.setEnableSpeakerphone(_isSpeakerOn);
   }
 
   void _onCallEnd(BuildContext context) {
@@ -214,61 +243,87 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            RawMaterialButton(
-              onPressed: _onToggleMute,
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor: _isMuted ? Colors.blueAccent : Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(
-                _isMuted ? Icons.mic_off : Icons.mic,
-                color: _isMuted ? Colors.white : Colors.blueAccent,
-                size: 20.0,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Mute/Unmute button - bound to muteLocalAudioStream
+              RawMaterialButton(
+                onPressed: _onToggleMute,
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: _isMuted ? Colors.blueAccent : Colors.white,
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  _isMuted ? Icons.mic_off : Icons.mic,
+                  color: _isMuted ? Colors.white : Colors.blueAccent,
+                  size: 18.0,
+                ),
               ),
-            ),
-            RawMaterialButton(
-              onPressed: () => _onCallEnd(context),
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor: Colors.redAccent,
-              padding: const EdgeInsets.all(15.0),
-              child: Icon(
-                Icons.call_end,
-                color: Colors.white,
-                size: 35.0,
+              SizedBox(width: 8),
+              // End call button
+              RawMaterialButton(
+                onPressed: () => _onCallEnd(context),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: Colors.redAccent,
+                padding: const EdgeInsets.all(12.0),
+                child: Icon(
+                  Icons.call_end,
+                  color: Colors.white,
+                  size: 28.0,
+                ),
               ),
-            ),
-            RawMaterialButton(
-              onPressed: _onToggleCamera,
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor: _isCameraOff ? Colors.blueAccent : Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(
-                _isCameraOff ? Icons.videocam_off : Icons.videocam,
-                color: _isCameraOff ? Colors.white : Colors.blueAccent,
-                size: 20.0,
+              SizedBox(width: 8),
+              // Camera on/off button
+              RawMaterialButton(
+                onPressed: _onToggleCamera,
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: _isCameraOff ? Colors.blueAccent : Colors.white,
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  _isCameraOff ? Icons.videocam_off : Icons.videocam,
+                  color: _isCameraOff ? Colors.white : Colors.blueAccent,
+                  size: 18.0,
+                ),
               ),
-            ),
-            RawMaterialButton(
-              onPressed: _onSwitchCamera,
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor: Colors.white,
-              padding: const EdgeInsets.all(12.0),
-              child: Icon(
-                Icons.switch_camera,
-                color: Colors.blueAccent,
-                size: 20.0,
+              SizedBox(width: 8),
+              // Switch camera button - bound to switchCamera
+              RawMaterialButton(
+                onPressed: _onSwitchCamera,
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: Colors.white,
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  Icons.switch_camera,
+                  color: Colors.blueAccent,
+                  size: 18.0,
+                ),
               ),
-            ),
-          ],
+              SizedBox(width: 8),
+              // Speaker on/off button - bound to enableSpeakerphone
+              RawMaterialButton(
+                onPressed: _onToggleSpeaker,
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: _isSpeakerOn ? Colors.white : Colors.blueAccent,
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  _isSpeakerOn ? Icons.volume_up : Icons.volume_off,
+                  color: _isSpeakerOn ? Colors.blueAccent : Colors.white,
+                  size: 18.0,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+// DONE: Agora controls fixed

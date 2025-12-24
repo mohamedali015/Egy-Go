@@ -11,6 +11,7 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
   final TripRepo repo;
 
   TripModel? currentTrip;
+  TripDetailsState? _previousState; // Cache previous state
 
   Future<void> fetchTripDetails(String tripId) async {
     emit(TripDetailsLoading());
@@ -42,16 +43,32 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
   }
 
   Future<void> initiateCall(String tripId, String guideId) async {
+    // Cache current state before call initiation
+    if (state is TripDetailsSuccess) {
+      _previousState = state;
+    }
+
     emit(CallInitiating());
     final result = await repo.initiateCall(tripId, guideId);
     result.fold(
       (error) {
+        // Restore previous state on failure
+        restoreTripDetailsState();
         emit(CallInitiationFailed(error));
       },
       (callResponse) {
         emit(CallInitiatedSuccess(callResponse));
       },
     );
+  }
+
+  // Restore TripDetails state after call operations
+  void restoreTripDetailsState() {
+    if (currentTrip != null) {
+      emit(TripDetailsSuccess(currentTrip!));
+    } else if (_previousState != null) {
+      emit(_previousState!);
+    }
   }
 
   bool canCancelTrip() {
@@ -90,3 +107,5 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
     return '';
   }
 }
+
+// DONE: TripDetails state preserved

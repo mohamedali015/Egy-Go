@@ -68,10 +68,12 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
         return;
       }
 
+      // Validation passed - prepare form data
       double? negotiatedPrice = _priceController.text.isNotEmpty
           ? double.tryParse(_priceController.text)
           : null;
 
+      // Always call endCall API
       context.read<CallCubit>().endCall(
             widget.callId,
             _selectedReason,
@@ -95,14 +97,39 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
       body: BlocConsumer<CallCubit, CallState>(
         listener: (context, state) {
           if (state is CallEnded) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-            // Navigate back to trip details with refresh
-            Navigator.pop(context, true);
+            // Handle based on endReason
+            if (_selectedReason == 'cancelled') {
+              // For cancelled: call cancelTrip to set trip status to CANCELLED
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Call ended. Cancelling trip...'),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+              // Navigate back and trigger trip cancellation
+              Navigator.pop(context,
+                  {'action': 'cancel', 'reason': 'Call was cancelled'});
+            } else if (_selectedReason == 'completed') {
+              // For completed: Trip status → WAITING (handled by backend)
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              // Navigate back to trip details with refresh
+              Navigator.pop(context, true);
+            } else if (_selectedReason == 'timeout') {
+              // For timeout: No trip status change
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.blue,
+                ),
+              );
+              // Navigate back to trip details with refresh
+              Navigator.pop(context, true);
+            }
           } else if (state is CallEndFailed) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -112,6 +139,7 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
             );
           }
         },
+        // DONE: End Call logic
         builder: (context, state) {
           if (state is CallEnding) {
             return CustomLoadingIndicator();
@@ -151,14 +179,20 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
                         child: Text('Cancelled'),
                       ),
                       DropdownMenuItem(
-                        value: 'no_agreement',
-                        child: Text('No Agreement Reached'),
+                        value: 'timeout',
+                        child: Text('Timeout'),
                       ),
                     ],
                     onChanged: (value) {
                       setState(() {
                         _selectedReason = value!;
                       });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a call status';
+                      }
+                      return null;
                     },
                   ),
                   SizedBox(height: MyResponsive.height(value: 20)),
@@ -264,3 +298,5 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
     );
   }
 }
+
+// DONE: End Call form UI
