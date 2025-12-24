@@ -5,6 +5,7 @@ import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
+import 'package:egy_go/features/profile/views/favorite_view.dart';
 import 'package:egy_go/features/profile/views/my_profile_view.dart';
 import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class ProfileView extends StatelessWidget {
             ProfileRowWidget(
               title: AppStrings.myFavorites,
               imagePath: AppAssets.profileFavorite,
-              goTo: Placeholder(),
+              goTo: FavoriteView(),
             ),
             SizedBox(height: MyResponsive.height(value: 38)),
             Divider(

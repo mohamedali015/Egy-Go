@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/cache/cache_key.dart';
 import '../../../../core/helper/my_navigator.dart';
+import '../../../../features/places/data/models/places_response_model.dart';
 import '../../data/repo/user_repo.dart';
 import 'user_state.dart';
 
@@ -23,6 +24,7 @@ class UserCubit extends Cubit<UserState> {
 
   /// Data
   UserModel userModel = UserModel();
+  List<Place> favoritePlaces = [];
 
   final UserRepo userRepo;
 

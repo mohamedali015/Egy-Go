@@ -1,21 +1,29 @@
-import 'package:egy_go/core/helper/my_navigator.dart';
-import 'package:egy_go/core/shared_widgets/cached_network_image_wrapper.dart';
-import 'package:egy_go/features/places/data/models/places_response_model.dart';
-import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
-import 'package:egy_go/features/places/views/place_details_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/helper/my_navigator.dart';
 import '../../../../core/helper/my_responsive.dart';
+import '../../../../core/shared_widgets/cached_network_image_wrapper.dart';
 import '../../../../core/shared_widgets/rating_bar_wrapper.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_text_styles.dart';
+import '../../../places/data/models/places_response_model.dart';
+import '../../../places/manager/places_cubit/places_cubit.dart';
+import '../../../places/views/place_details_view.dart';
 
 class PlaceItem extends StatelessWidget {
-  const PlaceItem({super.key, required this.place, required this.index});
+  const PlaceItem({
+    super.key,
+    required this.place,
+    required this.index,
+    this.isFavorite = false,
+    this.onTap,
+  });
 
   final Place place;
   final int index;
+  final bool? isFavorite;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +70,22 @@ class PlaceItem extends StatelessWidget {
                 ),
               ),
             ),
+            if (isFavorite == true)
+              Positioned(
+                top: MyResponsive.height(value: 10),
+                right: MyResponsive.width(value: 10),
+                child: IconButton(
+                  onPressed: onTap,
+                  style: IconButton.styleFrom(
+                    shape: CircleBorder(),
+                    backgroundColor: AppColors.white.withValues(alpha: 0.4),
+                  ),
+                  icon: Icon(
+                    Icons.close,
+                    size: MyResponsive.fontSize(value: 25),
+                  ),
+                ),
+              ),
             Positioned(
               left: MyResponsive.width(value: 14),
               right: MyResponsive.width(value: 14),
