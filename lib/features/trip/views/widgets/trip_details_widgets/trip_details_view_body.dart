@@ -1,5 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_loading_indicator.dart';
+import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/trip/manager/trip_details_cubit/trip_details_cubit.dart';
 import 'package:egy_go/features/trip/manager/trip_details_cubit/trip_details_state.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/trip_info_section.dart';
@@ -8,6 +9,8 @@ import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/trip_act
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/call_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/proposal_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/waiting_section.dart';
+import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/payment_section.dart';
+import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/backend_offline_section.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
 import 'package:flutter/material.dart';
@@ -109,8 +112,83 @@ class TripDetailsViewBody extends StatelessWidget {
         if (state is TripDetailsLoading || state is CallInitiating) {
           return CustomLoadingIndicator();
         } else if (state is TripDetailsFailure && state is! TripCancelling) {
+          // Check if it's a connection error (backend offline)
+          final isConnectionError =
+              state.errorMessage.contains('Cannot connect to server') ||
+                  state.errorMessage.contains('No internet connection');
+
+          final cubit = TripDetailsCubit.get(context);
+
+          // If we have cached trip data, show it with offline banner
+          if (isConnectionError && cubit.currentTrip != null) {
+            final trip = cubit.currentTrip!;
+
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: MyResponsive.paddingSymmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MyResponsive.height(value: 16)),
+
+                  // Show offline banner at top
+                  BackendOfflineSection(
+                    onRetry: () {
+                      if (trip.sId != null) {
+                        cubit.fetchTripDetails(trip.sId!);
+                      }
+                    },
+                  ),
+
+                  SizedBox(height: MyResponsive.height(value: 16)),
+                  TripInfoSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  GuideSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  WaitingSection(trip: trip),
+                  if (trip.status?.toLowerCase() == 'pending_confirmation')
+                    SizedBox(height: MyResponsive.height(value: 24)),
+                  CallSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  ProposalSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  PaymentSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  TripActionsSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                ],
+              ),
+            );
+          }
+
+          // Otherwise show error message
           return Center(
-            child: Text(state.errorMessage),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 64, color: Colors.red),
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Text(
+                    state.errorMessage,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.regular14,
+                  ),
+                ),
+                SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    final cubit = TripDetailsCubit.get(context);
+                    if (cubit.currentTrip?.sId != null) {
+                      cubit.fetchTripDetails(cubit.currentTrip!.sId!);
+                    }
+                  },
+                  icon: Icon(Icons.refresh),
+                  label: Text('Retry'),
+                ),
+              ],
+            ),
           );
         } else if (state is TripDetailsSuccess ||
             state is TripCancelling ||
@@ -148,6 +226,8 @@ class TripDetailsViewBody extends StatelessWidget {
                   CallSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
                   ProposalSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  PaymentSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
                   TripActionsSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),

@@ -90,6 +90,8 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
         result.fold(
           (error) {
             print('[TripDetailsCubit] ⚠️ Polling failed: $error');
+            // Don't emit error state during polling to avoid disrupting UI
+            // Just log and continue
           },
           (tripDetailsData) {
             final newStatus = tripDetailsData.trip?.status;
@@ -109,6 +111,7 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
         );
       } catch (e) {
         print('[TripDetailsCubit] ⚠️ Polling error: $e');
+        // Continue polling even if there's an error
       }
     });
     print('[TripDetailsCubit] ✅ Polling fallback started');

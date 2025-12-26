@@ -50,13 +50,35 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
       print('[AgoraCall] App ID: ${widget.appId}');
       print('[AgoraCall] Channel Name: ${widget.channelName}');
       print('[AgoraCall] UID: ${widget.uid}');
-      print('[AgoraCall] Token: ${widget.token.substring(0, 20)}...');
+      print('[AgoraCall] Token Length: ${widget.token.length}');
+      print(
+          '[AgoraCall] Token Preview: ${widget.token.substring(0, widget.token.length > 20 ? 20 : widget.token.length)}...');
       print('[AgoraCall] Call ID: ${widget.callId}');
       print('[AgoraCall] Trip ID: ${widget.tripId}');
+      print(
+          '[AgoraCall] 🔍 CRITICAL: Channel name is: "${widget.channelName}"');
+      print(
+          '[AgoraCall] 🔍 CRITICAL: Make sure guide receives same channel name!');
       print('═══════════════════════════════════════════');
 
       // Request permissions
-      await [Permission.microphone, Permission.camera].request();
+      final micStatus = await Permission.microphone.request();
+      final cameraStatus = await Permission.camera.request();
+
+      print('[AgoraCall] Microphone permission: $micStatus');
+      print('[AgoraCall] Camera permission: $cameraStatus');
+
+      if (!micStatus.isGranted || !cameraStatus.isGranted) {
+        print('[AgoraCall] ⚠️ WARNING: Permissions not granted!');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Camera and microphone permissions are required'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
 
       // Create Agora engine as a single persistent instance
       _engine = createAgoraRtcEngine();
@@ -65,41 +87,83 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
         channelProfile: ChannelProfileType.channelProfileCommunication,
       ));
 
-      print('[AgoraCall] Engine initialized');
+      print('[AgoraCall] ✅ Engine initialized');
 
       _engine.registerEventHandler(
         RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-            print(
-                '[AgoraCall] ✅ Local user ${connection.localUid} joined channel: ${connection.channelId}');
+            print('═══════════════════════════════════════════');
+            print('[AgoraCall] ✅ LOCAL USER JOINED SUCCESSFULLY!');
+            print('[AgoraCall] ✅ My UID: ${connection.localUid}');
+            print('[AgoraCall] ✅ Channel: ${connection.channelId}');
+            print('[AgoraCall] ✅ Time taken: ${elapsed}ms');
+            print('[AgoraCall] 👀 Waiting for remote user to join...');
+            print('═══════════════════════════════════════════');
             setState(() {
               _localUserJoined = true;
             });
+
+            // ✅ NOW we can safely enable speakerphone after joining
+            _engine.setEnableSpeakerphone(_isSpeakerOn).then((_) {
+              print('[AgoraCall] 🔊 Speakerphone enabled: $_isSpeakerOn');
+            }).catchError((e) {
+              print('[AgoraCall] ⚠️ Failed to enable speakerphone: $e');
+            });
           },
           onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-            print(
-                '[AgoraCall] 🎉 Remote user $remoteUid joined channel: ${connection.channelId}');
+            print('═══════════════════════════════════════════');
+            print('[AgoraCall] 🎉🎉🎉 REMOTE USER JOINED! 🎉🎉🎉');
+            print('[AgoraCall] 🎉 Remote UID: $remoteUid');
+            print('[AgoraCall] 🎉 Channel: ${connection.channelId}');
+            print('[AgoraCall] 🎉 Time taken: ${elapsed}ms');
+            print('[AgoraCall] 🎉 Call is now CONNECTED!');
+            print('═══════════════════════════════════════════');
             setState(() {
               _remoteUid = remoteUid;
             });
           },
           onUserOffline: (RtcConnection connection, int remoteUid,
               UserOfflineReasonType reason) {
-            print(
-                '[AgoraCall] ❌ Remote user $remoteUid left channel. Reason: $reason');
+            print('═══════════════════════════════════════════');
+            print('[AgoraCall] ❌ REMOTE USER LEFT');
+            print('[AgoraCall] ❌ Remote UID: $remoteUid');
+            print('[AgoraCall] ❌ Reason: $reason');
+            print('═══════════════════════════════════════════');
             setState(() {
               _remoteUid = null;
             });
           },
           onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-            print('[AgoraCall] ⚠️ Token will expire soon');
+            print('[AgoraCall] ⚠️ Token will expire soon - need to renew!');
           },
           onError: (ErrorCodeType err, String msg) {
-            print('[AgoraCall] ❌ Error: $err - $msg');
+            print('═══════════════════════════════════════════');
+            print('[AgoraCall] ❌❌❌ AGORA ERROR! ❌❌❌');
+            print('[AgoraCall] ❌ Error Code: $err');
+            print('[AgoraCall] ❌ Error Message: $msg');
+            print('═══════════════════════════════════════════');
           },
           onConnectionStateChanged: (RtcConnection connection,
               ConnectionStateType state, ConnectionChangedReasonType reason) {
-            print('[AgoraCall] Connection state: $state, reason: $reason');
+            print('[AgoraCall] 🔌 Connection state: $state, reason: $reason');
+
+            if (state == ConnectionStateType.connectionStateFailed) {
+              print('[AgoraCall] ❌ CONNECTION FAILED!');
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Connection failed: $reason'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            }
+          },
+          onRejoinChannelSuccess: (RtcConnection connection, int elapsed) {
+            print('[AgoraCall] ✅ Rejoined channel successfully');
+          },
+          onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+            print('[AgoraCall] 👋 Left channel');
           },
         ),
       );
@@ -108,19 +172,17 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
       await _engine.enableVideo();
       await _engine.startPreview();
 
-      print('[AgoraCall] Preview started');
+      print('[AgoraCall] ✅ Video enabled, preview started');
 
       // Set engine initialized after preview starts
       setState(() {
         _isEngineInitialized = true;
       });
 
-      // Enable speaker by default
-      await _engine.setEnableSpeakerphone(_isSpeakerOn);
-
-      print('[AgoraCall] Joining channel...');
-      print('[AgoraCall] Channel: ${widget.channelName}');
-      print('[AgoraCall] UID: ${widget.uid}');
+      print('[AgoraCall] 📞 JOINING CHANNEL NOW...');
+      print('[AgoraCall] 📞 Channel: "${widget.channelName}"');
+      print('[AgoraCall] 📞 UID: ${widget.uid}');
+      print('[AgoraCall] 📞 Token valid: ${widget.token.isNotEmpty}');
 
       await _engine.joinChannel(
         token: widget.token,
@@ -129,12 +191,31 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
         options: const ChannelMediaOptions(
           channelProfile: ChannelProfileType.channelProfileCommunication,
           clientRoleType: ClientRoleType.clientRoleBroadcaster,
+          publishCameraTrack: true,
+          publishMicrophoneTrack: true,
+          autoSubscribeAudio: true,
+          autoSubscribeVideo: true,
         ),
       );
 
-      print('[AgoraCall] Join channel request sent');
-    } catch (e) {
-      print('[AgoraCall] ❌ Error initializing Agora: $e');
+      print('[AgoraCall] ✅ Join channel request sent successfully');
+      print('[AgoraCall] ⏳ Waiting for onJoinChannelSuccess callback...');
+    } catch (e, stackTrace) {
+      print('═══════════════════════════════════════════');
+      print('[AgoraCall] ❌❌❌ INITIALIZATION FAILED! ❌❌❌');
+      print('[AgoraCall] ❌ Error: $e');
+      print('[AgoraCall] ❌ Stack trace: $stackTrace');
+      print('═══════════════════════════════════════════');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to initialize call: $e'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
     }
   }
 

@@ -57,8 +57,12 @@ class SelectGuideCubit extends Cubit<SelectGuideState> {
     Set<String> languages = {};
     for (var guide in allGuides) {
       if (guide.languages != null) {
-        // Filter out any null or empty strings
-        languages.addAll(guide.languages!.where((lang) => lang.isNotEmpty));
+        // Filter out any null or empty strings - FIX: Handle null values properly
+        languages.addAll(
+          guide.languages!
+              .where((lang) => lang != null && lang.isNotEmpty)
+              .map((lang) => lang.toString()),
+        );
       }
     }
     return languages.toList()..sort();

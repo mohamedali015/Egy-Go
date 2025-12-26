@@ -59,7 +59,11 @@ class ApiResponse {
       case DioExceptionType.cancel:
         return "Request was cancelled.";
       case DioExceptionType.connectionError:
-        return "No internet connection.";
+        // Check if it's a host lookup failure (DevTunnel expired)
+        if (error.error.toString().contains('Failed host lookup')) {
+          return "Cannot connect to server. The backend may be offline or the connection URL has expired. Please contact support.";
+        }
+        return "No internet connection. Please check your network.";
       default:
         return "Unknown error occurred.";
     }

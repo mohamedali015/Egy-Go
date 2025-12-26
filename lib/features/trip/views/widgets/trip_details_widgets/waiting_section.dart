@@ -35,7 +35,8 @@ class WaitingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Only show when status is pending_confirmation (after call ends)
+    // ONLY show when status is exactly 'pending_confirmation'
+    // NOT for 'awaiting_payment' - that's handled by PaymentSection
     if (trip.status?.toLowerCase() != 'pending_confirmation') {
       return SizedBox.shrink();
     }
@@ -57,6 +58,7 @@ class WaitingSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header with icon
           Row(
             children: [
               Icon(
@@ -65,28 +67,34 @@ class WaitingSection extends StatelessWidget {
                 size: 24,
               ),
               SizedBox(width: MyResponsive.width(value: 8)),
-              Text(
-                'Waiting for Confirmation',
-                style: AppTextStyles.bold18.copyWith(color: Colors.orange),
+              Expanded(
+                child: Text(
+                  'Awaiting Confirmation',
+                  style: AppTextStyles.bold18.copyWith(color: Colors.orange),
+                ),
               ),
             ],
           ),
-          SizedBox(height: MyResponsive.height(value: 16)),
+          SizedBox(height: MyResponsive.height(value: 12)),
+
+          // Description
           Text(
-            'Your call has ended. Waiting for guide confirmation to proceed.',
+            'Your call has ended. The guide will review and confirm your trip details.',
             style: AppTextStyles.regular14.copyWith(color: Colors.grey[600]),
           ),
+
           SizedBox(height: MyResponsive.height(value: 20)),
           Divider(color: Colors.grey[300]),
           SizedBox(height: MyResponsive.height(value: 16)),
 
-          // Summary Section
+          // Call Summary from end call form
           Text(
             'Call Summary',
             style: AppTextStyles.semiBold16,
           ),
           SizedBox(height: MyResponsive.height(value: 8)),
           Container(
+            width: double.infinity,
             padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.grey[100],
@@ -98,33 +106,34 @@ class WaitingSection extends StatelessWidget {
             ),
           ),
 
-          // Negotiated Price
+          SizedBox(height: MyResponsive.height(value: 16)),
+
+          // Negotiated Price from end call form (if provided)
           if (trip.meta?.negotiatedPrice != null) ...[
-            SizedBox(height: MyResponsive.height(value: 16)),
             _buildInfoRow(
               icon: Icons.attach_money,
               label: 'Negotiated Price',
               value: '\$${trip.meta!.negotiatedPrice!.toStringAsFixed(2)}',
               valueColor: Colors.green,
+              isBold: true,
             ),
+            SizedBox(height: MyResponsive.height(value: 12)),
           ],
 
-          SizedBox(height: MyResponsive.height(value: 16)),
-
-          // Province
+          // Province/Governorate
           _buildInfoRow(
             icon: Icons.location_city,
-            label: 'Province',
+            label: 'Governorate',
             value: _getProvinceName(context),
           ),
 
           SizedBox(height: MyResponsive.height(value: 12)),
 
-          // Address
+          // Meeting Address
           _buildInfoRow(
             icon: Icons.location_on,
             label: 'Meeting Address',
-            value: trip.meetingAddress ?? 'Not set',
+            value: trip.meetingAddress ?? 'Not specified',
           ),
         ],
       ),
@@ -136,6 +145,7 @@ class WaitingSection extends StatelessWidget {
     required String label,
     required String value,
     Color? valueColor,
+    bool isBold = false,
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,9 +169,11 @@ class WaitingSection extends StatelessWidget {
               SizedBox(height: 4),
               Text(
                 value,
-                style: AppTextStyles.medium14.copyWith(
-                  color: valueColor ?? Colors.black87,
-                ),
+                style: isBold
+                    ? AppTextStyles.semiBold16
+                        .copyWith(color: valueColor ?? Colors.black87)
+                    : AppTextStyles.medium14
+                        .copyWith(color: valueColor ?? Colors.black87),
               ),
             ],
           ),
@@ -171,4 +183,4 @@ class WaitingSection extends StatelessWidget {
   }
 }
 
-// DONE: Waiting UI
+// DONE: Waiting UI - Shows ONLY for pending_confirmation with call details

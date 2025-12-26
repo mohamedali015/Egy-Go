@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:egy_go/features/trip/data/models/cancel_trip_response_model.dart';
+import 'package:egy_go/features/trip/data/models/checkout_session_response_model.dart';
 import 'package:egy_go/features/trip/data/models/end_call_response_model.dart';
 import 'package:egy_go/features/trip/data/models/initiate_call_response_model.dart';
 import 'package:egy_go/features/trip/data/models/trip_details_response_model.dart';
@@ -23,4 +24,7 @@ abstract class TripRepo {
       String summary,
       double? negotiatedPrice,
       bool agreedToTerms);
+
+  Future<Either<String, CheckoutSessionResponseModel>> createCheckoutSession(
+      String tripId);
 }

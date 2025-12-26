@@ -3,6 +3,7 @@ import 'package:egy_go/core/network/api_helper.dart';
 import 'package:egy_go/core/network/api_response.dart';
 import 'package:egy_go/core/network/end_points.dart';
 import 'package:egy_go/features/trip/data/models/cancel_trip_response_model.dart';
+import 'package:egy_go/features/trip/data/models/checkout_session_response_model.dart';
 import 'package:egy_go/features/trip/data/models/end_call_response_model.dart';
 import 'package:egy_go/features/trip/data/models/initiate_call_response_model.dart';
 import 'package:egy_go/features/trip/data/models/trip_details_response_model.dart';
@@ -129,6 +130,28 @@ class TripRepoImpl implements TripRepo {
         return Right(endCallResponseModel);
       } else {
         throw Exception("Failed to end call.");
+      }
+    } catch (e) {
+      ApiResponse errorResponse = ApiResponse.fromError(e);
+      return Left(errorResponse.message);
+    }
+  }
+
+  @override
+  Future<Either<String, CheckoutSessionResponseModel>> createCheckoutSession(
+      String tripId) async {
+    try {
+      ApiResponse response = await apiHelper.postRequest(
+        endPoint: EndPoints.createCheckoutSession(tripId),
+        isProtected: true,
+      );
+      CheckoutSessionResponseModel checkoutSessionResponseModel =
+          CheckoutSessionResponseModel.fromJson(response.data);
+      if (checkoutSessionResponseModel.success != null &&
+          checkoutSessionResponseModel.success == true) {
+        return Right(checkoutSessionResponseModel);
+      } else {
+        throw Exception("Failed to create checkout session.");
       }
     } catch (e) {
       ApiResponse errorResponse = ApiResponse.fromError(e);

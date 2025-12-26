@@ -15,7 +15,10 @@ import 'package:egy_go/features/trip/views/trip_details_screen.dart';
 import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
+import 'package:egy_go/features/trip/views/payment_success_screen.dart';
+import 'package:egy_go/features/trip/views/payment_return_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../features/auth/views/widgets/reset_password_widgets/forget_password_flow.dart';
 import '../../features/home/views/app_home_view.dart';
@@ -147,6 +150,39 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
           callId: args['callId'] as String,
           tripId: args['tripId'] as String,
         ),
+        settings: settings,
+      );
+    case PaymentSuccessScreen.routeName:
+      final tripId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => PaymentSuccessScreen(tripId: tripId),
+        settings: settings,
+      );
+    case PaymentReturnScreen.routeName:
+      // Get tripId from parameters or arguments
+      String? tripId;
+
+      if (settings.arguments is Map<String, dynamic>) {
+        final args = settings.arguments as Map<String, dynamic>;
+        tripId = args['tripId'] as String?;
+      } else if (settings.arguments is String) {
+        tripId = settings.arguments as String;
+      }
+
+      // Fallback: try to get from Get parameters
+      tripId ??= Get.parameters['tripId'];
+
+      if (tripId == null || tripId.isEmpty) {
+        print('[Routes] ❌ PaymentReturnScreen: Missing tripId');
+        // Return to home or show error
+        return MaterialPageRoute(
+          builder: (_) => const SplashView(),
+          settings: settings,
+        );
+      }
+
+      return MaterialPageRoute(
+        builder: (_) => PaymentReturnScreen(tripId: tripId!),
         settings: settings,
       );
 

@@ -9,7 +9,7 @@ abstract class EndPoints {
   static const String getUserData = 'auth/me';
   static const String refreshToken = 'auth/refresh';
   static const String getGovernorates = 'provinces';
-  static const String getPlaces = 'places?page=1&limit=20';
+  static const String getPlaces = 'provinces/giza/places?type=archaeological';
   static const String createTrip = 'tourist/trips';
   static const String getMyTrips = 'tourist/trips';
 
@@ -43,5 +43,9 @@ abstract class EndPoints {
 
   static String endCallTrip(String callId) {
     return 'calls/$callId/end';
+  }
+
+  static String createCheckoutSession(String tripId) {
+    return 'tourist/trips/$tripId/create-checkout-session';
   }
 }

@@ -147,16 +147,12 @@ class SelectGuideItem extends StatelessWidget {
                       SizedBox(width: MyResponsive.width(value: 4)),
                       Expanded(
                         child: Text(
-                          (guide.languages
-                                          ?.where((lang) => lang.isNotEmpty)
-                                          .toList() ??
-                                      [])
+                          guide.languages != null && guide.languages!.isNotEmpty
+                              ? guide.languages!
+                                  .where(
+                                      (lang) => lang != null && lang.isNotEmpty)
                                   .join(', ')
-                                  .isEmpty
-                              ? 'N/A'
-                              : guide.languages!
-                                  .where((lang) => lang.isNotEmpty)
-                                  .join(', '),
+                              : 'N/A',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.medium12,
