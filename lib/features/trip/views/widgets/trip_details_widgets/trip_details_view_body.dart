@@ -36,6 +36,16 @@ class TripDetailsViewBody extends StatelessWidget {
               backgroundColor: Colors.red,
             ),
           );
+        } else if (state is SocketConnectionError) {
+          // Show socket connection error but don't block UI
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Real-time updates unavailable: ${state.errorMessage}'),
+              backgroundColor: Colors.orange,
+              duration: Duration(seconds: 5),
+            ),
+          );
         } else if (state is CallInitiatedSuccess) {
           // Navigate to Agora call screen
           final callResponse = state.callResponse;
@@ -96,7 +106,7 @@ class TripDetailsViewBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is CallInitiating) {
+        if (state is TripDetailsLoading || state is CallInitiating) {
           return CustomLoadingIndicator();
         } else if (state is TripDetailsFailure && state is! TripCancelling) {
           return Center(
@@ -113,26 +123,36 @@ class TripDetailsViewBody extends StatelessWidget {
             return Center(child: Text('Trip data not available'));
           }
 
-          return SingleChildScrollView(
-            padding: MyResponsive.paddingSymmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: MyResponsive.height(value: 16)),
-                TripInfoSection(trip: trip),
-                SizedBox(height: MyResponsive.height(value: 24)),
-                GuideSection(trip: trip),
-                SizedBox(height: MyResponsive.height(value: 24)),
-                WaitingSection(trip: trip),
-                if (trip.status?.toLowerCase() == 'pending_confirmation')
+          return RefreshIndicator(
+            onRefresh: () async {
+              final cubit = TripDetailsCubit.get(context);
+              if (cubit.currentTrip?.sId != null) {
+                print('[TripDetailsViewBody] 🔄 Manual refresh triggered');
+                await cubit.fetchTripDetails(cubit.currentTrip!.sId!);
+              }
+            },
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: MyResponsive.paddingSymmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MyResponsive.height(value: 16)),
+                  TripInfoSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
-                CallSection(trip: trip),
-                SizedBox(height: MyResponsive.height(value: 24)),
-                ProposalSection(trip: trip),
-                SizedBox(height: MyResponsive.height(value: 24)),
-                TripActionsSection(trip: trip),
-                SizedBox(height: MyResponsive.height(value: 24)),
-              ],
+                  GuideSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  WaitingSection(trip: trip),
+                  if (trip.status?.toLowerCase() == 'pending_confirmation')
+                    SizedBox(height: MyResponsive.height(value: 24)),
+                  CallSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  ProposalSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  TripActionsSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                ],
+              ),
             ),
           );
         }

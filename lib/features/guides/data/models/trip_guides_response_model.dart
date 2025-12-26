@@ -83,8 +83,11 @@ class Guide {
     isActive = json['isActive'];
     canEnterArchaeologicalSites = json['canEnterArchaeologicalSites'];
     isLicensed = json['isLicensed'];
-    if (json['languages'] != null) {
-      languages = json['languages'].cast<String>();
+    if (json['languages'] != null && json['languages'] is List) {
+      languages = (json['languages'] as List)
+          .where((lang) => lang != null)
+          .map((lang) => lang.toString())
+          .toList();
     }
     pricePerHour = json['pricePerHour'];
     bio = json['bio'];

@@ -19,6 +19,12 @@ class TripDetailsFailure extends TripDetailsState {
   TripDetailsFailure(this.errorMessage);
 }
 
+class SocketConnectionError extends TripDetailsState {
+  final String errorMessage;
+
+  SocketConnectionError(this.errorMessage);
+}
+
 class TripCancelling extends TripDetailsState {}
 
 class TripCancelled extends TripDetailsState {

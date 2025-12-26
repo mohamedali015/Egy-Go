@@ -44,6 +44,17 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
 
   Future<void> initAgora() async {
     try {
+      print('═══════════════════════════════════════════');
+      print('[AgoraCall] INITIALIZING AGORA CALL');
+      print('═══════════════════════════════════════════');
+      print('[AgoraCall] App ID: ${widget.appId}');
+      print('[AgoraCall] Channel Name: ${widget.channelName}');
+      print('[AgoraCall] UID: ${widget.uid}');
+      print('[AgoraCall] Token: ${widget.token.substring(0, 20)}...');
+      print('[AgoraCall] Call ID: ${widget.callId}');
+      print('[AgoraCall] Trip ID: ${widget.tripId}');
+      print('═══════════════════════════════════════════');
+
       // Request permissions
       await [Permission.microphone, Permission.camera].request();
 
@@ -54,27 +65,41 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
         channelProfile: ChannelProfileType.channelProfileCommunication,
       ));
 
+      print('[AgoraCall] Engine initialized');
+
       _engine.registerEventHandler(
         RtcEngineEventHandler(
           onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-            debugPrint("Local user ${connection.localUid} joined");
+            print(
+                '[AgoraCall] ✅ Local user ${connection.localUid} joined channel: ${connection.channelId}');
+            setState(() {
+              _localUserJoined = true;
+            });
           },
           onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-            debugPrint("Remote user $remoteUid joined");
+            print(
+                '[AgoraCall] 🎉 Remote user $remoteUid joined channel: ${connection.channelId}');
             setState(() {
               _remoteUid = remoteUid;
             });
           },
           onUserOffline: (RtcConnection connection, int remoteUid,
               UserOfflineReasonType reason) {
-            debugPrint("Remote user $remoteUid left channel");
+            print(
+                '[AgoraCall] ❌ Remote user $remoteUid left channel. Reason: $reason');
             setState(() {
               _remoteUid = null;
             });
           },
           onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-            debugPrint(
-                '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
+            print('[AgoraCall] ⚠️ Token will expire soon');
+          },
+          onError: (ErrorCodeType err, String msg) {
+            print('[AgoraCall] ❌ Error: $err - $msg');
+          },
+          onConnectionStateChanged: (RtcConnection connection,
+              ConnectionStateType state, ConnectionChangedReasonType reason) {
+            print('[AgoraCall] Connection state: $state, reason: $reason');
           },
         ),
       );
@@ -83,23 +108,33 @@ class _AgoraCallScreenState extends State<AgoraCallScreen> {
       await _engine.enableVideo();
       await _engine.startPreview();
 
-      // Set local user joined after preview starts so camera feed shows immediately
+      print('[AgoraCall] Preview started');
+
+      // Set engine initialized after preview starts
       setState(() {
-        _localUserJoined = true;
         _isEngineInitialized = true;
       });
 
       // Enable speaker by default
       await _engine.setEnableSpeakerphone(_isSpeakerOn);
 
+      print('[AgoraCall] Joining channel...');
+      print('[AgoraCall] Channel: ${widget.channelName}');
+      print('[AgoraCall] UID: ${widget.uid}');
+
       await _engine.joinChannel(
         token: widget.token,
         channelId: widget.channelName,
         uid: widget.uid,
-        options: const ChannelMediaOptions(),
+        options: const ChannelMediaOptions(
+          channelProfile: ChannelProfileType.channelProfileCommunication,
+          clientRoleType: ClientRoleType.clientRoleBroadcaster,
+        ),
       );
+
+      print('[AgoraCall] Join channel request sent');
     } catch (e) {
-      debugPrint("Error initializing Agora: $e");
+      print('[AgoraCall] ❌ Error initializing Agora: $e');
     }
   }
 
