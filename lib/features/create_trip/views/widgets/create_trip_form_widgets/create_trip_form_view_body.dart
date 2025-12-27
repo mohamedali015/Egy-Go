@@ -43,6 +43,9 @@ class CreateTripFormViewBody extends StatelessWidget {
               title: AppStrings.findGuide,
               onPressed: CreateTripCubit.get(context).submit,
             ),
+            SizedBox(
+              height: MyResponsive.height(value: 20),
+            ),
           ],
         ),
       ),

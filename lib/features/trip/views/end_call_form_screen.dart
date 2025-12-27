@@ -1,6 +1,7 @@
 import 'package:egy_go/core/helper/get_it.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_loading_indicator.dart';
+import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/trip/data/repos/trip_repo.dart';
 import 'package:egy_go/features/trip/manager/call_cubit/call_cubit.dart';
@@ -277,6 +278,7 @@ class _EndCallFormContentState extends State<_EndCallFormContent> {
                     child: ElevatedButton(
                       onPressed: () => _submitForm(context),
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
