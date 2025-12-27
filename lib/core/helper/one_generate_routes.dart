@@ -11,12 +11,14 @@ import 'package:egy_go/features/places/views/places_view.dart';
 import 'package:egy_go/features/governorates/views/governorates_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/on_boarding_view.dart';
 import 'package:egy_go/features/splash_and_onboarding/views/splash_view.dart';
+import 'package:egy_go/features/trip/data/models/trips_response_model.dart';
 import 'package:egy_go/features/trip/views/trip_details_screen.dart';
 import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
 import 'package:egy_go/features/trip/views/payment_success_screen.dart';
 import 'package:egy_go/features/trip/views/payment_return_screen.dart';
+import 'package:egy_go/features/trip/views/trip_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -126,6 +128,29 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     case TripsScreen.routeName:
       return MaterialPageRoute(
         builder: (_) => const TripsScreen(),
+        settings: settings,
+      );
+
+    case TripChatScreen.routeName:
+      final args = settings.arguments;
+      String tripId;
+      TripGuide? guide;
+
+      if (args is Map<String, dynamic>) {
+        tripId = args['tripId'] as String;
+        guide = args['guide'] as TripGuide?;
+      } else if (args is String) {
+        tripId = args;
+        guide = null;
+      } else {
+        return MaterialPageRoute(
+          builder: (_) => const SplashView(),
+          settings: settings,
+        );
+      }
+
+      return MaterialPageRoute(
+        builder: (_) => TripChatScreen(tripId: tripId, guide: guide),
         settings: settings,
       );
 
