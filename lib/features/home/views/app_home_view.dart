@@ -45,19 +45,47 @@ class _AppHomeViewState extends State<AppHomeView> {
         index: currentIndex,
         children: screens,
       ),
-      floatingActionButton: SizedBox(
-        height: MyResponsive.height(value: 65),
-        width: MyResponsive.width(value: 65),
-        child: FloatingActionButton(
-          onPressed: () {
-            MyNavigator.goTo(screen: CreateTripImageView());
-          },
-          backgroundColor: AppColors.primary,
-          child: SvgWrapper(
-            path: AppAssets.startTrip,
-            width: MyResponsive.fontSize(value: 35),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: MyResponsive.height(value: 50),
+            width: MyResponsive.width(value: 50),
+            child: FloatingActionButton(
+              heroTag: 'Ai Chat',
+              mini: true,
+              onPressed: () {
+                MyNavigator.goTo(screen: CreateTripImageView());
+              },
+              backgroundColor: AppColors.scaffoldBackground,
+              child: Icon(
+                Icons.support_agent,
+                size: MyResponsive.fontSize(value: 30),
+                color: AppColors.black,
+              ),
+              // child: SvgWrapper(
+              //   path: AppAssets.startTrip,
+              //   width: MyResponsive.fontSize(value: 35),
+              // ),
+            ),
           ),
-        ),
+          SizedBox(height: MyResponsive.height(value: 10)),
+          SizedBox(
+            height: MyResponsive.height(value: 65),
+            width: MyResponsive.width(value: 65),
+            child: FloatingActionButton(
+              heroTag: 'Start Trip',
+              onPressed: () {
+                MyNavigator.goTo(screen: CreateTripImageView());
+              },
+              backgroundColor: AppColors.primary,
+              child: SvgWrapper(
+                path: AppAssets.startTrip,
+                width: MyResponsive.fontSize(value: 35),
+              ),
+            ),
+          ),
+        ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
