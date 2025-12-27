@@ -148,13 +148,24 @@ class TripChatCubit extends Cubit<TripChatState> {
       final messageData = data['data'] ?? data;
       final message = ChatMessageModel.fromJson(messageData);
 
+      // Check if message already exists (avoid duplicates)
+      final messageExists = _messages.any((m) => m.id == message.id);
+      if (messageExists) {
+        print('[TripChatCubit] ℹ️ Message already exists, skipping');
+        return;
+      }
+
       // Add message to list
       _messages.add(message);
 
-      // Emit updated state
+      print(
+          '[TripChatCubit] ✅ Message added. Total messages: ${_messages.length}');
+
+      // Emit updated state with a new list instance to ensure rebuild
       emit(ChatMessagesUpdated(List.from(_messages)));
     } catch (e) {
       print('[TripChatCubit] ❌ Error parsing message: $e');
+      print('[TripChatCubit] ❌ Raw data: $data');
     }
   }
 

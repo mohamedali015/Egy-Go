@@ -25,8 +25,9 @@ class ChatMessagesLoaded extends TripChatState {
 
 class ChatMessagesUpdated extends TripChatState {
   final List<ChatMessageModel> messages;
+  final DateTime timestamp;
 
-  ChatMessagesUpdated(this.messages);
+  ChatMessagesUpdated(this.messages) : timestamp = DateTime.now();
 }
 
 class ChatMessageSending extends TripChatState {

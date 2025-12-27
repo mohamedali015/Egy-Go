@@ -133,6 +133,9 @@ class ChatSocketService {
   void onNewMessage(Function(Map<String, dynamic>) callback) {
     if (_socket == null) return;
 
+    // Remove any existing listeners first to avoid duplicates
+    _socket!.off('new_message');
+
     _socket!.on('new_message', (data) {
       print('[ChatSocketService] 📨 New message received: $data');
       if (data is Map<String, dynamic>) {
@@ -144,6 +147,9 @@ class ChatSocketService {
   /// Listen for chat errors
   void onChatError(Function(String) callback) {
     if (_socket == null) return;
+
+    // Remove any existing listeners first to avoid duplicates
+    _socket!.off('chat_error');
 
     _socket!.on('chat_error', (data) {
       print('[ChatSocketService] ❌ Chat error: $data');
