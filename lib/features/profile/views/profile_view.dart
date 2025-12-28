@@ -41,7 +41,7 @@ class ProfileView extends StatelessWidget {
               height: MyResponsive.height(value: 20),
             ),
             Text(
-              'Mohamed Ali',
+              UserCubit.get(context).userModel.name ?? 'User Name',
               style: AppTextStyles.semiBold18.copyWith(
                 color: AppColors.primary,
               ),
