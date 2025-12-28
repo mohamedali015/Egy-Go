@@ -1,0 +1,111 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:egy_go/features/ai_chat/data/models/ai_message_model.dart';
+import 'package:egy_go/features/ai_chat/data/repos/ai_chat_repo.dart';
+import 'ai_chat_state.dart';
+
+class AiChatCubit extends Cubit<AiChatState> {
+  AiChatCubit(this.aiChatRepo) : super(AiChatInitial());
+
+  final AiChatRepo aiChatRepo;
+  final List<AiMessageModel> _messages = [];
+  String? _lastFailedMessage;
+
+  List<AiMessageModel> get messages => _messages;
+
+  void initializeChat() {
+    // Add welcome message from Nefertiti
+    _messages.clear();
+    _messages.add(
+      AiMessageModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        message:
+            'Hello! I\'m Nefertiti, your smart tour guide in Egypt. How can I help you today?',
+        isUser: false,
+        timestamp: DateTime.now(),
+      ),
+    );
+    emit(AiChatLoaded(List.from(_messages)));
+  }
+
+  Future<void> sendMessage(String message) async {
+    if (message.trim().isEmpty) return;
+
+    _lastFailedMessage = message; // Store for potential retry
+
+    // Add user message
+    final userMessage = AiMessageModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      message: message,
+      isUser: true,
+      timestamp: DateTime.now(),
+    );
+
+    _messages.add(userMessage);
+    emit(AiChatLoading(List.from(_messages)));
+
+    // Send to AI backend
+    final result = await aiChatRepo.sendMessage(message);
+
+    result.fold(
+      (error) {
+        // Keep the failed message for retry
+        emit(AiChatError(error, List.from(_messages), _lastFailedMessage));
+      },
+      (response) {
+        print('[AiChatCubit] Got response: ${response.reply}');
+        print('[AiChatCubit] Places count: ${response.places?.length ?? 0}');
+
+        // Add AI response with places
+        _messages.add(
+          AiMessageModel(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            message: response.reply,
+            isUser: false,
+            timestamp: DateTime.now(),
+            places: response.places,
+          ),
+        );
+        _lastFailedMessage = null; // Clear on success
+        emit(AiChatLoaded(List.from(_messages)));
+      },
+    );
+  }
+
+  Future<void> retryLastMessage() async {
+    if (_lastFailedMessage != null) {
+      final messageToRetry = _lastFailedMessage!;
+      _lastFailedMessage = null;
+
+      // Retry sending
+      emit(AiChatLoading(List.from(_messages)));
+      final result = await aiChatRepo.sendMessage(messageToRetry);
+
+      result.fold(
+        (error) {
+          _lastFailedMessage = messageToRetry; // Store again for retry
+          emit(AiChatError(error, List.from(_messages), _lastFailedMessage));
+        },
+        (response) {
+          print('[AiChatCubit] Retry - Got response: ${response.reply}');
+
+          // Add AI response with places
+          _messages.add(
+            AiMessageModel(
+              id: DateTime.now().millisecondsSinceEpoch.toString(),
+              message: response.reply,
+              isUser: false,
+              timestamp: DateTime.now(),
+              places: response.places,
+            ),
+          );
+          emit(AiChatLoaded(List.from(_messages)));
+        },
+      );
+    }
+  }
+
+  void clearChat() {
+    _messages.clear();
+    initializeChat();
+  }
+}

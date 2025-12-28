@@ -37,7 +37,7 @@ class RecommendedListView extends StatelessWidget {
                   height: MyResponsive.height(value: 16),
                 );
               },
-              itemCount: 10,
+              itemCount: state.places.length,
             );
           }
         } else if (state is PlacesLoadError) {

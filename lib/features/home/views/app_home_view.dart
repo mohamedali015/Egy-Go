@@ -6,7 +6,12 @@ import 'package:egy_go/features/create_trip/views/create_trip_image_view.dart';
 import 'package:egy_go/features/home/views/home_view.dart';
 import 'package:egy_go/features/profile/views/profile_view.dart';
 import 'package:egy_go/features/trip/views/trips_screen.dart';
+import 'package:egy_go/features/ai_chat/views/ai_chat_view.dart';
+import 'package:egy_go/features/ai_chat/manager/ai_chat_cubit/ai_chat_cubit.dart';
+import 'package:egy_go/features/ai_chat/data/repos/ai_chat_repo.dart';
+import 'package:egy_go/core/helper/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 
@@ -55,18 +60,19 @@ class _AppHomeViewState extends State<AppHomeView> {
               heroTag: 'Ai Chat',
               mini: true,
               onPressed: () {
-                MyNavigator.goTo(screen: CreateTripImageView());
+                // Navigate to AI Chat with BlocProvider
+                MyNavigator.goTo(
+                  screen: BlocProvider(
+                    create: (context) => AiChatCubit(getIt<AiChatRepo>()),
+                    child: AiChatView(),
+                  ),
+                );
               },
               backgroundColor: AppColors.scaffoldBackground,
-              child: Icon(
-                Icons.support_agent,
-                size: MyResponsive.fontSize(value: 30),
-                color: AppColors.black,
+              child: SvgWrapper(
+                path: AppAssets.nefertiti,
+                width: MyResponsive.fontSize(value: 30),
               ),
-              // child: SvgWrapper(
-              //   path: AppAssets.startTrip,
-              //   width: MyResponsive.fontSize(value: 35),
-              // ),
             ),
           ),
           SizedBox(height: MyResponsive.height(value: 10)),

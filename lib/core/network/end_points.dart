@@ -1,5 +1,6 @@
 abstract class EndPoints {
-  static const String baseUrl = 'https://1p1jgw5z-5001.euw.devtunnels.ms/api/';
+  static const String baseUrl =
+      'https://egygo-backend-production.up.railway.app/api/';
 
   static const String register = 'auth/register';
   static const String login = 'auth/login';

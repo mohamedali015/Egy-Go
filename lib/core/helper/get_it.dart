@@ -17,6 +17,8 @@ import 'package:egy_go/features/trip/data/repos/trip_repo.dart';
 import 'package:egy_go/features/trip/data/repos/trip_repo_impl.dart';
 import 'package:egy_go/features/trip/data/repos/chat_repo.dart';
 import 'package:egy_go/features/trip/data/repos/chat_repo_impl.dart';
+import 'package:egy_go/features/ai_chat/data/repos/ai_chat_repo.dart';
+import 'package:egy_go/features/ai_chat/data/repos/ai_chat_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -52,4 +54,7 @@ void setupGetIt() {
 
   getIt
       .registerSingleton<ChatRepo>(ChatRepoImpl(apiHelper: getIt<ApiHelper>()));
+
+  getIt.registerSingleton<AiChatRepo>(
+      AiChatRepoImpl(apiHelper: getIt<ApiHelper>()));
 }
