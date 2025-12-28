@@ -16,8 +16,8 @@
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   AgoraRtcEnginePluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("AgoraRtcEnginePlugin"));
-    AppLinksPluginCApiRegisterWithRegistrar(
-            registry->GetRegistrarForPlugin("AppLinksPluginCApi"));
+  AppLinksPluginCApiRegisterWithRegistrar(
+          registry->GetRegistrarForPlugin("AppLinksPluginCApi"));
   GeolocatorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("GeolocatorWindows"));
   IrisMethodChannelPluginCApiRegisterWithRegistrar(

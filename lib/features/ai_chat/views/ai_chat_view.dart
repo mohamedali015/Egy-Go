@@ -1,4 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
+import 'package:egy_go/core/shared_widgets/svg_wrapper.dart';
+import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/ai_chat/data/models/ai_message_model.dart';
@@ -66,9 +68,9 @@ class _AiChatViewState extends State<AiChatView> {
           children: [
             CircleAvatar(
               backgroundColor: AppColors.white,
-              child: Icon(
-                Icons.support_agent,
-                color: AppColors.primary,
+              child: SvgWrapper(
+                path: AppAssets.nefertiti,
+                width: MyResponsive.fontSize(value: 30),
               ),
             ),
             SizedBox(width: MyResponsive.width(value: 12)),
