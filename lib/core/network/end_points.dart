@@ -10,7 +10,7 @@ abstract class EndPoints {
   static const String getUserData = 'auth/me';
   static const String refreshToken = 'auth/refresh';
   static const String getGovernorates = 'provinces';
-  static const String getPlaces = 'provinces/giza/places?type=archaeological';
+  static const String getPlaces = 'provinces/giza/places';
   static const String createTrip = 'tourist/trips';
   static const String getMyTrips = 'tourist/trips';
 
