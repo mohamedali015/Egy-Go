@@ -75,7 +75,7 @@ class _AppHomeViewState extends State<AppHomeView> {
               ),
             ),
           ),
-          SizedBox(height: MyResponsive.height(value: 10)),
+          SizedBox(height: MyResponsive.height(value: 18)),
           SizedBox(
             height: MyResponsive.height(value: 65),
             width: MyResponsive.width(value: 65),
