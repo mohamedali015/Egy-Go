@@ -61,4 +61,26 @@ class PlacesRepoImpl extends PlacesRepo {
       return Left(errorResponse.message);
     }
   }
+
+  @override
+  Future<Either<String, Place>> getPlaceById(String placeId) async {
+    try {
+      ApiResponse response = await apiHelper.getRequest(
+        endPoint: 'places/$placeId',
+        isProtected: false,
+      );
+
+      if (response.success) {
+        // Parse the place from response
+        final placeData = response.data['data'] ?? response.data;
+        Place place = Place.fromJson(placeData);
+        return Right(place);
+      } else {
+        throw Exception("Failed to fetch place details.");
+      }
+    } catch (e) {
+      ApiResponse errorResponse = ApiResponse.fromError(e);
+      return Left(errorResponse.message);
+    }
+  }
 }

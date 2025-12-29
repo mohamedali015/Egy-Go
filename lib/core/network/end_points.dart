@@ -22,6 +22,10 @@ abstract class EndPoints {
     return 'provinces/$governorate/places?type=$category';
   }
 
+  static String getPlacesById(String placeId) {
+    return 'places/$placeId';
+  }
+
   static String getTripGuides(String tripId) {
     return 'tourist/trips/$tripId/guides';
   }

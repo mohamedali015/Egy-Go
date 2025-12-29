@@ -104,6 +104,22 @@ class AiChatCubit extends Cubit<AiChatState> {
     }
   }
 
+  Future<void> getPlaceDetails(String placeId) async {
+    // Don't change the chat state, just fetch the place details
+    final result = await aiChatRepo.getPlaceDetails(placeId);
+
+    return result.fold(
+      (error) {
+        print('[AiChatCubit] Error fetching place details: $error');
+        throw Exception(error);
+      },
+      (placeDetails) {
+        print('[AiChatCubit] Successfully fetched place: ${placeDetails.name}');
+        return placeDetails;
+      },
+    );
+  }
+
   void clearChat() {
     _messages.clear();
     initializeChat();

@@ -1,4 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
+import 'package:egy_go/core/helper/my_navigator.dart';
+import 'package:egy_go/core/helper/get_it.dart';
 import 'package:egy_go/core/shared_widgets/svg_wrapper.dart';
 import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
@@ -6,6 +8,9 @@ import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/ai_chat/data/models/ai_message_model.dart';
 import 'package:egy_go/features/ai_chat/manager/ai_chat_cubit/ai_chat_cubit.dart';
 import 'package:egy_go/features/ai_chat/manager/ai_chat_cubit/ai_chat_state.dart';
+import 'package:egy_go/features/places/data/repos/places_repo/places_repo.dart';
+import 'package:egy_go/features/places/views/place_details_view.dart';
+import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -244,162 +249,208 @@ class _AiChatViewState extends State<AiChatView> {
         left: MyResponsive.width(value: 16),
         right: MyResponsive.width(value: 16),
       ),
-      child: Container(
-        height: MyResponsive.height(value: 200),
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(MyResponsive.radius(value: 16)),
-          border: Border.all(
-            color: AppColors.black.withValues(alpha: .2),
-            width: 1,
+      child: InkWell(
+        onTap: () async {
+          try {
+            // Show loading indicator
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Loading place details...'),
+                duration: Duration(seconds: 1),
+              ),
+            );
+
+            // Fetch full place details from places repo
+            final placesRepo = getIt<PlacesRepo>();
+            final result = await placesRepo.getPlaceById(placeRef.id);
+
+            result.fold(
+              (error) {
+                // Show error message
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Error: $error'),
+                    backgroundColor: AppColors.red,
+                  ),
+                );
+              },
+              (place) {
+                // Set the selected place and navigate
+                PlacesCubit.get(context).setSelectedPlace(place);
+                MyNavigator.goTo(screen: PlaceDetailsView());
+              },
+            );
+          } catch (e) {
+            print('[AiChatView] Error loading place: $e');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to load place details'),
+                backgroundColor: AppColors.red,
+              ),
+            );
+          }
+        },
+        child: Container(
+          height: MyResponsive.height(value: 200),
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(MyResponsive.radius(value: 16)),
+            border: Border.all(
+              color: AppColors.black.withValues(alpha: .2),
+              width: 1,
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            // Background gradient (since we don't have image URL from backend)
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppColors.primary.withValues(alpha: 0.8),
-                      AppColors.primary,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // Dark overlay for better text readability
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.6),
-                    ],
-                    stops: const [0.3, 1.0],
-                  ),
-                ),
-              ),
-            ),
-            // Category icon
-            Positioned(
-              top: MyResponsive.height(value: 16),
-              right: MyResponsive.width(value: 16),
-              child: Container(
-                padding: EdgeInsets.all(MyResponsive.width(value: 10)),
-                decoration: BoxDecoration(
-                  color: AppColors.white.withValues(alpha: 0.25),
-                  borderRadius:
-                      BorderRadius.circular(MyResponsive.radius(value: 10)),
-                ),
-                child: Icon(
-                  _getCategoryIcon(placeRef.category),
-                  color: AppColors.white,
-                  size: MyResponsive.fontSize(value: 28),
-                ),
-              ),
-            ),
-            // Place info
-            Positioned(
-              left: MyResponsive.width(value: 16),
-              right: MyResponsive.width(value: 16),
-              bottom: MyResponsive.height(value: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Place name
-                  Text(
-                    placeRef.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.bold20.copyWith(
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                  SizedBox(height: MyResponsive.height(value: 8)),
-                  // Location
-                  if (placeRef.province != null)
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.white.withValues(alpha: 0.95),
-                          size: MyResponsive.fontSize(value: 16),
-                        ),
-                        SizedBox(width: MyResponsive.width(value: 6)),
-                        Expanded(
-                          child: Text(
-                            placeRef.province!,
-                            style: AppTextStyles.medium14.copyWith(
-                              color: Colors.white.withValues(alpha: .95),
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+          child: Stack(
+            children: [
+              // Background gradient
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.primary.withValues(alpha: 0.8),
+                        AppColors.primary,
                       ],
                     ),
-                  // Description (if available)
-                  if (placeRef.description != null &&
-                      placeRef.description!.isNotEmpty) ...[
-                    SizedBox(height: MyResponsive.height(value: 6)),
+                  ),
+                ),
+              ),
+              // Dark overlay for better text readability
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.7),
+                      ],
+                      stops: const [0.4, 1.0],
+                    ),
+                  ),
+                ),
+              ),
+              // Category icon - smaller and less intrusive
+              Positioned(
+                top: MyResponsive.height(value: 12),
+                right: MyResponsive.width(value: 12),
+                child: Container(
+                  padding: EdgeInsets.all(MyResponsive.width(value: 8)),
+                  decoration: BoxDecoration(
+                    color: AppColors.white.withValues(alpha: 0.2),
+                    borderRadius:
+                        BorderRadius.circular(MyResponsive.radius(value: 8)),
+                  ),
+                  child: Icon(
+                    _getCategoryIcon(placeRef.category),
+                    color: AppColors.white,
+                    size: MyResponsive.fontSize(value: 22),
+                  ),
+                ),
+              ),
+              // Place info - centered vertically with better spacing
+              Positioned(
+                left: MyResponsive.width(value: 16),
+                right: MyResponsive.width(value: 16),
+                top: MyResponsive.height(value: 16),
+                bottom: MyResponsive.height(value: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Place name
                     Text(
-                      placeRef.description!,
+                      placeRef.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.regular12.copyWith(
-                        color: Colors.white.withValues(alpha: .85),
-                        height: 1.3,
+                      style: AppTextStyles.bold20.copyWith(
+                        color: Colors.white,
+                        height: 1.2,
                       ),
                     ),
-                  ],
-                  SizedBox(height: MyResponsive.height(value: 8)),
-                  // Category badge
-                  if (placeRef.category != null)
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MyResponsive.width(value: 10),
-                        vertical: MyResponsive.height(value: 5),
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.white.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(
-                            MyResponsive.radius(value: 12)),
-                        border: Border.all(
-                          color: AppColors.white.withValues(alpha: 0.4),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                    SizedBox(height: MyResponsive.height(value: 10)),
+                    // Location
+                    if (placeRef.province != null)
+                      Row(
                         children: [
                           Icon(
-                            _getCategoryIcon(placeRef.category),
-                            size: MyResponsive.fontSize(value: 12),
-                            color: Colors.white,
+                            Icons.location_on,
+                            color: Colors.white.withValues(alpha: 0.95),
+                            size: MyResponsive.fontSize(value: 16),
                           ),
-                          SizedBox(width: MyResponsive.width(value: 4)),
-                          Text(
-                            _getCategoryName(placeRef.category!),
-                            style: AppTextStyles.medium12.copyWith(
-                              color: Colors.white,
+                          SizedBox(width: MyResponsive.width(value: 6)),
+                          Expanded(
+                            child: Text(
+                              placeRef.province!,
+                              style: AppTextStyles.medium14.copyWith(
+                                color: Colors.white.withValues(alpha: .95),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                ],
+                    // Description (if available)
+                    if (placeRef.description != null &&
+                        placeRef.description!.isNotEmpty) ...[
+                      SizedBox(height: MyResponsive.height(value: 8)),
+                      Expanded(
+                        child: Text(
+                          placeRef.description!,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.regular12.copyWith(
+                            color: Colors.white.withValues(alpha: .9),
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: MyResponsive.height(value: 10)),
+                    // Category badge
+                    if (placeRef.category != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MyResponsive.width(value: 10),
+                          vertical: MyResponsive.height(value: 5),
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.white.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(
+                              MyResponsive.radius(value: 12)),
+                          border: Border.all(
+                            color: AppColors.white.withValues(alpha: 0.4),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _getCategoryIcon(placeRef.category),
+                              size: MyResponsive.fontSize(value: 12),
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: MyResponsive.width(value: 4)),
+                            Text(
+                              _getCategoryName(placeRef.category!),
+                              style: AppTextStyles.medium12.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

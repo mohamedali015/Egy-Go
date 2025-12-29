@@ -6,4 +6,6 @@ abstract class PlacesRepo {
 
   Future<Either<String, List<Place>>> getPlacesByCategory(
       {required String category, required String governorate});
+
+  Future<Either<String, Place>> getPlaceById(String placeId);
 }
