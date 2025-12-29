@@ -43,8 +43,12 @@ class AiChatCubit extends Cubit<AiChatState> {
     _messages.add(userMessage);
     emit(AiChatLoading(List.from(_messages)));
 
-    // Send to AI backend
-    final result = await aiChatRepo.sendMessage(message);
+    // Get conversation history (exclude the welcome message and current user message)
+    final conversationHistory =
+        _messages.where((msg) => msg != userMessage).toList();
+
+    // Send to AI backend with history
+    final result = await aiChatRepo.sendMessage(message, conversationHistory);
 
     result.fold(
       (error) {
@@ -52,7 +56,8 @@ class AiChatCubit extends Cubit<AiChatState> {
         emit(AiChatError(error, List.from(_messages), _lastFailedMessage));
       },
       (response) {
-        print('[AiChatCubit] Got response: ${response.reply}');
+        print(
+            '[AiChatCubit] Got response from ${response.source}: ${response.reply}');
         print('[AiChatCubit] Places count: ${response.places?.length ?? 0}');
 
         // Add AI response with places
@@ -76,9 +81,15 @@ class AiChatCubit extends Cubit<AiChatState> {
       final messageToRetry = _lastFailedMessage!;
       _lastFailedMessage = null;
 
+      // Get conversation history
+      final conversationHistory = _messages
+          .where((msg) => !msg.isUser || msg.message != messageToRetry)
+          .toList();
+
       // Retry sending
       emit(AiChatLoading(List.from(_messages)));
-      final result = await aiChatRepo.sendMessage(messageToRetry);
+      final result =
+          await aiChatRepo.sendMessage(messageToRetry, conversationHistory);
 
       result.fold(
         (error) {

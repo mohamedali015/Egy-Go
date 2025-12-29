@@ -14,6 +14,10 @@ import 'package:egy_go/features/places/manager/places_cubit/places_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AiChatView extends StatefulWidget {
   const AiChatView({super.key});
@@ -174,75 +178,578 @@ class _AiChatViewState extends State<AiChatView> {
       crossAxisAlignment:
           message.isUser ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
-        // Show text message
-        Align(
-          alignment:
-              message.isUser ? Alignment.centerLeft : Alignment.centerRight,
-          child: Container(
-            margin: EdgeInsets.only(bottom: MyResponsive.height(value: 12)),
-            padding: EdgeInsets.symmetric(
-              horizontal: MyResponsive.width(value: 16),
-              vertical: MyResponsive.height(value: 12),
-            ),
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.75,
-            ),
-            decoration: BoxDecoration(
-              color: message.isUser ? AppColors.primary : AppColors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(MyResponsive.width(value: 16)),
-                topRight: Radius.circular(MyResponsive.width(value: 16)),
-                bottomLeft: message.isUser
-                    ? Radius.circular(MyResponsive.width(value: 16))
-                    : Radius.zero,
-                bottomRight: message.isUser
-                    ? Radius.zero
-                    : Radius.circular(MyResponsive.width(value: 16)),
+        // Show text message only if there are no places or if it's a user message
+        if (message.isUser ||
+            (message.places == null || message.places!.isEmpty))
+          Align(
+            alignment:
+                message.isUser ? Alignment.centerLeft : Alignment.centerRight,
+            child: Container(
+              margin: EdgeInsets.only(bottom: MyResponsive.height(value: 12)),
+              padding: EdgeInsets.symmetric(
+                horizontal: MyResponsive.width(value: 16),
+                vertical: MyResponsive.height(value: 12),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.75,
+              ),
+              decoration: BoxDecoration(
+                gradient: message.isUser
+                    ? LinearGradient(
+                        colors: [
+                          AppColors.primary,
+                          AppColors.primary.withValues(alpha: 0.8),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : null,
+                color: message.isUser ? null : AppColors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(MyResponsive.width(value: 16)),
+                  topRight: Radius.circular(MyResponsive.width(value: 16)),
+                  bottomLeft: message.isUser
+                      ? Radius.circular(MyResponsive.width(value: 16))
+                      : Radius.zero,
+                  bottomRight: message.isUser
+                      ? Radius.zero
+                      : Radius.circular(MyResponsive.width(value: 16)),
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  message.message,
-                  style: TextStyle(
-                    fontSize: MyResponsive.fontSize(value: 14),
-                    color: message.isUser ? AppColors.white : AppColors.black,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                SizedBox(height: MyResponsive.height(value: 4)),
-                Text(
-                  DateFormat('HH:mm').format(message.timestamp),
-                  style: TextStyle(
-                    fontSize: MyResponsive.fontSize(value: 10),
-                    color: message.isUser
-                        ? AppColors.white.withValues(alpha: 0.7)
-                        : AppColors.grey,
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Use Markdown for AI responses, plain text for user messages
+                  if (message.isUser)
+                    Text(
+                      message.message,
+                      style: GoogleFonts.outfit(
+                        fontSize: MyResponsive.fontSize(value: 14),
+                        color: AppColors.white,
+                      ),
+                    )
+                  else
+                    MarkdownBody(
+                      data: message.message,
+                      styleSheet: MarkdownStyleSheet(
+                        p: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 14),
+                          color: AppColors.black,
+                        ),
+                        strong: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 14),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                        h1: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 20),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                        h2: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 18),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                        h3: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 16),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                        listBullet: TextStyle(
+                          color: AppColors.primary,
+                          fontSize: MyResponsive.fontSize(value: 14),
+                        ),
+                        blockquote: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 13),
+                          color: AppColors.grey,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        code: GoogleFonts.sourceCodePro(
+                          fontSize: MyResponsive.fontSize(value: 12),
+                          backgroundColor:
+                              AppColors.grey.withValues(alpha: 0.1),
+                        ),
+                      ),
+                    ),
+                  SizedBox(height: MyResponsive.height(value: 4)),
+                  Text(
+                    DateFormat('HH:mm').format(message.timestamp),
+                    style: GoogleFonts.outfit(
+                      fontSize: MyResponsive.fontSize(value: 10),
+                      color: message.isUser
+                          ? AppColors.white.withValues(alpha: 0.7)
+                          : AppColors.grey,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
+                .animate()
+                .fadeIn(duration: 300.ms, curve: Curves.easeOut)
+                .slideY(begin: 0.3, duration: 300.ms, curve: Curves.easeOut),
           ),
-        ),
-        // Show place cards if available
+
+        // Show place cards if available (for AI responses with places)
         if (!message.isUser &&
             message.places != null &&
-            message.places!.isNotEmpty)
+            message.places!.isNotEmpty) ...[
+          // Header message for places
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              margin: EdgeInsets.only(
+                bottom: MyResponsive.height(value: 8),
+                left: MyResponsive.width(value: 40),
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: MyResponsive.width(value: 16),
+                vertical: MyResponsive.height(value: 10),
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                borderRadius:
+                    BorderRadius.circular(MyResponsive.radius(value: 12)),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.hotel,
+                    color: AppColors.primary,
+                    size: MyResponsive.fontSize(value: 18),
+                  ),
+                  SizedBox(width: MyResponsive.width(value: 8)),
+                  Flexible(
+                    child: Text(
+                      'Found ${message.places!.length} ${message.places!.length == 1 ? 'place' : 'places'} for you',
+                      style: GoogleFonts.outfit(
+                        fontSize: MyResponsive.fontSize(value: 13),
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ).animate().fadeIn(duration: 300.ms),
+          ),
+          // Display each place as a card
           ...message.places!
-              .map((placeRef) => _buildPlaceCard(placeRef))
+              .asMap()
+              .entries
+              .map((entry) => _buildEnhancedPlaceCard(entry.value, entry.key))
               .toList(),
+        ],
       ],
     );
   }
 
+  Widget _buildEnhancedPlaceCard(PlaceReference place, int index) {
+    final hasImages = place.images != null && place.images!.isNotEmpty;
+    final imageUrl = hasImages ? place.images!.first : null;
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom: MyResponsive.height(value: 16),
+        left: MyResponsive.width(value: 8),
+        right: MyResponsive.width(value: 8),
+      ),
+      child: Material(
+        elevation: 6,
+        borderRadius: BorderRadius.circular(MyResponsive.radius(value: 20)),
+        shadowColor: AppColors.primary.withValues(alpha: 0.2),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(MyResponsive.radius(value: 20)),
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.15),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image Section with Category Badge Overlay
+              if (hasImages)
+                Stack(
+                  children: [
+                    // Hotel Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft:
+                            Radius.circular(MyResponsive.radius(value: 20)),
+                        topRight:
+                            Radius.circular(MyResponsive.radius(value: 20)),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl!,
+                        height: MyResponsive.height(value: 200),
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          height: MyResponsive.height(value: 200),
+                          color: AppColors.grey.withValues(alpha: 0.2),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: MyResponsive.height(value: 200),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.primary.withValues(alpha: 0.3),
+                                AppColors.primary.withValues(alpha: 0.1),
+                              ],
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                _getCategoryIcon(place.category ?? place.type),
+                                size: MyResponsive.fontSize(value: 48),
+                                color: AppColors.primary,
+                              ),
+                              SizedBox(height: MyResponsive.height(value: 8)),
+                              Text(
+                                'No Image',
+                                style: GoogleFonts.outfit(
+                                  color: AppColors.grey,
+                                  fontSize: MyResponsive.fontSize(value: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Gradient overlay for better text readability
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft:
+                                Radius.circular(MyResponsive.radius(value: 20)),
+                            topRight:
+                                Radius.circular(MyResponsive.radius(value: 20)),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withValues(alpha: 0.4),
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.7),
+                            ],
+                            stops: const [0.0, 0.5, 1.0],
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Category Badge - Top Right
+                    if (place.category != null || place.type != null)
+                      Positioned(
+                        top: MyResponsive.height(value: 12),
+                        right: MyResponsive.width(value: 12),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MyResponsive.width(value: 12),
+                            vertical: MyResponsive.height(value: 6),
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(
+                                MyResponsive.radius(value: 20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                _getCategoryIcon(place.category ?? place.type),
+                                color: AppColors.white,
+                                size: MyResponsive.fontSize(value: 14),
+                              ),
+                              SizedBox(width: MyResponsive.width(value: 4)),
+                              Text(
+                                _getCategoryName(
+                                    place.category ?? place.type ?? 'Place'),
+                                style: GoogleFonts.outfit(
+                                  fontSize: MyResponsive.fontSize(value: 11),
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    // Rating Badge - Bottom Left on Image
+                    if (place.rating != null)
+                      Positioned(
+                        bottom: MyResponsive.height(value: 12),
+                        left: MyResponsive.width(value: 12),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MyResponsive.width(value: 10),
+                            vertical: MyResponsive.height(value: 6),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.6),
+                            borderRadius: BorderRadius.circular(
+                                MyResponsive.radius(value: 12)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.star_rounded,
+                                color: Colors.amber,
+                                size: MyResponsive.fontSize(value: 16),
+                              ),
+                              SizedBox(width: MyResponsive.width(value: 4)),
+                              Text(
+                                place.rating!.toStringAsFixed(1),
+                                style: GoogleFonts.outfit(
+                                  fontSize: MyResponsive.fontSize(value: 14),
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+
+              // Content Section
+              Padding(
+                padding: EdgeInsets.all(MyResponsive.width(value: 16)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Hotel Name
+                    Text(
+                      place.name,
+                      style: GoogleFonts.outfit(
+                        fontSize: MyResponsive.fontSize(value: 20),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black,
+                        height: 1.2,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: MyResponsive.height(value: 8)),
+
+                    // Location with Icon
+                    if (place.province != null)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_rounded,
+                            color: AppColors.primary,
+                            size: MyResponsive.fontSize(value: 18),
+                          ),
+                          SizedBox(width: MyResponsive.width(value: 6)),
+                          Expanded(
+                            child: Text(
+                              place.province!,
+                              style: GoogleFonts.outfit(
+                                fontSize: MyResponsive.fontSize(value: 14),
+                                color: AppColors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    // Description
+                    if (place.description != null &&
+                        place.description!.isNotEmpty) ...[
+                      SizedBox(height: MyResponsive.height(value: 12)),
+                      Text(
+                        place.description!,
+                        style: GoogleFonts.outfit(
+                          fontSize: MyResponsive.fontSize(value: 13),
+                          color: AppColors.black.withValues(alpha: 0.7),
+                          height: 1.5,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+
+                    SizedBox(height: MyResponsive.height(value: 16)),
+
+                    // Show More Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => _navigateToPlaceDetails(place),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.white,
+                          padding: EdgeInsets.symmetric(
+                            vertical: MyResponsive.height(value: 14),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                MyResponsive.radius(value: 14)),
+                          ),
+                          elevation: 2,
+                          shadowColor: AppColors.primary.withValues(alpha: 0.4),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Show More Details',
+                              style: GoogleFonts.outfit(
+                                fontSize: MyResponsive.fontSize(value: 15),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            SizedBox(width: MyResponsive.width(value: 8)),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              size: MyResponsive.fontSize(value: 18),
+                              color: AppColors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    )
+        .animate(delay: (150 * index).ms)
+        .fadeIn(duration: 500.ms, curve: Curves.easeOut)
+        .slideY(begin: 0.2, duration: 500.ms, curve: Curves.easeOut)
+        .scale(
+            begin: const Offset(0.9, 0.9),
+            duration: 500.ms,
+            curve: Curves.easeOut);
+  }
+
+  Future<void> _navigateToPlaceDetails(PlaceReference place) async {
+    try {
+      // Show loading indicator
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                ),
+              ),
+              SizedBox(width: 16),
+              Text('Loading ${place.name}...'),
+            ],
+          ),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+
+      // Fetch full place details from places repo
+      final placesRepo = getIt<PlacesRepo>();
+      final result = await placesRepo.getPlaceById(place.id);
+
+      result.fold(
+        (error) {
+          // Hide loading and show error
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.error_outline, color: AppColors.white),
+                  SizedBox(width: 12),
+                  Expanded(child: Text('Error: $error')),
+                ],
+              ),
+              backgroundColor: AppColors.red,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+        },
+        (placeDetails) {
+          // Hide loading snackbar
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+          // Set the selected place and navigate
+          PlacesCubit.get(context).setSelectedPlace(placeDetails);
+          MyNavigator.goTo(screen: PlaceDetailsView());
+        },
+      );
+    } catch (e) {
+      print('[AiChatView] Error loading place: $e');
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.error_outline, color: AppColors.white),
+              SizedBox(width: 12),
+              Expanded(child: Text('Failed to load place details')),
+            ],
+          ),
+          backgroundColor: AppColors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildPlaceCard(PlaceReference placeRef) {
+    // Keep old implementation for backwards compatibility
     return Container(
       margin: EdgeInsets.only(
         bottom: MyResponsive.height(value: 12),
@@ -502,39 +1009,46 @@ class _AiChatViewState extends State<AiChatView> {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(MyResponsive.width(value: 16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildDot(0),
+            _buildAnimatedDot(0),
             SizedBox(width: MyResponsive.width(value: 4)),
-            _buildDot(1),
+            _buildAnimatedDot(1),
             SizedBox(width: MyResponsive.width(value: 4)),
-            _buildDot(2),
+            _buildAnimatedDot(2),
           ],
         ),
-      ),
+      )
+          .animate(onPlay: (controller) => controller.repeat())
+          .fadeIn(duration: 300.ms),
     );
   }
 
-  Widget _buildDot(int index) {
-    return TweenAnimationBuilder(
-      tween: Tween(begin: 0.0, end: 1.0),
-      duration: Duration(milliseconds: 600),
-      builder: (context, double value, child) {
-        return Opacity(
-          opacity: (value + index * 0.3) % 1.0,
-          child: Container(
-            width: MyResponsive.width(value: 8),
-            height: MyResponsive.height(value: 8),
-            decoration: BoxDecoration(
-              color: AppColors.grey,
-              shape: BoxShape.circle,
-            ),
-          ),
-        );
-      },
-    );
+  Widget _buildAnimatedDot(int index) {
+    return Container(
+      width: MyResponsive.width(value: 8),
+      height: MyResponsive.height(value: 8),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        shape: BoxShape.circle,
+      ),
+    )
+        .animate(onPlay: (controller) => controller.repeat())
+        .fadeIn(
+          delay: (200 * index).ms,
+          duration: 600.ms,
+        )
+        .then()
+        .fadeOut(duration: 600.ms);
   }
 
   Widget _buildMessageInput() {

@@ -13,14 +13,22 @@ class AiChatRepoImpl implements AiChatRepo {
   AiChatRepoImpl({required this.apiHelper});
 
   @override
-  Future<Either<String, AiChatResponseModel>> sendMessage(
-      String message) async {
+  Future<Either<String, AiChatResponseModel>> sendMessage(String message,
+      List<AiMessageModel> conversationHistory) async {
     try {
       print('[AiChatRepo] Sending message: $message');
+      print('[AiChatRepo] History length: ${conversationHistory.length}');
+
+      // Convert conversation history to API format (role + content)
+      final history =
+          conversationHistory.map((msg) => msg.toHistoryJson()).toList();
 
       final response = await apiHelper.postRequest(
         endPoint: 'chat',
-        data: {'message': message},
+        data: {
+          'message': message,
+          'history': history, // Send conversation history
+        },
         isProtected: false, // Public endpoint
       );
 

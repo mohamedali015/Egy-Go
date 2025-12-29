@@ -38,6 +38,14 @@ class AiMessageModel {
       'places': places?.map((p) => p.toJson()).toList(),
     };
   }
+
+  // Convert to API format for conversation history
+  Map<String, String> toHistoryJson() {
+    return {
+      'role': isUser ? 'user' : 'model',
+      'content': message,
+    };
+  }
 }
 
 class PlaceReference {
@@ -46,6 +54,10 @@ class PlaceReference {
   final String? province;
   final String? category;
   final String? description;
+  final List<String>? images;
+  final double? rating;
+  final String? type;
+  final String? slug;
 
   PlaceReference({
     required this.id,
@@ -53,15 +65,41 @@ class PlaceReference {
     this.province,
     this.category,
     this.description,
+    this.images,
+    this.rating,
+    this.type,
+    this.slug,
   });
 
   factory PlaceReference.fromJson(Map<String, dynamic> json) {
+    // Extract province name from nested object or string
+    String? provinceName;
+    if (json['province'] != null) {
+      if (json['province'] is Map) {
+        provinceName = json['province']['name'] ?? json['province']['slug'];
+      } else if (json['province'] is String) {
+        provinceName = json['province'];
+      }
+    }
+
+    // Extract images list
+    List<String>? imagesList;
+    if (json['images'] != null && json['images'] is List) {
+      imagesList =
+          (json['images'] as List).map((img) => img.toString()).toList();
+    }
+
     return PlaceReference(
       id: json['id'] ?? json['_id'] ?? '',
       name: json['name'] ?? '',
-      province: json['province'],
-      category: json['category'],
+      province: provinceName,
+      category: json['category'] ?? json['type'],
       description: json['description'],
+      images: imagesList,
+      rating:
+          json['rating'] != null ? (json['rating'] as num).toDouble() : null,
+      type: json['type'],
+      slug: json['slug'],
     );
   }
 
@@ -72,20 +110,24 @@ class PlaceReference {
       'province': province,
       'category': category,
       'description': description,
+      'images': images,
+      'rating': rating,
+      'type': type,
+      'slug': slug,
     };
   }
 }
 
 class AiChatResponseModel {
   final bool success;
-  final String? type; // "text" or "places"
+  final String? source; // "database" or "gemini"
   final String reply;
   final List<PlaceReference>? places;
   final String? error;
 
   AiChatResponseModel({
     required this.success,
-    this.type,
+    this.source,
     required this.reply,
     this.places,
     this.error,
@@ -94,34 +136,35 @@ class AiChatResponseModel {
   factory AiChatResponseModel.fromJson(Map<String, dynamic> json) {
     print('[AiChatResponseModel] Parsing JSON: $json');
 
-    final responseType = json['type'] ?? 'text';
-    String replyText = '';
+    // New API format: { success, source, reply }
+    final replyText = json['reply'] ?? json['content'] ?? '';
+    final source = json['source']; // 'database' or 'gemini'
+
     List<PlaceReference>? placesList;
 
-    if (responseType == 'text') {
-      // Handle text response: content contains the text message
-      replyText = json['content'] ?? json['reply'] ?? '';
-    } else if (responseType == 'places') {
-      // Handle places response: content contains array of places
-      final contentData = json['content'];
-
-      if (contentData is List) {
-        placesList = contentData
-            .map((p) => PlaceReference.fromJson(p as Map<String, dynamic>))
-            .toList();
-
-        // Create a reply text showing the places count
-        replyText =
-            'I found ${placesList.length} places that might interest you:';
-      }
+    // Check multiple possible locations for places data
+    if (json['places'] != null && json['places'] is List) {
+      placesList = (json['places'] as List)
+          .map((p) => PlaceReference.fromJson(p as Map<String, dynamic>))
+          .toList();
+    } else if (json['data'] != null && json['data'] is List) {
+      // Backend might send places in 'data' field
+      placesList = (json['data'] as List)
+          .map((p) => PlaceReference.fromJson(p as Map<String, dynamic>))
+          .toList();
+    } else if (json['results'] != null && json['results'] is List) {
+      // Or in 'results' field
+      placesList = (json['results'] as List)
+          .map((p) => PlaceReference.fromJson(p as Map<String, dynamic>))
+          .toList();
     }
 
     print(
-        '[AiChatResponseModel] Type: $responseType, Reply: $replyText, Places: ${placesList?.length ?? 0}');
+        '[AiChatResponseModel] Source: $source, Reply length: ${replyText.length}, Places: ${placesList?.length ?? 0}');
 
     return AiChatResponseModel(
       success: json['success'] ?? false,
-      type: responseType,
+      source: source,
       reply: replyText,
       places: placesList,
       error: json['error'],
