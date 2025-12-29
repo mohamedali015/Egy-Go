@@ -15,13 +15,13 @@ class GovernoratesCategoryView extends StatelessWidget {
     var cubit = GovernoratesCubit.get(context);
     Governorate governorate = cubit.selectedGovernorate!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          governorate.name ?? '',
-          style: AppTextStyles.semiBold28.copyWith(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     governorate.name ?? '',
+      //     style: AppTextStyles.semiBold28.copyWith(color: Colors.black),
+      //   ),
+      //   centerTitle: true,
+      // ),
       body: GovernoratesCategoryViewBody(),
     );
   }
