@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:egy_go/features/trip/data/models/trips_response_model.dart';
 import 'package:egy_go/features/trip/data/repos/trip_repo.dart';
 import 'package:egy_go/core/network/socket_service.dart';
+import 'package:egy_go/features/trip/manager/trips_cubit/trips_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'trip_details_state.dart';
@@ -103,6 +104,12 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
               print('[TripDetailsCubit]    New: $newStatus');
 
               currentTrip = tripDetailsData.trip;
+
+              // Notify trips screen to refresh
+              TripsCubit.notifyTripUpdated(tripId);
+              print(
+                  '[TripDetailsCubit] 📢 Notified trips screen to refresh (polling)');
+
               emit(TripDetailsSuccess(tripDetailsData.trip!));
             } else {
               print('[TripDetailsCubit] ℹ️ No status change detected');
@@ -177,6 +184,10 @@ class TripDetailsCubit extends Cubit<TripDetailsState> {
           print(
               '[TripDetailsCubit] 💳 Payment status updated: ${data['paymentStatus']}');
         }
+
+        // Notify trips screen to refresh
+        TripsCubit.notifyTripUpdated(tripId);
+        print('[TripDetailsCubit] 📢 Notified trips screen to refresh');
 
         // Trigger UI rebuild with updated trip
         print(

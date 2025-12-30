@@ -4,7 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   agora_rtc_engine
-        app_links
+  app_links
   geolocator_windows
   iris_method_channel
   permission_handler_windows

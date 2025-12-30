@@ -14,7 +14,9 @@ class TripsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TripsCubit(getIt<TripRepo>())..fetchTrips(),
+      create: (context) => TripsCubit(getIt<TripRepo>())
+        ..fetchTrips()
+        ..listenForTripUpdates(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(

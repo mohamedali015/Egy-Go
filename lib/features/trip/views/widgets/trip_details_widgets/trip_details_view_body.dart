@@ -1,6 +1,8 @@
+import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/shared_widgets/custom_loading_indicator.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
+import 'package:egy_go/features/home/views/app_home_view.dart';
 import 'package:egy_go/features/trip/manager/trip_details_cubit/trip_details_cubit.dart';
 import 'package:egy_go/features/trip/manager/trip_details_cubit/trip_details_state.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/trip_info_section.dart';
@@ -14,6 +16,7 @@ import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/backend_
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/chat_section.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
+import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,8 +34,13 @@ class TripDetailsViewBody extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-          // Navigate back to trips screen
-          Navigator.pop(context);
+          // Navigate to trips screen and refresh
+          MyNavigator.goTo(
+            screen: AppHomeView(
+              initialIndex: 1,
+            ),
+            isReplace: true,
+          );
         } else if (state is TripDetailsFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
