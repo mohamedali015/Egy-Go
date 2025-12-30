@@ -14,6 +14,8 @@ class TripActionsSection extends StatelessWidget {
 
   bool get isCompleted => trip.status?.toLowerCase() == 'completed';
 
+  bool get isInProgress => trip.status?.toLowerCase() == 'in_progress';
+
   void _showCancelDialog(BuildContext context) {
     final cubit = TripDetailsCubit.get(context);
 
@@ -130,8 +132,8 @@ class TripActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Don't show any actions if trip is cancelled or completed
-    if (isCancelled || isCompleted) {
+    // Don't show any actions if trip is cancelled, completed, or in_progress
+    if (isCancelled || isCompleted || isInProgress) {
       return SizedBox.shrink();
     }
 

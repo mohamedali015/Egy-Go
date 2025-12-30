@@ -41,6 +41,12 @@ class TripInfoSection extends StatelessWidget {
         return 'Awaiting Call';
       case 'pending_confirmation':
         return 'Pending Confirmation';
+      case 'confirmed':
+        return 'Confirmed';
+      case 'upcoming':
+        return 'Upcoming Trip';
+      case 'in_progress':
+        return 'In Progress';
       case 'completed':
         return 'Completed';
       case 'cancelled':
@@ -53,17 +59,23 @@ class TripInfoSection extends StatelessWidget {
   Color _getStatusColor() {
     switch (trip.status?.toLowerCase()) {
       case 'selecting_guide':
-        return Colors.orange;
+        return Colors.amber; // Warm amber for selection phase
       case 'awaiting_call':
-        return Colors.blue;
+        return Colors.blue.shade600; // Deep blue for awaiting action
       case 'pending_confirmation':
-        return Colors.orange;
+        return Colors.orange.shade700; // Rich orange for pending
+      case 'confirmed':
+        return Colors.teal; // Teal for confirmed (positive but not complete)
+      case 'upcoming':
+        return Colors.deepPurple; // Deep purple for upcoming urgency
+      case 'in_progress':
+        return Colors.indigo; // Indigo for active trip
       case 'completed':
-        return Colors.green;
+        return Colors.green.shade600; // Strong green for success
       case 'cancelled':
-        return Colors.red;
+        return Colors.red.shade700; // Deep red for cancelled
       default:
-        return Colors.grey;
+        return Colors.grey.shade600;
     }
   }
 
@@ -86,6 +98,58 @@ class TripInfoSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Show upcoming banner if status is upcoming
+          if (trip.status?.toLowerCase() == 'upcoming') ...[
+            Container(
+              padding:
+                  MyResponsive.paddingSymmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.purple.shade400, Colors.purple.shade600],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius:
+                    BorderRadius.circular(MyResponsive.radius(value: 8)),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.access_time_filled,
+                    color: Colors.white,
+                    size: MyResponsive.fontSize(value: 24),
+                  ),
+                  SizedBox(width: MyResponsive.width(value: 12)),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Upcoming Trip',
+                          style: AppTextStyles.bold16.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: MyResponsive.height(value: 4)),
+                        Text(
+                          'Your trip starts within 24 hours',
+                          style: AppTextStyles.regular12.copyWith(
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: MyResponsive.fontSize(value: 16),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: MyResponsive.height(value: 16)),
+          ],
           Text(
             'Trip Information',
             style: AppTextStyles.bold18,

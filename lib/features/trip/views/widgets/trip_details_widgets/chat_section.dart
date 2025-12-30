@@ -11,17 +11,20 @@ class ChatSection extends StatelessWidget {
   final TripModel trip;
 
   /// Check if chat should be visible
-  /// Show chat button if trip has a selected guide and is NOT cancelled or rejected
+  /// Show chat button if trip has a selected guide and is NOT cancelled, rejected, or completed
   bool get shouldShowChat {
     final status = trip.status?.toLowerCase();
     final hasSelectedGuide = trip.selectedGuide != null;
 
-    // Don't show chat if cancelled or rejected
-    if (status == 'cancelled' || status == 'rejected') {
+    // Don't show chat if cancelled, rejected, or completed
+    if (status == 'cancelled' ||
+        status == 'rejected' ||
+        status == 'completed') {
       return false;
     }
 
     // Only show chat if there's a selected guide
+    // This covers: confirmed, upcoming, in_progress
     return hasSelectedGuide;
   }
 
