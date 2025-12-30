@@ -53,25 +53,46 @@ class _AppHomeViewState extends State<AppHomeView> {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: MyResponsive.height(value: 50),
-            width: MyResponsive.width(value: 50),
-            child: FloatingActionButton(
-              heroTag: 'Ai Chat',
-              mini: true,
-              onPressed: () {
-                // Navigate to AI Chat with BlocProvider
-                MyNavigator.goTo(
-                  screen: BlocProvider(
-                    create: (context) => AiChatCubit(getIt<AiChatRepo>()),
-                    child: AiChatView(),
+          Container(
+            height: MyResponsive.height(value: 55),
+            width: MyResponsive.width(value: 55),
+            decoration: BoxDecoration(
+              // color: AppColors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  // Navigate to AI Chat with BlocProvider
+                  MyNavigator.goTo(
+                    screen: BlocProvider(
+                      create: (context) => AiChatCubit(getIt<AiChatRepo>()),
+                      child: AiChatView(),
+                    ),
+                  );
+                },
+                customBorder: CircleBorder(),
+                child: ClipOval(
+                  child: Image.asset(
+                    AppAssets.aiChatImage,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.chat,
+                        size: MyResponsive.fontSize(value: 25),
+                        color: AppColors.primary,
+                      );
+                    },
                   ),
-                );
-              },
-              backgroundColor: AppColors.scaffoldBackground,
-              child: SvgWrapper(
-                path: AppAssets.nefertiti,
-                width: MyResponsive.fontSize(value: 30),
+                ),
               ),
             ),
           ),

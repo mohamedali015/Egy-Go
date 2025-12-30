@@ -19,6 +19,7 @@ abstract class AppAssets {
   // home screen assets
   static const String homeBanner = "${basePath}home_banner.png";
   static const String startTrip = "${basePath}start_trip_icon.svg";
+  static const String aiChatImage = "${basePath}chatbot_icon.png";
   static const String nefertiti = "${basePath}nefertiti.svg";
   static const String home = "${basePath}home.svg";
   static const String trips = "${basePath}schedule.svg";

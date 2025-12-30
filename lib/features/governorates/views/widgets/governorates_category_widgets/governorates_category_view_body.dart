@@ -13,27 +13,6 @@ class GovernoratesCategoryViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Positioned.fill(
-        //   child: Image.asset(
-        //     AppAssets.test,
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        // Positioned.fill(
-        //   child: Container(
-        //     decoration: BoxDecoration(
-        //       gradient: LinearGradient(
-        //         begin: Alignment.topCenter,
-        //         end: Alignment.bottomCenter,
-        //         colors: [
-        //           Colors.transparent,
-        //           Colors.black.withValues(alpha: .2),
-        //         ],
-        //         stops: [0.0, 0.0],
-        //       ),
-        //     ),
-        //   ),
-        // ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

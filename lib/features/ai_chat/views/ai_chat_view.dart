@@ -1,7 +1,6 @@
 import 'package:egy_go/core/helper/my_responsive.dart';
 import 'package:egy_go/core/helper/my_navigator.dart';
 import 'package:egy_go/core/helper/get_it.dart';
-import 'package:egy_go/core/shared_widgets/svg_wrapper.dart';
 import 'package:egy_go/core/utils/app_assets.dart';
 import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
@@ -77,9 +76,21 @@ class _AiChatViewState extends State<AiChatView> {
           children: [
             CircleAvatar(
               backgroundColor: AppColors.white,
-              child: SvgWrapper(
-                path: AppAssets.nefertiti,
-                width: MyResponsive.fontSize(value: 30),
+              radius: MyResponsive.width(value: 20),
+              child: ClipOval(
+                child: Image.asset(
+                  AppAssets.aiChatImage,
+                  width: MyResponsive.width(value: 50),
+                  height: MyResponsive.height(value: 50),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      Icons.chat,
+                      size: MyResponsive.fontSize(value: 30),
+                      color: AppColors.primary,
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(width: MyResponsive.width(value: 12)),
@@ -680,8 +691,14 @@ class _AiChatViewState extends State<AiChatView> {
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
                 ),
               ),
-              SizedBox(width: 16),
-              Text('Loading ${place.name}...'),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Loading ${place.name}...',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
             ],
           ),
           duration: Duration(seconds: 2),
