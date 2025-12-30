@@ -7,9 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SelectGuideScreen extends StatefulWidget {
-  const SelectGuideScreen({super.key, required this.tripId});
+  const SelectGuideScreen({
+    super.key,
+    required this.tripId,
+    this.isLicensed,
+    this.canEnterArchaeologicalSites,
+  });
 
   final String tripId;
+  final bool? isLicensed;
+  final bool? canEnterArchaeologicalSites;
 
   static const String routeName = "selectGuide";
 
@@ -20,7 +27,11 @@ class SelectGuideScreen extends StatefulWidget {
 class _SelectGuideScreenState extends State<SelectGuideScreen> {
   @override
   void initState() {
-    SelectGuideCubit.get(context).fetchTripGuides(widget.tripId);
+    SelectGuideCubit.get(context).fetchTripGuides(
+      widget.tripId,
+      isLicensed: widget.isLicensed,
+      canEnterArchaeologicalSites: widget.canEnterArchaeologicalSites,
+    );
     super.initState();
   }
 

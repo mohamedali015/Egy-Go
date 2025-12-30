@@ -5,7 +5,7 @@ import 'package:egy_go/core/shared_widgets/custom_progress_hud.dart';
 import 'package:egy_go/features/create_trip/data/repos/create_trip_form_repo/create_trip_form_repo.dart';
 import 'package:egy_go/features/create_trip/manager/create_trip_cubit/create_trip_cubit.dart';
 import 'package:egy_go/features/create_trip/views/choose_guide_view.dart';
-import 'package:egy_go/features/guides/views/select_guide_screen.dart';
+import 'package:egy_go/features/guides/views/guide_filter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +31,7 @@ class CreateTripFormView extends StatelessWidget {
               } else if (state is CreateTripSuccess) {
                 MySnackbar.success(context, state.response.message!);
                 MyNavigator.goTo(
-                    screen: SelectGuideScreen(
+                    screen: GuideFilterScreen(
                   tripId: state.response.trip!.sId!,
                 ));
               }

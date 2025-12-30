@@ -15,7 +15,11 @@ class SelectGuideCubit extends Cubit<SelectGuideState> {
   String? selectedLanguage;
   TripInfo? tripInfo;
 
-  Future<void> fetchTripGuides(String tripId) async {
+  Future<void> fetchTripGuides(
+    String tripId, {
+    bool? isLicensed,
+    bool? canEnterArchaeologicalSites,
+  }) async {
     emit(SelectGuideLoading());
     final result = await repo.getTripGuides(tripId);
     result.fold(
@@ -27,11 +31,42 @@ class SelectGuideCubit extends Cubit<SelectGuideState> {
         if (guidesData.guides != null) {
           allGuides.addAll(guidesData.guides!);
         }
-        filteredGuides = List.from(allGuides);
+
+        // Apply filters based on parameters
+        filteredGuides = _applyFilters(
+          allGuides,
+          isLicensed: isLicensed,
+          canEnterArchaeologicalSites: canEnterArchaeologicalSites,
+        );
+
         tripInfo = guidesData.trip;
-        emit(SelectGuideSuccess(guidesData));
+        emit(SelectGuideSuccess(TripGuidesResponseModel(
+          success: true,
+          guides: filteredGuides,
+          trip: tripInfo,
+        )));
       },
     );
+  }
+
+  List<Guide> _applyFilters(
+    List<Guide> guides, {
+    bool? isLicensed,
+    bool? canEnterArchaeologicalSites,
+  }) {
+    List<Guide> filtered = List.from(guides);
+
+    if (isLicensed != null && isLicensed) {
+      filtered = filtered.where((guide) => guide.isLicensed == true).toList();
+    }
+
+    if (canEnterArchaeologicalSites != null && canEnterArchaeologicalSites) {
+      filtered = filtered
+          .where((guide) => guide.canEnterArchaeologicalSites == true)
+          .toList();
+    }
+
+    return filtered;
   }
 
   void filterByLanguage(String? language) {

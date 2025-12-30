@@ -5,7 +5,7 @@ import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/guides/data/models/trip_guides_response_model.dart'
     as guides_model;
 import 'package:egy_go/features/guides/views/guide_details_screen.dart';
-import 'package:egy_go/features/guides/views/select_guide_screen.dart';
+import 'package:egy_go/features/guides/views/guide_filter_screen.dart';
 import 'package:egy_go/features/trip/data/models/trips_response_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -124,7 +124,7 @@ class GuideSection extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        SelectGuideScreen(tripId: trip.sId ?? ''),
+                        GuideFilterScreen(tripId: trip.sId ?? ''),
                   ),
                 );
               },
