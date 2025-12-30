@@ -14,9 +14,9 @@ import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/waiting_
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/payment_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/backend_offline_section.dart';
 import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/chat_section.dart';
+import 'package:egy_go/features/trip/views/widgets/trip_details_widgets/sos_section.dart';
 import 'package:egy_go/features/trip/views/agora_call_screen.dart';
 import 'package:egy_go/features/trip/views/end_call_form_screen.dart';
-import 'package:egy_go/features/trip/views/trips_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -152,6 +152,9 @@ class TripDetailsViewBody extends StatelessWidget {
                   SizedBox(height: MyResponsive.height(value: 16)),
                   TripInfoSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
+                  // SOS Section - only shows for in_progress trips
+                  SosSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
                   GuideSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
                   ChatSection(trip: trip),
@@ -228,6 +231,9 @@ class TripDetailsViewBody extends StatelessWidget {
                 children: [
                   SizedBox(height: MyResponsive.height(value: 16)),
                   TripInfoSection(trip: trip),
+                  SizedBox(height: MyResponsive.height(value: 24)),
+                  // SOS Section - only shows for in_progress trips
+                  SosSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
                   GuideSection(trip: trip),
                   SizedBox(height: MyResponsive.height(value: 24)),
