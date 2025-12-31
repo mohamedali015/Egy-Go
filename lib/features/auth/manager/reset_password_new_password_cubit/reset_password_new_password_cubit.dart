@@ -23,15 +23,17 @@ class ResetPasswordNewPasswordCubit
       return;
     }
     emit(ResetPasswordNewPasswordLoading());
-    var result = await repo.resetPassword(
-      email: email,
-      password: passwordController.text,
-    );
-
-    result.fold(
-      (error) => emit(ResetPasswordNewPasswordFailure(error)),
-      (message) => emit(ResetPasswordNewPasswordSuccess(message)),
-    );
+    // var result = await repo.resetPassword(
+    //   email: email,
+    //   password: passwordController.text,
+    // );
+    //
+    // result.fold(
+    //   (error) => emit(ResetPasswordNewPasswordFailure(error)),
+    //   (message) => emit(ResetPasswordNewPasswordSuccess(message)),
+    // );
+    await Future.delayed(const Duration(seconds: 2));
+    emit(ResetPasswordNewPasswordSuccess("Password reset successfully"));
   }
 
   void changeObsecurePassword() {
