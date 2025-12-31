@@ -135,6 +135,8 @@ abstract class AppStrings {
   static const String passwordRequired = 'Password is required';
   static const String passwordLength =
       'Password must be at least 6 characters long';
+  static const String passwordValid =
+      'Password must contain uppercase, lowercase, number and special character';
   static const String confirmPasswordRequired = 'Confirm password is required';
   static const String passwordNotMatch = 'Passwords do not match';
   static const String phoneRequired = 'Phone number is required';

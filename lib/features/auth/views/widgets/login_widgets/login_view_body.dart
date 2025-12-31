@@ -5,14 +5,11 @@ import 'package:egy_go/core/utils/app_colors.dart';
 import 'package:egy_go/core/utils/app_strings.dart';
 import 'package:egy_go/core/utils/app_text_styles.dart';
 import 'package:egy_go/features/auth/manager/login_cubit/login_cubit.dart';
-import 'package:egy_go/features/auth/views/widgets/login_widgets/social_login_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/utils/app_assets.dart';
 import '../../register_view.dart';
 import '../do_not_have_account.dart';
 import '../reset_password_widgets/forget_password_flow.dart';
-import 'or_divider.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -98,26 +95,26 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             SizedBox(
               height: MyResponsive.height(value: 43),
             ),
-            OrDivider(),
-            SizedBox(
-              height: MyResponsive.height(value: 41),
-            ),
-            SocialLoginButton(
-              imagePath: AppAssets.googleLogo,
-              title: AppStrings.loginWithGoogle,
-              onPressed: () {},
-            ),
-            SizedBox(
-              height: MyResponsive.height(value: 16),
-            ),
-            SocialLoginButton(
-              imagePath: AppAssets.facebookLogo,
-              title: AppStrings.loginWithFacebook,
-              onPressed: () {},
-            ),
-            SizedBox(
-              height: MyResponsive.height(value: 80),
-            ),
+            // OrDivider(),
+            // SizedBox(
+            //   height: MyResponsive.height(value: 41),
+            // ),
+            // SocialLoginButton(
+            //   imagePath: AppAssets.googleLogo,
+            //   title: AppStrings.loginWithGoogle,
+            //   onPressed: () {},
+            // ),
+            // SizedBox(
+            //   height: MyResponsive.height(value: 16),
+            // ),
+            // SocialLoginButton(
+            //   imagePath: AppAssets.facebookLogo,
+            //   title: AppStrings.loginWithFacebook,
+            //   onPressed: () {},
+            // ),
+            // SizedBox(
+            //   height: MyResponsive.height(value: 80),
+            // ),
             DoNotHaveAccount(
               question: AppStrings.dontHaveAccount,
               actionText: AppStrings.register,

@@ -29,6 +29,13 @@ abstract class Validator {
     if (value.length < 6) {
       return AppStrings.passwordLength;
     }
+    final passwordRegex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]',
+    );
+    if (!passwordRegex.hasMatch(value)) {
+      return AppStrings.passwordValid;
+    }
+
     return null;
   }
 
@@ -38,6 +45,12 @@ abstract class Validator {
     }
     if (value != password) {
       return AppStrings.passwordNotMatch;
+    }
+    final passwordRegex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]',
+    );
+    if (!passwordRegex.hasMatch(value)) {
+      return AppStrings.passwordValid;
     }
     return null;
   }
