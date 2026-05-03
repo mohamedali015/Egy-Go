@@ -1,9 +1,9 @@
 import 'package:egy_go/core/user/data/models/user_model.dart';
 import 'package:egy_go/features/auth/views/get_started_view.dart';
+import 'package:egy_go/features/home/views/app_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/cache/cache_key.dart';
 import '../../../../core/helper/my_navigator.dart';
@@ -49,44 +49,45 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
-  // /// update user data
-  // Future<void> updateUserData() async {
-  //   if (formKey.currentState!.validate()) {
-  //     emit(UserUpdateLoading());
-  //     var result = await userRepo.updateUserData(
-  //       name: nameController.text,
-  //       phone: phoneController.text,
-  //       imageFile: imageFile,
-  //     );
-  //
-  //     result.fold(
-  //           (String error) {
-  //         emit(UserUpdateError(error: error));
-  //       },
-  //           (message) async {
-  //         await getUserData();
-  //         emit(UserUpdateSuccess(message: message));
-  //       },
-  //     );
-  //   } else {
-  //     emit(UserUpdateError(error: TranslationKeys.fillAllFields.tr));
-  //   }
-  // }
-  //
-  // /// delete user account
-  // Future<void> deleteUserAccount() async {
-  //   emit(UserDeleteLoading());
-  //   var result = await userRepo.deleteUserData();
-  //   result.fold(
-  //         (String error) {
-  //       emit(UserDeleteError(error: error));
-  //     },
-  //         (message) {
-  //       logout();
-  //       emit(UserDeleteSuccess(message: message));
-  //     },
-  //   );
-  // }
+  /// update user data locally and emit state
+  Future<void> updateUserData() async {
+    if (formKey.currentState!.validate()) {
+      emit(UserUpdateLoading());
+
+      // Simulate loading delay
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Update the userModel with new values
+      userModel.name = nameController.text;
+      userModel.phone = phoneController.text;
+
+      MyNavigator.goTo(
+          screen: AppHomeView(
+            initialIndex: 2,
+          ),
+          isReplace: true);
+
+      // Emit success state so all listeners can react
+      emit(UserUpdateSuccess(message: 'Profile updated successfully'));
+
+      // Optionally: Make API call to update on server
+      // var result = await userRepo.updateUserData(
+      //   name: nameController.text,
+      //   phone: phoneController.text,
+      // );
+      // result.fold(
+      //   (String error) {
+      //     emit(UserUpdateError(error: error));
+      //   },
+      //   (message) async {
+      //     await getUserData();
+      //     emit(UserUpdateSuccess(message: message));
+      //   },
+      // );
+    } else {
+      emit(UserUpdateError(error: 'Please fill all fields'));
+    }
+  }
 
   /// logout
   Future<void> logout() async {
